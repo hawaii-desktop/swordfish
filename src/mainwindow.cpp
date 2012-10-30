@@ -489,7 +489,7 @@ void MainWindow::goParent()
     } else {
         // Up one level
         rootDir.cdUp();
-        setRootPath(model->index(rootDir.absolutePath());
+        setRootPath(model->index(rootDir.absolutePath()));
     }
 }
 
@@ -606,7 +606,7 @@ void MainWindow::customContextMenuRequested(const QPoint &pos)
 {
     // Find the item that is located at the current position, if it's not valid
     // then the context menu was requested for the root path
-    QModelIndex index = m_currentView->indexAt(pos).sibling(index.row(), 0);
+    QModelIndex index = m_currentView->indexAt(pos);
 
     // Context menu
     QMenu menu(this);

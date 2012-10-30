@@ -809,13 +809,8 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>VNavigationBar</class>
-   <extends>QTreeView</extends>
-   <header>VibeWidgets/VNavigationBar</header>
-  </customwidget>
-  <customwidget>
    <class>VFilePlacesView</class>
-   <extends>VNavigationBar</extends>
+   <extends>QTreeView</extends>
    <header>VFilePlacesView</header>
   </customwidget>
  </customwidgets>
