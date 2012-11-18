@@ -27,6 +27,8 @@
 #include <QMainWindow>
 #include <QAbstractItemView>
 
+#include <VSettings>
+
 namespace Ui
 {
     class MainWindow;
@@ -61,6 +63,7 @@ private:
     QList<QModelIndex> m_history;
     int m_historyPoint;
     FileViewController *m_viewController;
+    VSettings *m_desktopSettings;
 
     void setupActions();
     void setupViews();

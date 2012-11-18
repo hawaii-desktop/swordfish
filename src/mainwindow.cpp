@@ -48,6 +48,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // Interface settings
+    m_desktopSettings = new VSettings("org.hawaii.desktop");
+
     // Create the file manager interface
     m_fileMan = new FileManager(this);
     connect(m_fileMan, SIGNAL(copyFinished(QUrl, QUrl)),
@@ -118,6 +121,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete m_desktopSettings;
 }
 
 QAbstractItemView *MainWindow::currentView() const
@@ -216,9 +220,13 @@ void MainWindow::setupActions()
 
 void MainWindow::setupViews()
 {
+    int iconSize = m_desktopSettings->value("interface/iconview-icon-size").toInt();
+
     // Icon view
     ui->iconView->setModel(m_viewController->model());
     ui->iconView->setSelectionModel(m_viewController->selectionModel());
+    ui->iconView->setIconSize(QSize(iconSize, iconSize));
+    ui->iconView->setGridSize(QSize(iconSize * 2, iconSize * 2));
     m_currentView = ui->iconView;
     connect(ui->iconView, SIGNAL(customContextMenuRequested(QPoint)),
             this, SLOT(customContextMenuRequested(QPoint)));

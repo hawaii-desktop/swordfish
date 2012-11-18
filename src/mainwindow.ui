@@ -22,7 +22,7 @@
       </property>
       <widget class="VFilePlacesView" name="placesView">
        <property name="sizePolicy">
-        <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+        <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
          <horstretch>0</horstretch>
          <verstretch>0</verstretch>
         </sizepolicy>
@@ -91,11 +91,8 @@
             <property name="resizeMode">
              <enum>QListView::Adjust</enum>
             </property>
-            <property name="gridSize">
-             <size>
-              <width>120</width>
-              <height>120</height>
-             </size>
+            <property name="spacing">
+             <number>6</number>
             </property>
             <property name="viewMode">
              <enum>QListView::IconMode</enum>
@@ -229,7 +226,7 @@
      <x>0</x>
      <y>0</y>
      <width>780</width>
-     <height>25</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
