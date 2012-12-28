@@ -39,6 +39,7 @@
 #include "ui_mainwindow.h"
 #include "fileviewcontroller.h"
 #include "filemanager.h"
+#include "infodialog.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -175,6 +176,8 @@ void MainWindow::setupActions()
             this, SLOT(selectAll()));
     connect(ui->actionRename, SIGNAL(triggered()),
             this, SLOT(rename()));
+    connect(ui->actionGetInformation, SIGNAL(triggered()),
+            this, SLOT(getInformation()));
     connect(ui->actionMoveToTrash, SIGNAL(triggered()),
             this, SLOT(moveToTrash()));
     connect(ui->actionDeletePermanently, SIGNAL(triggered()),
@@ -403,6 +406,15 @@ void MainWindow::rename()
         if (index.isValid())
             m_currentView->edit(index);
     }
+}
+
+void MainWindow::getInformation()
+{
+    InfoDialog dialog(this);
+    dialog.setModel(m_viewController->model());
+    dialog.setModelIndexList(m_viewController->selectionModel()->selection().indexes());
+    dialog.move(frameGeometry().center());
+    dialog.exec();
 }
 
 void MainWindow::moveToTrash()

@@ -89,6 +89,7 @@ private slots:
     void paste();
     void selectAll();
     void rename();
+    void getInformation();
     void moveToTrash();
     void deletePermanently();
     void preferences();

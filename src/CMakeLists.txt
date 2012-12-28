@@ -9,6 +9,7 @@ add_definitions(${VibeWidgets_DEFINITIONS})
 set(SOURCES
     main.cpp
     mainwindow.cpp
+    infodialog.cpp
     filemanager.cpp
     fileviewcontroller.cpp
     filecopyjob.cpp
@@ -20,6 +21,7 @@ set(SOURCES
 
 set(UI_SOURCES
     mainwindow.ui
+    infodialog.ui
 )
 
 qt5_wrap_ui(UI_FILES ${UI_SOURCES})
