@@ -552,7 +552,7 @@ void MainWindow::about()
     VAboutDialog dialog(this);
     dialog.setAuthors(authors);
     dialog.setCopyright("Pier Luigi Fiorini");
-    dialog.setDescription("File manager with a focus on seed and ease of use.");
+    dialog.setDescription("File manager with a focus on speed and ease of use.");
     dialog.setLink(QUrl("http://www.maui-project.org/"));
 
     QFile licenseFile(":/COPYING");
