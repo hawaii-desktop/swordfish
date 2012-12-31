@@ -22,6 +22,7 @@ set(UI_SOURCES
 )
 
 set(QM_SOURCES
+    translations/it.ts
 )
 
 qt5_wrap_ui(UI_FILES ${UI_SOURCES})
