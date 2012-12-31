@@ -24,15 +24,19 @@
  * $END_LICENSE$
  ***************************************************************************/
 
+#include <QCoreApplication>
 #include <QDebug>
 #include <QActionGroup>
 #include <QClipboard>
 #include <QDesktopServices>
 #include <QFileInfo>
+#include <QLibraryInfo>
 #include <QMessageBox>
 #include <QMimeData>
 #include <QScrollBar>
+#include <QStandardPaths>
 #include <QToolButton>
+#include <QTranslator>
 #include <QUrl>
 
 #include <VFileSystemModel>
@@ -48,10 +52,14 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow())
+    , m_translator(0)
     , m_historyPoint(0)
     , m_viewController(new FileViewController(this))
 {
     ui->setupUi(this);
+
+    // Load translations
+    loadTranslations();
 
     // Interface settings
     m_desktopSettings = new VSettings("org.hawaii.desktop");
@@ -134,17 +142,48 @@ QAbstractItemView *MainWindow::currentView() const
     return m_currentView;
 }
 
-void MainWindow::changeEvent(QEvent *e)
+void MainWindow::changeEvent(QEvent *event)
 {
-    QMainWindow::changeEvent(e);
+    QMainWindow::changeEvent(event);
 
-    switch (e->type()) {
+    switch (event->type()) {
         case QEvent::LanguageChange:
+            loadTranslations();
             ui->retranslateUi(this);
+            break;
+        case QEvent::LocaleChange:
+            loadTranslations();
             break;
         default:
             break;
     }
+}
+
+void MainWindow::loadTranslations()
+{
+    // Locale name
+    const QString locale = QLocale::system().name();
+
+    // Qt translations
+    QTranslator qtTranslator;
+    qtTranslator.load("qt_" + locale,
+                      QLibraryInfo::location(QLibraryInfo::TranslationsPath));
+    QCoreApplication::instance()->installTranslator(&qtTranslator);
+
+    // Remove translation of the previously loaded locale
+    if (m_translator) {
+        QCoreApplication::instance()->removeTranslator(m_translator);
+        delete m_translator;
+    }
+
+    // Load our translations for the current locale
+    m_translator = new QTranslator(this);
+    QString localeDir = QStandardPaths::locate(
+                            QStandardPaths::GenericDataLocation,
+                            QLatin1String("swordfish/translations"),
+                            QStandardPaths::LocateDirectory);
+    m_translator->load(locale, localeDir);
+    QCoreApplication::instance()->installTranslator(m_translator);
 }
 
 void MainWindow::setupActions()

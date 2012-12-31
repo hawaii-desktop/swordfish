@@ -39,7 +39,10 @@ namespace Ui
 }
 
 class QToolButton;
+class QTranslator;
+
 class VBreadcrumbView;
+
 class FileManager;
 class FileViewController;
 
@@ -57,6 +60,7 @@ protected:
 
 private:
     Ui::MainWindow *ui;
+    QTranslator *m_translator;
     FileManager *m_fileMan;
 #if 0
     VBreadcrumbView *m_breadcrumb;
@@ -68,6 +72,8 @@ private:
     int m_historyPoint;
     FileViewController *m_viewController;
     VSettings *m_desktopSettings;
+
+    void loadTranslations();
 
     void setupActions();
     void setupViews();
