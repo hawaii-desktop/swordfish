@@ -14,9 +14,6 @@ Categories=Qt;Hawaii;Utility;Core;
 MimeType=inode/directory;application/x-hawaii-saved-search;
 Actions=Window;
 
-X-Hawaii-Identifier=org.maui.Swordfish
-X-Hawaii-Version=0.0.0
-
 [Desktop Action Window]
 Name=Open a New Window
 Name[it]=Apri una nuova finestra
