@@ -117,3 +117,5 @@ void InfoDialog::directorySizeCalculated(VJob *job)
 
     job->deleteLater();
 }
+
+#include "moc_infodialog.cpp"
