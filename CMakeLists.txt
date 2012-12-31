@@ -1,9 +1,11 @@
 project(Swordfish)
 
-cmake_minimum_required(VERSION 2.8.7)
+cmake_minimum_required(VERSION 2.8.9)
 
-# Enable automoc and include current directory
-set(CMAKE_AUTOMOC ON)
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+
+# Instruct CMake to run moc automatically when needed
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 # Set version
@@ -14,6 +16,9 @@ set(SWORDFISH_VERSION_STRING "${SWORDFISH_VERSION_MAJOR}.${SWORDFISH_VERSION_MIN
 
 # Installation directories
 include(HawaiiInstallDirs)
+
+# Log features
+include(MacroLogFeature)
 
 # Add custom uninstall target
 configure_file(
@@ -48,6 +53,7 @@ find_package(VibeWidgets REQUIRED)
 if(NOT VibeWidgets_FOUND)
     message(FATAL_ERROR "VibeWidgets module is required!")
 endif()
+macro_log_feature(VibeWidgets_FOUND "VibeWidgets" "Support for VibeWidgets" "http://www.maui-project.org" "")
 
 # Find pkg-config executable
 find_program(PKGCONFIG_EXECUTABLE pkg-config)
@@ -67,3 +73,6 @@ string(REGEX REPLACE "[ \t\n]+" \; DBUS_SESSION_BUS_SERVICES_DIR "${DBUS_SESSION
 # Subdirectories
 add_subdirectory(data)
 add_subdirectory(src)
+
+# Display featute log
+macro_display_feature_log()
