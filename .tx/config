@@ -1,0 +1,14 @@
+[main]
+host = https://www.transifex.com
+
+[hawaii.swordfish]
+type = QT
+source_lang = en
+source_file = src/translations/template.ts
+file_filter = src/translations/<lang>.ts
+
+[hawaii.swordfish-desktop-file]
+type = DESKTOP
+source_lang = en
+source_file = data/swordfish.desktop
+file_filter = data/swordfish_<lang>.desktop
