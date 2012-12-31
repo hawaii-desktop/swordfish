@@ -1,0 +1,24 @@
+[Desktop Entry]
+Type=Application
+Name=Files
+Comment=Access and organize files
+Exec=swordfish %U
+TryExec=swordfish
+Icon=system-file-manager
+Terminal=false
+StartupNotify=false
+OnlyShowIn=Hawaii;
+Categories=Qt;Hawaii;Utility;Core;
+MimeType=inode/directory;application/x-hawaii-saved-search;
+Actions=Window;
+
+[Desktop Action Window]
+Name=Open a New Window
+Exec=Swordfish
+OnlyShowIn=Hawaii;
+
+
+# Translations
+Name[it]=Files
+Icon[it]=system-file-manager
+Comment[it]=Accede ed organizza i file
