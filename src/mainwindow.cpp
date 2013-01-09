@@ -71,6 +71,9 @@ MainWindow::MainWindow(QWidget *parent)
     connect(m_fileMan, SIGNAL(moveFinished(QUrl, QUrl)),
             this, SLOT(fileMoved(QUrl, QUrl)));
 
+    // Hide tab bar
+    ui->tabWidget->tabBar()->hide();
+
     // Hide the menu bar by default because we have the app menu button
     menuBar()->hide();
 
