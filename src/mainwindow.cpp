@@ -126,6 +126,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, SLOT(clipboardChanged()));
     connect(QApplication::clipboard(), SIGNAL(changed(QClipboard::Mode)),
             this, SLOT(clipboardChanged()));
+    connect(ui->placesView, SIGNAL(urlChanged(QUrl)),
+            this, SLOT(placeActivated(QUrl)));
     connect(m_viewController, SIGNAL(itemSelected(QModelIndex)),
             this, SLOT(selectItem(QModelIndex)));
     connect(m_viewController, SIGNAL(itemsSelected(QModelIndexList)),
@@ -616,6 +618,15 @@ void MainWindow::clipboardChanged()
     const QMimeData *data = QApplication::clipboard()->mimeData();
     qDebug() << data->hasUrls() << data->urls() << data->data("text/uri-list");
     ui->actionPaste->setEnabled(data->hasUrls());
+}
+
+void MainWindow::placeActivated(const QUrl &url)
+{
+    if (url.isValid() && url.isLocalFile()) {
+        qDebug() << url.toLocalFile();
+        QModelIndex index = m_viewController->model()->index(url.toLocalFile());
+        doubleClicked(index);
+    }
 }
 
 void MainWindow::selectItem(const QModelIndex &index)

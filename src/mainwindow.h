@@ -121,6 +121,7 @@ private slots:
 
     void clipboardChanged();
 
+    void placeActivated(const QUrl &url);
     void selectItem(const QModelIndex &index);
     void itemsSelected(const QModelIndexList &indexes);
     void selectionCleared();
