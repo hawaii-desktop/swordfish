@@ -50,7 +50,16 @@
           <property name="spacing">
            <number>0</number>
           </property>
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
@@ -112,7 +121,16 @@
           <property name="spacing">
            <number>0</number>
           </property>
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
@@ -174,7 +192,16 @@
           <property name="spacing">
            <number>0</number>
           </property>
-          <property name="margin">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
            <number>0</number>
           </property>
           <item>
@@ -226,7 +253,7 @@
      <x>0</x>
      <y>0</y>
      <width>780</width>
-     <height>26</height>
+     <height>19</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -535,9 +562,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="view-list-icons">
-     <normaloff/>
-    </iconset>
+    <iconset theme="view-grid-symbolic"/>
    </property>
    <property name="text">
     <string>As Icons</string>
@@ -548,9 +573,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="view-list-details">
-     <normaloff/>
-    </iconset>
+    <iconset theme="view-list-symbolic"/>
    </property>
    <property name="text">
     <string>As Details</string>
@@ -564,9 +587,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset theme="view-list-compact">
-     <normaloff/>
-    </iconset>
+    <iconset theme="view-list-symbolic"/>
    </property>
    <property name="text">
     <string>As Columns</string>
@@ -582,9 +603,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="go-previous">
-     <normaloff/>
-    </iconset>
+    <iconset theme="go-previous"/>
    </property>
    <property name="text">
     <string>&amp;Back</string>
@@ -598,9 +617,7 @@
     <bool>false</bool>
    </property>
    <property name="icon">
-    <iconset theme="go-next">
-     <normaloff/>
-    </iconset>
+    <iconset theme="go-next"/>
    </property>
    <property name="text">
     <string>&amp;Forward</string>
