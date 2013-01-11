@@ -26,7 +26,6 @@
 
 #include <QDateTime>
 #include <QDir>
-#include <QFileInfo>
 #include <QFileSystemModel>
 #include <QMimeDatabase>
 #include <QMimeType>
@@ -46,6 +45,25 @@ InfoDialog::InfoDialog(QWidget *parent)
 {
     ui->setupUi(this);
     ui->alwaysOpenWithApp->setText(tr("Always open with aaa"));
+
+    connect(ui->ownerReadButton, SIGNAL(toggled(bool)),
+            this, SLOT(permissionChanged()));
+    connect(ui->ownerWriteButton, SIGNAL(toggled(bool)),
+            this, SLOT(permissionChanged()));
+    connect(ui->ownerExecuteButton, SIGNAL(toggled(bool)),
+            this, SLOT(permissionChanged()));
+    connect(ui->groupReadButton, SIGNAL(toggled(bool)),
+            this, SLOT(permissionChanged()));
+    connect(ui->groupWriteButton, SIGNAL(toggled(bool)),
+            this, SLOT(permissionChanged()));
+    connect(ui->groupExecuteButton, SIGNAL(toggled(bool)),
+            this, SLOT(permissionChanged()));
+    connect(ui->otherReadButton, SIGNAL(toggled(bool)),
+            this, SLOT(permissionChanged()));
+    connect(ui->otherWriteButton, SIGNAL(toggled(bool)),
+            this, SLOT(permissionChanged()));
+    connect(ui->otherExecuteButton, SIGNAL(toggled(bool)),
+            this, SLOT(permissionChanged()));
 }
 
 InfoDialog::~InfoDialog()
@@ -74,6 +92,9 @@ void InfoDialog::setModelIndexList(const QModelIndexList &list)
 void InfoDialog::setupForOneItem(const QModelIndex &index)
 {
     QFileInfo info = m_model->fileInfo(index);
+
+    m_infos.clear();
+    m_infos.append(info);
 
     QMimeDatabase mimeDb;
     QMimeType mimeType = mimeDb.mimeTypeForFile(info.absoluteFilePath());
@@ -120,6 +141,12 @@ void InfoDialog::setupForOneItem(const QModelIndex &index)
 
 void InfoDialog::setupForMultipleItems(const QModelIndexList &list)
 {
+    m_infos.clear();
+    for (int i = 0; i < list.size(); i++) {
+        QFileInfo info = m_model->fileInfo(list.at(i));
+        m_infos.append(info);
+    }
+
     ui->fileIcon->setPixmap(QIcon::fromTheme("document-multiple").pixmap(32));
     ui->fileName->setText(tr("%1 files").arg(list.size()));
 
@@ -141,6 +168,35 @@ void InfoDialog::directorySizeCalculated(VJob *job)
     }
 
     job->deleteLater();
+}
+
+void InfoDialog::permissionChanged()
+{
+    for (int i = 0; i < m_infos.size(); i++) {
+        QFileInfo info = m_infos.at(i);
+
+        QFile::Permissions permissions = 0;
+        if (ui->ownerReadButton->isChecked())
+            permissions |= QFile::ReadOwner;
+        if (ui->ownerWriteButton->isChecked())
+            permissions |= QFile::WriteOwner;
+        if (ui->ownerExecuteButton->isChecked())
+            permissions |= QFile::ExeOwner;
+        if (ui->otherReadButton->isChecked())
+            permissions |= QFile::ReadOther;
+        if (ui->otherWriteButton->isChecked())
+            permissions |= QFile::WriteOther;
+        if (ui->otherExecuteButton->isChecked())
+            permissions |= QFile::ExeOther;
+        if (ui->groupReadButton->isChecked())
+            permissions |= QFile::ReadGroup;
+        if (ui->groupWriteButton->isChecked())
+            permissions |= QFile::WriteGroup;
+        if (ui->groupExecuteButton->isChecked())
+            permissions |= QFile::ExeGroup;
+
+        QFile::setPermissions(info.absoluteFilePath(), permissions);
+    }
 }
 
 #include "moc_infodialog.cpp"

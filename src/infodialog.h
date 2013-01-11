@@ -29,6 +29,7 @@
 
 #include <QDialog>
 #include <QModelIndexList>
+#include <QFileInfo>
 
 class QFileSystemModel;
 class VJob;
@@ -50,12 +51,14 @@ public:
 private:
     Ui::InfoDialog *ui;
     QFileSystemModel *m_model;
+    QFileInfoList m_infos;
 
     void setupForOneItem(const QModelIndex &index);
     void setupForMultipleItems(const QModelIndexList &list);
 
 private slots:
     void directorySizeCalculated(VJob *job);
+    void permissionChanged();
 };
 
 #endif // INFODIALOG_H
