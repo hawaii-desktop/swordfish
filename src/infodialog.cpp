@@ -44,7 +44,6 @@ InfoDialog::InfoDialog(QWidget *parent)
     , m_model(0)
 {
     ui->setupUi(this);
-    ui->alwaysOpenWithApp->setText(tr("Always open with aaa"));
 
     connect(ui->ownerReadButton, SIGNAL(toggled(bool)),
             this, SLOT(permissionChanged()));

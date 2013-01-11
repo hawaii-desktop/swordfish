@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>305</width>
+    <width>326</width>
     <height>382</height>
    </rect>
   </property>
@@ -243,7 +243,7 @@
           <item>
            <widget class="QCheckBox" name="alwaysOpenWithApp">
             <property name="text">
-             <string>Always open</string>
+             <string>Always open with selected application</string>
             </property>
            </widget>
           </item>
