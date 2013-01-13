@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>326</width>
-    <height>382</height>
+    <height>406</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -29,16 +29,77 @@
      <item>
       <layout class="QVBoxLayout" name="verticalLayout">
        <item>
-        <widget class="QLineEdit" name="fileName"/>
-       </item>
-       <item>
-        <widget class="QLabel" name="fileTypeAndSize">
-         <property name="text">
-          <string>fileTypeAndSize</string>
+        <widget class="QStackedWidget" name="fileSummary">
+         <property name="currentIndex">
+          <number>0</number>
          </property>
-         <property name="textInteractionFlags">
-          <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
-         </property>
+         <widget class="QWidget" name="page">
+          <layout class="QVBoxLayout" name="verticalLayout_6">
+           <item>
+            <widget class="QLineEdit" name="fileName"/>
+           </item>
+           <item>
+            <widget class="QLabel" name="fileTypeAndSize">
+             <property name="text">
+              <string notr="true">fileTypeAndSize</string>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_4">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="page_2">
+          <layout class="QVBoxLayout" name="verticalLayout_7">
+           <item>
+            <widget class="QLabel" name="fileCount">
+             <property name="text">
+              <string notr="true">fileCount</string>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="fileSize">
+             <property name="text">
+              <string notr="true">fileSize</string>
+             </property>
+             <property name="textInteractionFlags">
+              <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_5">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
         </widget>
        </item>
       </layout>
@@ -92,7 +153,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>fileAccessTime</string>
+               <string notr="true">fileAccessTime</string>
               </property>
               <property name="textInteractionFlags">
                <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
@@ -118,7 +179,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>fileMimeType</string>
+               <string notr="true">fileMimeType</string>
               </property>
              </widget>
             </item>
@@ -131,7 +192,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>fileModificationTime</string>
+               <string notr="true">fileModificationTime</string>
               </property>
               <property name="textInteractionFlags">
                <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
@@ -147,7 +208,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>fileCreationTIme</string>
+               <string notr="true">fileCreationTIme</string>
               </property>
              </widget>
             </item>
@@ -180,7 +241,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>fileLocation</string>
+               <string notr="true">fileLocation</string>
               </property>
               <property name="textInteractionFlags">
                <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
@@ -206,7 +267,7 @@
                </sizepolicy>
               </property>
               <property name="text">
-               <string>fileVoluime</string>
+               <string notr="true">fileVoluime</string>
               </property>
               <property name="textInteractionFlags">
                <set>Qt::LinksAccessibleByMouse|Qt::TextSelectableByKeyboard|Qt::TextSelectableByMouse</set>
