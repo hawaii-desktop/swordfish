@@ -1,7 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=Files
-Name[it]=File
+Name=Swordfish
 Comment=Access and organize files
 Comment[it]=Accede ed organizza i file
 Exec=swordfish %U
@@ -17,5 +16,5 @@ Actions=Window;
 [Desktop Action Window]
 Name=Open a New Window
 Name[it]=Apri una nuova finestra
-Exec=Swordfish
+Exec=swordfish
 OnlyShowIn=Hawaii;
