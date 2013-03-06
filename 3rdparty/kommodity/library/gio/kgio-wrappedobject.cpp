@@ -70,4 +70,4 @@ bool WrappedObject::isNull() const
 
 }}
 
-#include "kgio-wrappedobject.moc"
+#include "moc_kgio-wrappedobject.cpp"

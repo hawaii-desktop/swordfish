@@ -1,6 +1,5 @@
 add_definitions(-DQT_NO_KEYWORDS -Demit=)
 include_directories( 
-	${QT_INCLUDES} 
 	${GLIB2_INCLUDE_DIR} 
 	${GIO_INCLUDE_DIR} 
 	${GOBJECT_INCLUDE_DIR}
@@ -43,13 +42,11 @@ set(kommoditygio_LIB_SRCS
 	)
 
 
-QT4_AUTOMOC(${kommoditygio_LIB_SRCS})
-
 add_library(kommoditygio SHARED ${kommoditygio_LIB_SRCS})
+qt5_use_modules(kommoditygio Core)
+target_link_libraries(kommoditygio ${GLIB2_LIBRARIES} ${GIO_LIBRARIES} ${GOBJECT_LIBRARIES})
 
-target_link_libraries(kommoditygio  ${QT_QTCORE_LIBRARY} ${GLIB2_LIBRARIES} ${GIO_LIBRARIES} ${GOBJECT_LIBRARIES})
-
-install(TARGETS kommoditygio ${INSTALL_TARGETS_DEFAULT_ARGS})
+#install(TARGETS kommoditygio ${INSTALL_TARGETS_DEFAULT_ARGS})
 
 set(kommodity_gio_public_HDRS
 kgio-appinfo.h
@@ -83,6 +80,6 @@ kgio-sharedwrappedobject.h
 kgio-fileattributematcher.h
 )
 
-install( FILES  ${kommodity_gio_public_HDRS} 
-DESTINATION ${KOMMODITY_INCLUDE_INSTALL_DIR}/GIO )
+#install( FILES  ${kommodity_gio_public_HDRS} 
+#DESTINATION ${KOMMODITY_INCLUDE_INSTALL_DIR}/GIO )
 

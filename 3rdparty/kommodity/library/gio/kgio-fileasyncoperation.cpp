@@ -961,5 +961,5 @@ void FileAsyncOperation::emitReplaceContentsReady(const File & file, const QStri
 
 }}
 
-#include "kgio-fileasyncoperation_p.moc"
+#include "moc_kgio-fileasyncoperation_p.cpp"
 

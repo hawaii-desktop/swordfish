@@ -115,4 +115,4 @@ void FileInputStream::emitQueryInfoReady(const FileInputStream * fileInputStream
 
 }}
 
-#include "kgio-fileinputstream.moc"
+#include "moc_kgio-fileinputstream.cpp"

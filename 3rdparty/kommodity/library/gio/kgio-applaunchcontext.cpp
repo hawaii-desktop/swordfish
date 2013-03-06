@@ -115,5 +115,5 @@ void AppLaunchContext::launchFailed(const QByteArray & startupNotifyId)
 
 }}
 
-#include "kgio-applaunchcontext.moc"
+#include "moc_kgio-applaunchcontext.cpp"
 

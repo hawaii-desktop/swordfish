@@ -218,4 +218,4 @@ void Mount::emitEjectReady(Mount * mount, const Error & error)
 
 }}
 
-#include "kgio-mount.moc"
+#include "moc_kgio-mount.cpp"

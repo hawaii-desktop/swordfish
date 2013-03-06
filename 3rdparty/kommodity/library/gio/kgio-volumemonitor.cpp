@@ -357,4 +357,4 @@ void VolumeMonitor::emitVolumeRemoved(const VolumeMonitor * volumeMonitor, const
 
 }}
 
-#include "kgio-volumemonitor.moc"
+#include "moc_kgio-volumemonitor.cpp"

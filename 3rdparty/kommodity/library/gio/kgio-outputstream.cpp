@@ -298,4 +298,4 @@ void OutputStream::clearPending()
 
 }}
 
-#include "kgio-outputstream.moc"
+#include "moc_kgio-outputstream.cpp"

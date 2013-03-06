@@ -198,4 +198,4 @@ void FileEnumerator::emitCloseAsyncReady(FileEnumerator * fileEnumerator, const 
 
 }}
 
-#include "kgio-fileenumerator.moc"
+#include "moc_kgio-fileenumerator.cpp"

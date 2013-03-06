@@ -21,7 +21,7 @@
 #ifndef KGIOREADFILEASYNCTEST_H_
 #define KGIOREADFILEASYNCTEST_H_
 
-#include <QtGui>
+#include <QtWidgets>
 #include <QApplication>
 #include <QPushButton>
 #include <QString>

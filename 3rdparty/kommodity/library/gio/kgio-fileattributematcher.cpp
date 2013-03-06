@@ -102,5 +102,5 @@ QByteArray FileAttributeMatcher::enumerateNext()
 
 }}
 
-#include "kgio-fileattributematcher.moc"
+#include "moc_kgio-fileattributematcher.cpp"
 

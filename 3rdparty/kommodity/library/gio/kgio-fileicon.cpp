@@ -63,4 +63,4 @@ File FileIcon::getFile() const
 
 }}
 
-#include "kgio-fileicon.moc"
+#include "moc_kgio-fileicon.cpp"

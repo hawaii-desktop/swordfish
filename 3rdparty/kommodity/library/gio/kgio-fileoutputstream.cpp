@@ -129,4 +129,4 @@ void FileOutputStream::emitQueryInfoReady(const FileOutputStream * fileOutputStr
 
 }}
 
-#include "kgio-fileoutputstream.moc"
+#include "moc_kgio-fileoutputstream.cpp"

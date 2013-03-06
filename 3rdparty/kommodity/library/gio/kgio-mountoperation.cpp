@@ -233,4 +233,4 @@ void MountOperation::emitReplied(MountOperation *op, MountOperationResult abort)
 
 }}
 
-#include "kgio-mountoperation.moc"
+#include "moc_kgio-mountoperation.cpp"

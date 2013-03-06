@@ -56,4 +56,4 @@ Icon::~Icon()
 
 }}
 
-#include "kgio-icon.moc"
+#include "moc_kgio-icon.cpp"

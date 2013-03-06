@@ -113,4 +113,4 @@ QList<QString> ThemedIcon::getNames() const
 
 }}
 
-#include "kgio-themedicon.moc"
+#include "moc_kgio-themedicon.cpp"

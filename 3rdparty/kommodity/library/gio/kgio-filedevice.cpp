@@ -205,4 +205,4 @@ qint64 FileDevice::writeData ( const char * data, qint64 maxSize )
 
 }}
 
-#include "kgio-filedevice.moc"
+#include "moc_kgio-filedevice.cpp"

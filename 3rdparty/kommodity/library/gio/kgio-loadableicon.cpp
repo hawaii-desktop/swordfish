@@ -119,4 +119,4 @@ void LoadableIcon::emitLoadAsyncReady(LoadableIcon * icon, InputStream * inputSt
 
 }}
 
-#include "kgio-loadableicon.moc"
+#include "moc_kgio-loadableicon.cpp"

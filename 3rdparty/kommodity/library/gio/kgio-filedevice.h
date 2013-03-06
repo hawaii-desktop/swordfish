@@ -25,6 +25,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtCore/QByteArray>
+#include <QtCore/QIODevice>
 
 #include <Kommodity/GIO/File>
 #include <Kommodity/GIO/FileInputStream>
@@ -47,7 +48,7 @@ public:
     FileDevice( const File & file );
     virtual ~FileDevice();
 
-    virtual bool open ( OpenMode mode );    
+    virtual bool open ( QIODevice::OpenMode mode );
     
     virtual bool atEnd () const;
     virtual qint64 bytesAvailable () const;

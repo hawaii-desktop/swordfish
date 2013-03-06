@@ -256,4 +256,4 @@ bool AppInfo::launchDefaultForUri(const QString & uri, AppLaunchContext & launch
 
 }}
 
-#include "kgio-appinfo.moc"
+#include "moc_kgio-appinfo.cpp"

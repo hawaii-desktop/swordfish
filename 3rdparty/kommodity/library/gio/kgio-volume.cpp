@@ -206,4 +206,4 @@ void Volume::emitEjectReady(Volume * volume, const Error & error)
 
 }}
 
-#include "kgio-volume.moc"
+#include "moc_kgio-volume.cpp"

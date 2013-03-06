@@ -146,4 +146,4 @@ void FileMonitor::emitChanged(FileMonitor *monitor,
 
 }}
 
-#include "kgio-filemonitor.moc"
+#include "moc_kgio-filemonitor.cpp"

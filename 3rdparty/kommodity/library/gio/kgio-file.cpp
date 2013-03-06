@@ -934,5 +934,5 @@ void File::replaceContentsAsync(const QByteArray contents,
 
 }}
 
-//#include "kgio-file.moc"
+//#include "moc_kgio-file.cpp"
 

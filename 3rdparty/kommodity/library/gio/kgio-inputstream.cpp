@@ -250,4 +250,4 @@ void InputStream::clearPending()
 
 }}
 
-#include "kgio-inputstream.moc"
+#include "moc_kgio-inputstream.cpp"

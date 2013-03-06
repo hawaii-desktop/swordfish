@@ -458,5 +458,5 @@ void FileInfo::setSortOrder(qint32 sortOrder)
 
 }}
 
-#include "kgio-fileinfo.moc"
+#include "moc_kgio-fileinfo.cpp"
 

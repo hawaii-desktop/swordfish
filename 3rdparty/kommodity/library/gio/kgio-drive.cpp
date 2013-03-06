@@ -211,4 +211,4 @@ void Drive::emitEjectReady(Drive * drive, const Error & error)
 
 }}
 
-#include "kgio-drive.moc"
+#include "moc_kgio-drive.cpp"

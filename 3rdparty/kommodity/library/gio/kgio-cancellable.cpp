@@ -58,4 +58,4 @@ void Cancellable::cancel()
 
 }}
 
-#include "kgio-cancellable.moc"
+#include "moc_kgio-cancellable.cpp"
