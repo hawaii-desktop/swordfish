@@ -1,0 +1,88 @@
+add_definitions(-DQT_NO_KEYWORDS -Demit=)
+include_directories( 
+	${QT_INCLUDES} 
+	${GLIB2_INCLUDE_DIR} 
+	${GIO_INCLUDE_DIR} 
+	${GOBJECT_INCLUDE_DIR}
+	${kommodity_BINARY_DIR}/library/gio
+	${kommodity_SOURCE_DIR}/library/gio
+	${kommodity_SOURCE_DIR}/include
+	${CMAKE_CURRENT_BINARY_DIR}
+	)
+
+set(kommoditygio_LIB_SRCS
+	kgio-wrappedobject.cpp 
+	kgio-sharedwrappedobject.cpp 
+	kgio-file.cpp
+	kgio-fileasyncoperation.cpp  
+	kgio-error.cpp
+	kgio-seekable.cpp  
+	kgio-cancellable.cpp
+	kgio-inputstream.cpp
+	kgio-outputstream.cpp	
+	kgio-fileinputstream.cpp
+	kgio-fileoutputstream.cpp
+	kgio-fileinfo.cpp
+	kgio-mountoperation.cpp
+	kgio-mount.cpp
+	kgio-drive.cpp
+	kgio-volume.cpp
+	kgio-volumemonitor.cpp
+	kgio-filemonitor.cpp
+	kgio-fileenumerator.cpp
+	kgio-wrappedobjectutils.cpp
+	kgio-icon.cpp
+	kgio-themedicon.cpp
+	kgio-loadableicon.cpp
+	kgio-appinfo.cpp
+	kgio-applaunchcontext.cpp
+	kgio-contenttype.cpp
+	kgio-fileicon.cpp
+	kgio-filedevice.cpp
+	kgio-fileattributematcher.cpp
+	)
+
+
+QT4_AUTOMOC(${kommoditygio_LIB_SRCS})
+
+add_library(kommoditygio SHARED ${kommoditygio_LIB_SRCS})
+
+target_link_libraries(kommoditygio  ${QT_QTCORE_LIBRARY} ${GLIB2_LIBRARIES} ${GIO_LIBRARIES} ${GOBJECT_LIBRARIES})
+
+install(TARGETS kommoditygio ${INSTALL_TARGETS_DEFAULT_ARGS})
+
+set(kommodity_gio_public_HDRS
+kgio-appinfo.h
+kgio-applaunchcontext.h
+kgio-cancellable.h
+kgio-contenttype.h
+kgio-drive.h
+kgio-error.h
+kgio-fileattribute.h
+kgio-filedevice.h
+kgio-fileenumerator.h
+kgio-file.h
+kgio-fileicon.h
+kgio-fileinfo.h
+kgio-fileinputstream.h
+kgio-filemonitor.h
+kgio-fileoutputstream.h
+kgio-icon.h
+kgio-inputstream.h
+kgio-ioerror.h
+kgio-loadableicon.h
+kgio-mount.h
+kgio-mountoperation.h
+kgio-outputstream.h
+kgio-seekable.h
+kgio-themedicon.h
+kgio-volume.h
+kgio-volumemonitor.h
+kgio-wrappedobject.h
+kgio-sharedwrappedobject.h
+kgio-fileattributematcher.h
+)
+
+install( FILES  ${kommodity_gio_public_HDRS} 
+DESTINATION ${KOMMODITY_INCLUDE_INSTALL_DIR}/GIO )
+
