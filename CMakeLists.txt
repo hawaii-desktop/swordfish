@@ -49,10 +49,15 @@ if(CMAKE_BUILD_TYPE MATCHES "^[Rr]elease$")
 endif()
 
 # Find Qt
+find_package(Qt5Core REQUIRED)
+if(NOT Qt5Core_FOUND)
+    message(FATAL_ERROR "Qt5Core module is required!")
+endif()
 find_package(Qt5LinguistTools REQUIRED)
 if(NOT Qt5LinguistTools_FOUND)
     message(FATAL_ERROR "Qt5LinguistTools module is required!")
 endif()
+macro_log_feature(Qt5Core_FOUND "Qt5Core" "Support for Qt5Core" "http://qt-project.org" "")
 macro_log_feature(Qt5LinguistTools_FOUND "Qt5LinguistTools" "Support for Qt5LinguistTools" "http://qt-project.org" "")
 
 # Find Vibe libraries
@@ -79,6 +84,7 @@ string(REGEX REPLACE "[ \t\n]+" \; DBUS_SESSION_BUS_SERVICES_DIR "${DBUS_SESSION
 
 # Subdirectories
 add_subdirectory(data)
+add_subdirectory(3rdparty)
 add_subdirectory(src)
 
 # Display featute log

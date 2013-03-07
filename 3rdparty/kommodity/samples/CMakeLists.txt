@@ -1,5 +1,7 @@
-
 include_directories(
+	${GLIB2_INCLUDE_DIRS} 
+	${GIO_INCLUDE_DIRS} 
+	${GOBJECT_INCLUDE_DIRS}
 	${kommodity_SOURCE_DIR}/include
 	${kommodity_BINARY_DIR}/library/gio
 	${kommodity_SOURCE_DIR}/library/gio
