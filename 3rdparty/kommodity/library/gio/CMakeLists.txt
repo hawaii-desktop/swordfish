@@ -74,6 +74,3 @@ kgio-wrappedobject.h
 kgio-sharedwrappedobject.h
 kgio-fileattributematcher.h
 )
-
-#install( FILES  ${kommodity_gio_public_HDRS} 
-#DESTINATION ${KOMMODITY_INCLUDE_INSTALL_DIR}/GIO )
