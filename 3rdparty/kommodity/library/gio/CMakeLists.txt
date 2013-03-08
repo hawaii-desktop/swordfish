@@ -3,9 +3,7 @@ include_directories(
 	${GLIB2_INCLUDE_DIRS} 
 	${GIO_INCLUDE_DIRS} 
 	${GOBJECT_INCLUDE_DIRS}
-	${kommodity_BINARY_DIR}/library/gio
-	${kommodity_SOURCE_DIR}/library/gio
-	${kommodity_SOURCE_DIR}/include
+	${CMAKE_SOURCE_DIR}/3rdparty/kommodity/include
 	)
 
 set(kommoditygio_LIB_SRCS
