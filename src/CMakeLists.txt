@@ -1,6 +1,8 @@
 include_directories(
     ${VibeGui_INCLUDE_DIRS}
     ${VibeWidgets_INCLUDE_DIRS}
+    ${CMAKE_SOURCE_DIR}/3rdparty/kommodity/library/gio
+    ${CMAKE_SOURCE_DIR}/3rdparty/kommodity/include
 )
 
 set(SOURCES
