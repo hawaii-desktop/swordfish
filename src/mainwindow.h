@@ -32,6 +32,7 @@
 #include <QAbstractItemView>
 
 #include <VSettings>
+#include <Kommodity/GIO/File>
 
 namespace Ui
 {

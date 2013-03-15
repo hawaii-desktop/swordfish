@@ -16,6 +16,10 @@ set(SOURCES
     directorycopyjob.cpp
     directorymovejob.cpp
     directorysizejob.cpp
+    placesmodel.cpp
+    placesitem.cpp
+    bookmark.cpp	
+    
 )
 
 set(UI_SOURCES

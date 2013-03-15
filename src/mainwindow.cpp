@@ -32,12 +32,14 @@
 #include <QFileInfo>
 #include <QLibraryInfo>
 #include <QMessageBox>
+#include <QProcess>
 #include <QMimeData>
 #include <QScrollBar>
 #include <QStandardPaths>
 #include <QToolButton>
 #include <QTranslator>
 #include <QUrl>
+#include <QDir>
 
 #include <VFileSystemModel>
 #include <VBreadcrumbView>
@@ -448,12 +450,14 @@ void MainWindow::selectAll()
 
 void MainWindow::rename()
 {
-    QModelIndexList list = m_viewController->selectionModel()->selection().indexes();
+    //QModelIndexList list = m_viewController->selectionModel()->selection().indexes();
+QModelIndexList list = m_viewController->selectionModel()->selectedIndexes();
     if (list.length() > 0) {
-        QModelIndex index = list.at(0);
-        if (index.isValid())
-            m_currentView->edit(index);
-    }
+        //QModelIndex index = list.at(0);
+        if (list.at(0).isValid())
+	 //  m_currentView->scrollToBottom();
+            m_currentView->edit(list.at(0));
+   }
 }
 
 void MainWindow::getInformation()
@@ -467,12 +471,27 @@ void MainWindow::getInformation()
 
 void MainWindow::moveToTrash()
 {
-    QModelIndexList selection = m_viewController->selectionModel()->selection().indexes();
-    foreach(QModelIndex index, selection) {
-        // TODO: Move to the trash instead of delete it
-        // TODO: Check the error
-        m_viewController->model()->remove(index);
-    }
+	
+	QString trash= QDir::homePath ();
+	trash.append("/.local/share/Trash/files");
+    	QModelIndexList selection = m_viewController->selectionModel()->selection().indexes();
+   	QStringList SelectedIndexUrl;
+	QString move;
+
+	foreach(const QModelIndex &idx, selection)
+	{
+    	SelectedIndexUrl <<m_viewController->model()->filePath(idx);
+	}
+	for (int i = 0; i < SelectedIndexUrl.size(); ++i){
+ 	//Create Command
+	if(SelectedIndexUrl.at(i).contains(" ", Qt::CaseInsensitive))
+	move = "mv '"+SelectedIndexUrl.at(i)+"' "+trash;
+	else
+	move = "mv "+SelectedIndexUrl.at(i)+" "+trash;
+	QProcess::execute(move);
+ 	
+	}
+  
 }
 
 void MainWindow::deletePermanently()
