@@ -40,7 +40,7 @@ set(kommoditygio_LIB_SRCS
 
 
 add_library(kommoditygio STATIC ${kommoditygio_LIB_SRCS})
-qt5_use_modules(kommoditygio Core)
+qt5_use_modules(kommoditygio Core Gui)
 target_link_libraries(kommoditygio ${GLIB2_LIBRARIES} ${GIO_LIBRARIES} ${GOBJECT_LIBRARIES})
 
 set(kommodity_gio_public_HDRS
