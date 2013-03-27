@@ -20,7 +20,7 @@ set(SOURCES
     placesitem.cpp
     bookmark.cpp	
     volume.cpp
-    
+    mount.cpp
 )
 
 set(UI_SOURCES
