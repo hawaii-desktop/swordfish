@@ -21,6 +21,7 @@
 #include <QtCore/QFile>
 #include <QtCore/QString>
 #include <QtCore/QPointer>
+#include <QtGui/QIcon>
 
 #include <glib.h>
 #include <gio/gio.h>
@@ -51,10 +52,16 @@ Icon::Icon() : d(0)
 QIcon Icon::toQIcon() const
 {
     QString iconName = QString::fromUtf8(g_icon_to_string(WO::getGIcon(this)));
-    if(iconName.isEmpty())
-        iconName.append("unknown");
-    QIcon icon = QIcon::fromTheme(iconName);
-    return icon;
+
+    // When we deal with a GFileIcon we might have a path instead of an icon name,
+    // if it's an actual file name we load it as a QIcon
+    if (QFile::exists(iconName))
+        return QIcon(iconName);
+
+    // If we can't find the icon from the theme we fallback to unknown
+    if (!QIcon::hasThemeIcon(iconName))
+        iconName = QStringLiteral("unknown");
+    return QIcon::fromTheme(iconName);
 }
 
 
