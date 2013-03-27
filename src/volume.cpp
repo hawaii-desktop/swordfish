@@ -40,8 +40,6 @@ void Volume::update()
 
     if (m_volume->getMount())
         setUrl(m_volume->getMount()->getRoot().getUri());
-    else
-        setUrl(QUrl::fromUserInput("unknown"));
 }
 
 bool Volume::isMounted()
