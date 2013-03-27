@@ -48,6 +48,15 @@ Icon::Icon() : d(0)
     WO::initGIO();
 }
 
+QIcon Icon::toQIcon() const
+{
+    QString iconName = QString::fromUtf8(g_icon_to_string(WO::getGIcon(this)));
+    if(iconName.isEmpty())
+        iconName.append("unknown");
+    QIcon icon = QIcon::fromTheme(iconName);
+    return icon;
+}
+
 
 Icon::~Icon()
 {

@@ -25,6 +25,7 @@
 #include <QtCore/QObject>
 #include <QtCore/QString>
 #include <QtCore/QSharedData>
+#include <QIcon>
 
 #include <Kommodity/GIO/WrappedObject>
 #include <Kommodity/GIO/Cancellable>
@@ -41,6 +42,7 @@ public:
 
     Icon();    
     virtual ~Icon();
+    QIcon toQIcon() const;
     
 private:
 
