@@ -26,6 +26,11 @@
 
 #include "placesitem.h"
 
+PlacesItem::PlacesItem()
+: QStandardItem()
+{
+}
+
 PlacesItem::PlacesItem(const QUrl &url)
 : QStandardItem()
 {

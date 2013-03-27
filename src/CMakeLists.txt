@@ -19,6 +19,7 @@ set(SOURCES
     placesmodel.cpp
     placesitem.cpp
     bookmark.cpp	
+    volume.cpp
     
 )
 

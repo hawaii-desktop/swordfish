@@ -36,6 +36,7 @@
 class PlacesItem : public QStandardItem
 {
 public:
+    PlacesItem();
     PlacesItem(const QUrl &url);
     PlacesItem(const QIcon &icon,const QString &text,const QUrl &url);
     PlacesItem(const QString &icon,const QString &text,const QUrl &url);
