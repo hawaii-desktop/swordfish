@@ -40,11 +40,13 @@ public:
     void update();
     Volume(const Kommodity::GIO::Volume &volume);
 
-    bool canEject()const {
+    bool canEject() const
+    {
         return m_volume->canEject();
     }
 
-    Kommodity::GIO::Volume *volume()const {
+    Kommodity::GIO::Volume *volume() const
+    {
         return m_volume;
     }
 
