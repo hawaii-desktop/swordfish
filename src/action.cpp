@@ -26,7 +26,7 @@
 
 #include "action.h"
 
-Action::Action(PlacesItem *item, QString text, QObject *parent)
+Action::Action(const PlacesItem &item,const QString &text, QObject *parent)
 : QAction(text,parent), m_Item(item)
 {
 }

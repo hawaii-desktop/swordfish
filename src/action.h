@@ -35,15 +35,15 @@ class Action : public QAction
 {
     Q_OBJECT
 public:
-    Action(PlacesItem *item, QString text, QObject *parent = 0);
+    Action(const PlacesItem &item,const QString &text,QObject *parent = 0);
 
-    PlacesItem *item() const
+    PlacesItem item() const
     {
         return m_Item;
     }
 
 private:
-    PlacesItem *m_Item;
+    PlacesItem m_Item;
     
 };
 
