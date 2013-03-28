@@ -47,8 +47,13 @@ public:
 
     ~PlacesModel();
 
+
     int addBookmark(const QString &icon,const QString &text,const QUrl &url);
     void removeBookmark(const QString &text, const QUrl &url);
+
+
+protected:
+    PlacesItem *itemFromPath(const QUrl &url);
 
 private:
     Kommodity::GIO::VolumeMonitor *m_volumeMonitor;
