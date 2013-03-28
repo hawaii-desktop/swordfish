@@ -41,8 +41,9 @@
 
 class PlacesModel : public QStandardItemModel
 {
+    Q_OBJECT
 public:
-    PlacesModel();
+    PlacesModel(QObject* parent = 0);
 
     ~PlacesModel();
 

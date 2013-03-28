@@ -26,7 +26,7 @@
 
 #include "placesmodel.h"
 
-PlacesModel::PlacesModel()
+PlacesModel::PlacesModel(QObject* parent)
 {
 }
 
