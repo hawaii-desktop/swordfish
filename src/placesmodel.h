@@ -38,6 +38,9 @@
 #include <QObject>
 
 #include "bookmark.h"
+#include "mount.h"
+#include "volume.h"
+#include "placesitem.h"
 
 class PlacesModel : public QStandardItemModel
 {
@@ -54,6 +57,8 @@ public:
 
 protected:
     PlacesItem *itemFromPath(const QUrl &url);
+    Volume *itemFromVolume(Kommodity::GIO::Volume *volume);
+    Mount *itemFromMount(Kommodity::GIO::Mount *mount);
 
 private:
     Kommodity::GIO::VolumeMonitor *m_volumeMonitor;
