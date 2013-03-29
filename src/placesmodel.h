@@ -67,7 +67,17 @@ private:
     PlacesItem *m_home;
     PlacesItem *m_computer;
     PlacesItem *m_network;
+    PlacesItem *m_application;
+    QStandardItem *m_placesRoot;
+    QStandardItem *m_deviceRoot;
+    QStandardItem *m_bookmarksRoot;
+    bool m_showTrash;
+    bool m_showDesktop;
+    bool m_showApplications;
     QList<Bookmark *> m_bookmarks;
+    QUrl m_trashUrl;
+    QUrl m_computerUrl;
+    QUrl m_networkUrl;
 };
 
 #endif // PLACESMODEL_H
