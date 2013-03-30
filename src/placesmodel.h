@@ -70,6 +70,7 @@ private:
     PlacesItem *m_application;
     QStandardItem *m_placesRoot;
     QStandardItem *m_deviceRoot;
+    QStandardItem *m_networkRoot;
     QStandardItem *m_bookmarksRoot;
     bool m_showTrash;
     bool m_showDesktop;

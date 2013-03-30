@@ -63,6 +63,9 @@ PlacesModel::PlacesModel(QObject* parent)
     m_application->setEditable(false);
     m_placesRoot->appendRow(m_application);
 
+    m_networkRoot = new QStandardItem(tr("Network"));
+    m_networkRoot->setEditable(false);
+    m_networkRoot->setSelectable(false);
     m_networkUrl.setUrl("network:///");
     m_network = new PlacesItem("network", tr("Network"), m_networkUrl);
     m_network->setEditable(false);
@@ -97,3 +100,5 @@ void PlacesModel::removeBookmark(const QString &text, const QUrl &url)
         if(m_bookmarks.at(i)->text()==text && m_bookmarks.at(i)->url()==url)
             m_bookmarks.removeAt(i);
 }
+
+#include "moc_placesmodel.cpp"
