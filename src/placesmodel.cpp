@@ -48,6 +48,11 @@ PlacesModel::PlacesModel(QObject* parent)
     m_desktop->setEditable(false);
     m_placesRoot->appendRow(m_desktop);
 
+    m_filesystemUrl.setUrl("file:///");
+    m_filesystem = new PlacesItem("volume", tr("File system"), m_filesystemUrl);
+    m_filesystem->setEditable(false);
+    m_placesRoot->appendRow(m_filesystem);
+
     m_trashUrl.setUrl("trash:///");
     m_trash = new PlacesItem("user-trash", tr("Trash"), m_trashUrl);
     m_trash->setEditable(false);
@@ -58,10 +63,6 @@ PlacesModel::PlacesModel(QObject* parent)
     m_computer->setEditable(false);
     m_placesRoot->appendRow(m_computer);
 
-    m_application = new PlacesItem("system-software-install", tr("Application"),
-                                   QStandardPaths::writableLocation(QStandardPaths::ApplicationsLocation));
-    m_application->setEditable(false);
-    m_placesRoot->appendRow(m_application);
 
     m_networkRoot = new QStandardItem(tr("Network"));
     m_networkRoot->setEditable(false);

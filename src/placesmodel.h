@@ -67,7 +67,7 @@ private:
     PlacesItem *m_home;
     PlacesItem *m_computer;
     PlacesItem *m_network;
-    PlacesItem *m_application;
+    PlacesItem *m_filesystem;
     QStandardItem *m_placesRoot;
     QStandardItem *m_deviceRoot;
     QStandardItem *m_networkRoot;
@@ -78,6 +78,7 @@ private:
     QList<Bookmark *> m_bookmarks;
     QUrl m_trashUrl;
     QUrl m_computerUrl;
+    QUrl m_filesystemUrl;
     QUrl m_networkUrl;
 };
 
