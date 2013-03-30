@@ -69,7 +69,7 @@ private:
     PlacesItem *m_network;
     PlacesItem *m_filesystem;
     QStandardItem *m_placesRoot;
-    QStandardItem *m_deviceRoot;
+    QStandardItem *m_devicesRoot;
     QStandardItem *m_networkRoot;
     QStandardItem *m_bookmarksRoot;
     bool m_showTrash;
