@@ -32,7 +32,9 @@ PlacesModel::PlacesModel(QObject* parent)
   m_showDesktop(true),
   m_showTrash(true)
 {   
+    //Initializing some variables;
     PlacesItem *item;
+
     m_placesRoot = new QStandardItem(tr("Places"));
     m_placesRoot->setEditable(false);
     m_placesRoot->setSelectable(false);
@@ -72,10 +74,33 @@ PlacesModel::PlacesModel(QObject* parent)
     m_network->setEditable(false);
     m_placesRoot->appendRow(m_network);
 
-    m_deviceRoot = new QStandardItem(tr("Devices"));
-    m_deviceRoot->setEditable(false);
-    m_deviceRoot->setSelectable(false);
-    appendRow(m_deviceRoot);
+    m_devicesRoot = new QStandardItem(tr("Devices"));
+    m_devicesRoot->setEditable(false);
+    m_devicesRoot->setSelectable(false);
+    appendRow(m_devicesRoot);
+
+    //Find all volumes and append them to m_devicesRoot
+    QList<Kommodity::GIO::Volume *> volumes = m_volumeMonitor->getVolumes();
+
+        for (int i = 0; i < volumes.size(); ++i) {
+            Kommodity::GIO::Volume *volume = volumes.at(i);
+            item = new Volume(*volume);
+            m_devicesRoot->appendRow(item);
+        }
+    //Find all  mounts and append them to m_devicesRoot
+    QList<Kommodity::GIO::Mount *> mounts = m_volumeMonitor->getMounts();
+
+        for (int i = 0; i < mounts.size(); ++i) {
+            Kommodity::GIO::Mount *mount = mounts.at(i);
+            Kommodity::GIO::Volume *volume = mount->getVolume();
+
+            if(!volume) {
+            item = new Mount(*mount);
+            m_devicesRoot->appendRow(item);
+            }
+        }
+
+
 
 
 }
