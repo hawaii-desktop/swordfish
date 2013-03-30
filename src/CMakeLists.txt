@@ -21,7 +21,6 @@ set(SOURCES
     bookmark.cpp	
     volume.cpp
     mount.cpp
-    action.cpp
 )
 
 set(UI_SOURCES
