@@ -42,6 +42,8 @@
 #include "volume.h"
 #include "placesitem.h"
 
+
+
 class PlacesModel : public QStandardItemModel
 {
     Q_OBJECT
@@ -59,8 +61,13 @@ protected:
     PlacesItem *itemFromPath(const QUrl &url);
     Volume *itemFromVolume(Kommodity::GIO::Volume *volume);
     Mount *itemFromMount(Kommodity::GIO::Mount *mount);
+    Bookmark *itemFromBookmark(Bookmark *item);
+
+public Q_SLOTS:
+    void mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor, Kommodity::GIO::Mount *mount, PlacesModel *placesModel);
 
 private:
+    void updateBookmarks();
     Kommodity::GIO::VolumeMonitor *m_volumeMonitor;
     PlacesItem *m_trash;
     PlacesItem *m_desktop;

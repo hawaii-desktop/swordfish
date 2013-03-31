@@ -100,10 +100,57 @@ PlacesModel::PlacesModel(QObject* parent)
             }
         }
 
+    m_bookmarksRoot = new QStandardItem(tr("Bookmakrs"));
+    m_bookmarksRoot->setEditable(false);
+    m_bookmarksRoot->setSelectable(false);
+    appendRow(m_bookmarksRoot);
 
+    addBookmark("folder-documents-symbolic",tr("Documents"),
+                QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
+    addBookmark("folder-music-symbolic",tr("Music"),
+                QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
+    addBookmark("folder-pictures-symbolic",tr("Pictures"),
+                QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
+    addBookmark("folder-videos-symbolic",tr("Videos"),
+                QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
+    addBookmark("folder-download-symbolic",tr("Downloads"),
+                QStandardPaths::writableLocation(QStandardPaths::DownloadLocation));
+
+
+
+    for(int i = 0; i < m_bookmarks.size(); ++i) {
+        m_bookmarksRoot->appendRow(m_bookmarks.at(i));
+    }
+
+
+
+    connect(m_volumeMonitor, SIGNAL(mountAdded(Kommodity::GIO::VolumeMonitor *, Kommodity::GIO::Mount *)),
+               this, SLOT(mountAdded(Kommodity::GIO::VolumeMonitor *, Kommodity::GIO::Mount *, PlacesModel *)));
 
 
 }
+
+void PlacesModel::mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor, Kommodity::GIO::Mount *mount, PlacesModel *placesModel)
+{
+    Kommodity::GIO::Volume *volume = mount->getVolume();
+    if(volume) {
+        Volume *volumeItem = placesModel->itemFromVolume(volume);
+
+        if (volumeItem && volumeItem->url().isEmpty()) {
+            Kommodity::GIO::File file = mount->getRoot();
+            QUrl murl = file.getUri();
+            volumeItem->setUrl(murl);
+        }
+        else {
+            Mount *mountItem = placesModel->itemFromMount(mount);
+            if(!mountItem) {
+                mountItem = new Mount(*mount);
+                placesModel->m_devicesRoot->appendRow(mountItem);
+            }
+        }
+    }
+}
+
 
 PlacesModel::~PlacesModel()
 {
@@ -113,7 +160,7 @@ int PlacesModel::addBookmark(const QString &icon, const QString &text, const QUr
 {
     for(int i=0;i<m_bookmarks.length();i++)
     {
-        if(m_bookmarks.at(i)->text()==text && m_bookmarks.at(i)->url()==url)
+        if(m_bookmarks.at(i)->text()==text && m_bookmarks.at(i)->url() == url)
            return -1;
     }
     m_bookmarks.append(new Bookmark(text, icon, url));
@@ -125,6 +172,39 @@ void PlacesModel::removeBookmark(const QString &text, const QUrl &url)
     for(int i=0; i<m_bookmarks.length(); i++)
         if(m_bookmarks.at(i)->text()==text && m_bookmarks.at(i)->url()==url)
             m_bookmarks.removeAt(i);
+}
+
+Volume *PlacesModel::itemFromVolume(Kommodity::GIO::Volume *volume)
+{
+    int rowCount = m_devicesRoot->rowCount();
+    for (int i = 0; i < rowCount; ++i) {
+        PlacesItem *item = static_cast<PlacesItem *>(m_devicesRoot->child(i, 0));
+        if (item->type() == VOLUME)
+            if (static_cast<Volume *>(item)->volume() == volume) {
+                Volume *volumeItem = static_cast<Volume *>(item);
+                return volumeItem;
+            }
+
+
+    }
+}
+
+Mount *PlacesModel::itemFromMount(Kommodity::GIO::Mount *mount)
+{
+    int rowCount = m_devicesRoot->rowCount();
+    for (int i = 0; i < rowCount; ++i) {
+        PlacesItem *item = static_cast<PlacesItem *>(m_devicesRoot->child(i, 0));
+        if(item->type() == MOUNT)
+        if (static_cast<Mount *>(item)->mount() == mount) {
+            Mount *mountItem = static_cast<Mount *>(item);
+            return mountItem;
+        }
+    }
+}
+
+Bookmark *PlacesModel::itemFromBookmark(Bookmark *item)
+{
+
 }
 
 #include "moc_placesmodel.cpp"
