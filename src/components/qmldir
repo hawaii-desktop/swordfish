@@ -1,0 +1,3 @@
+module Swordfish
+PlacesView 0.1 PlacesView.qml
+plugin declarative_swordfish
