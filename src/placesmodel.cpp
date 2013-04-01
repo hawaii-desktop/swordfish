@@ -179,13 +179,9 @@ Volume *PlacesModel::itemFromVolume(Kommodity::GIO::Volume *volume)
     int rowCount = m_devicesRoot->rowCount();
     for (int i = 0; i < rowCount; ++i) {
         PlacesItem *item = static_cast<PlacesItem *>(m_devicesRoot->child(i, 0));
-        if (item->type() == VOLUME)
-            if (static_cast<Volume *>(item)->volume() == volume) {
-                Volume *volumeItem = static_cast<Volume *>(item);
-                return volumeItem;
-            }
-
-
+        Volume *volumeItem = static_cast<Volume *>(item);
+        if(volumeItem)
+            return volumeItem;
     }
 }
 
@@ -194,11 +190,9 @@ Mount *PlacesModel::itemFromMount(Kommodity::GIO::Mount *mount)
     int rowCount = m_devicesRoot->rowCount();
     for (int i = 0; i < rowCount; ++i) {
         PlacesItem *item = static_cast<PlacesItem *>(m_devicesRoot->child(i, 0));
-        if(item->type() == MOUNT)
-        if (static_cast<Mount *>(item)->mount() == mount) {
-            Mount *mountItem = static_cast<Mount *>(item);
-            return mountItem;
-        }
+        Mount *mountItem = static_cast<Mount *>(item);
+        if(mountItem)
+          return mountItem;
     }
 }
 
