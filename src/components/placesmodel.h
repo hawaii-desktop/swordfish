@@ -55,8 +55,6 @@ public:
 
     int addBookmark(const QString &icon,const QString &text,const QUrl &url);
     void removeBookmark(const QString &text, const QUrl &url);
-
-
 protected:
     PlacesItem *itemFromPath(const QUrl &url);
     Volume *itemFromVolume(Kommodity::GIO::Volume *volume);

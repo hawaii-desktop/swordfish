@@ -34,6 +34,7 @@ PlacesModel::PlacesModel(QObject* parent)
 {   
     //Initializing some variables;
     PlacesItem *item;
+    m_volumeMonitor = new Kommodity::GIO::VolumeMonitor();
 
     m_placesRoot = new QStandardItem(tr("Places"));
     m_placesRoot->setEditable(false);
@@ -122,10 +123,8 @@ PlacesModel::PlacesModel(QObject* parent)
         m_bookmarksRoot->appendRow(m_bookmarks.at(i));
     }
 
-
-
-    connect(m_volumeMonitor, SIGNAL(mountAdded(Kommodity::GIO::VolumeMonitor *, Kommodity::GIO::Mount *)),
-               this, SLOT(mountAdded(Kommodity::GIO::VolumeMonitor *, Kommodity::GIO::Mount *, PlacesModel *)));
+    /*connect(m_volumeMonitor, SIGNAL(mountAdded(const VolumeMonitor *,const Mount *)),
+               this, SLOT(mountAdded(Kommodity::GIO::VolumeMonitor *, Kommodity::GIO::Mount *, PlacesModel *)));*/
 
 
 }
@@ -198,7 +197,6 @@ Mount *PlacesModel::itemFromMount(Kommodity::GIO::Mount *mount)
 
 Bookmark *PlacesModel::itemFromBookmark(Bookmark *item)
 {
-
 }
 
 #include "moc_placesmodel.cpp"
