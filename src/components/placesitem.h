@@ -32,6 +32,7 @@
 #include <QIcon>
 #include <QList>
 #include <QUrl>
+#include <QVariant>
 
 class PlacesItem : public QStandardItem
 {
