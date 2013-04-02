@@ -29,6 +29,7 @@
 Volume::Volume(const Kommodity::GIO::Volume &volume)
 : PlacesItem()
 {
+    m_volume = new Kommodity::GIO::Volume();
     update();
     setEditable(false);
 }
@@ -36,7 +37,7 @@ Volume::Volume(const Kommodity::GIO::Volume &volume)
 void Volume::update()
 {
     setText(m_volume->getName());
-    setIcon(m_volume->getIcon()->toQIcon());
+    setIcon(m_volume->getIcon());//->toQIcon());
 
     if (m_volume->getMount())
         setUrl(m_volume->getMount()->getRoot().getUri());

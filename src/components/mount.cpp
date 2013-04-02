@@ -29,6 +29,7 @@
 Mount::Mount(const Kommodity::GIO::Mount &mount)
 : PlacesItem()
 {
+    m_mount = new Kommodity::GIO::Mount();
     update();
     setEditable(true);
 }
@@ -43,5 +44,5 @@ void Mount::update()
     else
         setUrl(QUrl::fromUserInput("unknown"));
 
-    setIcon(m_mount->getIcon()->toQIcon());
+    setIcon(m_mount->getIcon());
 }

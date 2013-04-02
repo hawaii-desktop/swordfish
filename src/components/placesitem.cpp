@@ -44,7 +44,7 @@ PlacesItem::PlacesItem(const QString &icon,const QString &text,const QUrl &url)
     setIcon(QIcon::fromTheme(icon));
 }
 PlacesItem::PlacesItem(const QIcon &icon,const QString &text,const QUrl &url)
-:  QStandardItem(icon,text)
+: QStandardItem(icon,text)
 {
     m_url = url;
 }
@@ -65,7 +65,8 @@ void PlacesItem::setUrl(const QUrl &url)
     m_url = url;
 }
 
-QVariant PlacesItem::data(int role) const {
+QVariant PlacesItem::data(int role) const
+{
     return QStandardItem::data(role);
 }
 

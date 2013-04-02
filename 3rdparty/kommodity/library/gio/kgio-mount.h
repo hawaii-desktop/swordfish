@@ -26,6 +26,8 @@
 #include <QtCore/QString>
 #include <QtCore/QByteArray>
 #include <QtCore/QSharedData>
+#include <QtGui/QIcon>
+#include <QtCore/QFile>
 
 #include <Kommodity/GIO/WrappedObject>
 #include <Kommodity/GIO/Error>
@@ -60,7 +62,7 @@ public:
 
     QString getName() const;
     QByteArray getUuid() const;
-    Icon * getIcon() const;
+    QIcon getIcon() const;
     Drive * getDrive() const;
     File getRoot() const;
     Volume * getVolume() const;

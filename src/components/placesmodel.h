@@ -53,6 +53,14 @@ public:
 
     int addBookmark(const QString &icon,const QString &text,const QUrl &url);
     void removeBookmark(const QString &text, const QUrl &url);
+protected:
+    PlacesItem *itemFromPath(const QUrl &url);
+    Volume *itemFromVolume(Kommodity::GIO::Volume *volume);
+    Mount *itemFromMount(Kommodity::GIO::Mount *mount);
+    Bookmark *itemFromBookmark(Bookmark *item);
+
+public Q_SLOTS:
+    void mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor, Kommodity::GIO::Mount *mount, PlacesModel *placesModel);
 
 
 protected:
@@ -61,6 +69,7 @@ protected:
     Mount *itemFromMount(Kommodity::GIO::Mount *mount);
 
 private:
+    void updateBookmarks();
     Kommodity::GIO::VolumeMonitor *m_volumeMonitor;
     PlacesItem *m_trash;
     PlacesItem *m_desktop;
