@@ -113,15 +113,25 @@ QByteArray Mount::getUuid() const
     return WO::qByteArrayFromCStrFreed(g_mount_get_uuid(WO::getGMount(this)));
 }
 
-Icon * Mount::getIcon() const
+QIcon Mount::getIcon() const
 {
     GIcon * gIcon = g_mount_get_icon(WO::getGMount(this));
-    if (!gIcon) return 0;
-    
-    Icon * icon = new Icon;
-    WO::set<Icon,GIcon>(icon, gIcon);
+    //if (!gIcon) return 0;
+    QString iconName = QString::fromUtf8(g_icon_to_string(gIcon));
+
+    // When we deal with a GFileIcon we might have a path instead of an icon name,
+    // if it's an actual file name we load it as a QIcon
+    if (QFile::exists(iconName))
+        return QIcon(iconName);
+
+    // If we can't find the icon from the theme we fallback to unknown
+    if (!QIcon::hasThemeIcon(iconName))
+        iconName = QStringLiteral("unknown");
+        return QIcon::fromTheme(iconName);
+    //Icon * icon = new Icon;
+    //WO::set<Icon,GIcon>(icon, gIcon);
     //WO::setGIcon(&icon, g_mount_get_icon(WO::getGMount(this)));
-    return icon;
+    //return icon;
 }
 
 Drive * Mount::getDrive() const
