@@ -44,7 +44,7 @@ Rectangle {
 
             Text {
                 font.weight: Font.Bold
-                text: name
+                text: display
             }
         }
 
