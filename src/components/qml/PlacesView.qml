@@ -27,12 +27,29 @@
 import QtQuick 2.0
 import Swordfish 0.1
 
-ListView {
+Rectangle {
     width: 400
     height: 400
+    color: sysPal.window
 
-    model: PlacesModel {}
-    delegate: Text {
-        text: name
+    SystemPalette {
+        id: sysPal
+    }
+
+    ListView {
+        anchors.fill: parent
+
+        Component {
+            id: delegate
+
+            Text {
+                font.weight: Font.Bold
+                text: name
+            }
+        }
+
+        model: PlacesModel {}
+        delegate: delegate
+        spacing: 8
     }
 }
