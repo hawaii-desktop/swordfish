@@ -34,13 +34,12 @@
 
 class Mount : public PlacesItem
 {
-
 public:
     Mount(const Kommodity::GIO::Mount &mount);
+
     void update();
 
-    Kommodity::GIO::Mount *mount() const
-    {
+    Kommodity::GIO::Mount *mount() const {
         return m_mount;
     }
 

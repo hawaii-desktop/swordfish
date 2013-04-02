@@ -26,27 +26,27 @@
 
 #include "bookmark.h"
 
-Bookmark::~Bookmark()
+Bookmark::Bookmark(const QString &text, const QString &icon, const QUrl &url)
+    : PlacesItem(icon, text, url)
 {
-}
-
-Bookmark::Bookmark(const QString &text,const QString &icon,const QUrl &url)
-: PlacesItem(icon,text,url)
-{
-    if(icon.isEmpty())
-        m_icon=QIcon::fromTheme("folder");
+    if (icon.isEmpty())
+        m_icon = QIcon::fromTheme("folder");
     else
-        m_icon=QIcon::fromTheme(icon);
+        m_icon = QIcon::fromTheme(icon);
 
-    if(url.isEmpty())
+    if (url.isEmpty())
         m_url.setPath(QDir::homePath());
     else
         m_url.setPath(url.toString());
 
-    if(text.isEmpty())
+    if (text.isEmpty())
         m_text = "title";
     else
         m_text = text;
+}
+
+Bookmark::~Bookmark()
+{
 }
 
 void Bookmark::setIcon(const QString &icon)
@@ -63,5 +63,3 @@ void Bookmark::setText(const QString &text)
 {
     m_text = text;
 }
-
-

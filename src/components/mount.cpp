@@ -27,7 +27,7 @@
 #include "mount.h"
 
 Mount::Mount(const Kommodity::GIO::Mount &mount)
-: PlacesItem()
+    : PlacesItem()
 {
     m_mount = new Kommodity::GIO::Mount();
     update();

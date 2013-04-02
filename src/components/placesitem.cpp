@@ -27,37 +27,37 @@
 #include "placesitem.h"
 
 PlacesItem::PlacesItem()
-: QStandardItem()
+    : QStandardItem()
 {
 }
 
 PlacesItem::PlacesItem(const QUrl &url)
-: QStandardItem()
+    : QStandardItem()
 {
     m_url = url;
 }
 
 PlacesItem::PlacesItem(const QString &icon,const QString &text,const QUrl &url)
-: QStandardItem(text)
+    : QStandardItem(text)
 {
     m_url = url;
     setIcon(QIcon::fromTheme(icon));
 }
+
 PlacesItem::PlacesItem(const QIcon &icon,const QString &text,const QUrl &url)
-: QStandardItem(icon,text)
+    : QStandardItem(icon,text)
 {
     m_url = url;
 }
 
 PlacesItem::PlacesItem(const QString &text,const QUrl &url)
-: QStandardItem(text)
+    : QStandardItem(text)
 {
     m_url = url;
 }
 
 PlacesItem::~PlacesItem()
 {
-
 }
 
 void PlacesItem::setUrl(const QUrl &url)
@@ -74,5 +74,3 @@ void PlacesItem::setInfo(const Kommodity::GIO::FileInfo &fileInfo)
 {
     m_fileInfo = fileInfo;
 }
-
-

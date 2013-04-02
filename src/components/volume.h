@@ -36,23 +36,21 @@
 class Volume : public PlacesItem
 {
 public:
-    bool isMounted();
-    void update();
     Volume(const Kommodity::GIO::Volume &volume);
 
-    bool canEject() const
-    {
+    bool isMounted();
+    void update();
+
+    bool canEject() const {
         return m_volume->canEject();
     }
 
-    Kommodity::GIO::Volume *volume() const
-    {
+    Kommodity::GIO::Volume *volume() const {
         return m_volume;
     }
 
 private:
     Kommodity::GIO::Volume *m_volume;
-
 };
 
 #endif // VOLUME_H

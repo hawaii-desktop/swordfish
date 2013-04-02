@@ -27,7 +27,7 @@
 #include "volume.h"
 
 Volume::Volume(const Kommodity::GIO::Volume &volume)
-: PlacesItem()
+    : PlacesItem()
 {
     m_volume = new Kommodity::GIO::Volume();
     update();
@@ -37,7 +37,7 @@ Volume::Volume(const Kommodity::GIO::Volume &volume)
 void Volume::update()
 {
     setText(m_volume->getName());
-    setIcon(m_volume->getIcon());//->toQIcon());
+    setIcon(m_volume->getIcon());
 
     if (m_volume->getMount())
         setUrl(m_volume->getMount()->getRoot().getUri());

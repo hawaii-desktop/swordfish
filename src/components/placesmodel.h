@@ -28,14 +28,15 @@
 #define PLACESMODEL_H
 
 #include <QStandardItemModel>
-#include <Kommodity/GIO/VolumeMonitor>
-#include <Kommodity/GIO/FileMonitor>
 #include <QIcon>
 #include <QList>
 #include <QDir>
 #include <QUrl>
 #include <QStandardPaths>
 #include <QObject>
+
+#include <Kommodity/GIO/VolumeMonitor>
+#include <Kommodity/GIO/FileMonitor>
 
 #include "bookmark.h"
 #include "mount.h"
@@ -48,28 +49,20 @@ class PlacesModel : public QStandardItemModel
 public:
     PlacesModel(QObject* parent = 0);
 
-    ~PlacesModel();
-
-
-    int addBookmark(const QString &icon,const QString &text,const QUrl &url);
+    int addBookmark(const QString &icon, const QString &text, const QUrl &url);
     void removeBookmark(const QString &text, const QUrl &url);
+
+public Q_SLOTS:
+    void mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor,
+                    Kommodity::GIO::Mount *mount, PlacesModel *placesModel);
+
 protected:
     PlacesItem *itemFromPath(const QUrl &url);
     Volume *itemFromVolume(Kommodity::GIO::Volume *volume);
     Mount *itemFromMount(Kommodity::GIO::Mount *mount);
     Bookmark *itemFromBookmark(Bookmark *item);
 
-public Q_SLOTS:
-    void mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor, Kommodity::GIO::Mount *mount, PlacesModel *placesModel);
-
-
-protected:
-    PlacesItem *itemFromPath(const QUrl &url);
-    Volume *itemFromVolume(Kommodity::GIO::Volume *volume);
-    Mount *itemFromMount(Kommodity::GIO::Mount *mount);
-
 private:
-    void updateBookmarks();
     Kommodity::GIO::VolumeMonitor *m_volumeMonitor;
     PlacesItem *m_trash;
     PlacesItem *m_desktop;
@@ -89,8 +82,8 @@ private:
     QUrl m_computerUrl;
     QUrl m_filesystemUrl;
     QUrl m_networkUrl;
+
+    void updateBookmarks();
 };
 
 #endif // PLACESMODEL_H
-
-

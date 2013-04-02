@@ -39,31 +39,27 @@ class PlacesItem : public QStandardItem
 public:
     PlacesItem();
     PlacesItem(const QUrl &url);
-    PlacesItem(const QIcon &icon,const QString &text,const QUrl &url);
-    PlacesItem(const QString &icon,const QString &text,const QUrl &url);
-    PlacesItem(const QString &text,const QUrl &url);
-
+    PlacesItem(const QIcon &icon, const QString &text, const QUrl &url);
+    PlacesItem(const QString &icon, const QString &text, const QUrl &url);
+    PlacesItem(const QString &text, const QUrl &url);
     ~PlacesItem();
 
     void setUrl(const QUrl &path);
     void setInfo(const Kommodity::GIO::FileInfo &fileInfo);
 
-    QVariant data ( int role = Qt::UserRole + 1 ) const;
+    QVariant data (int role = Qt::UserRole + 1) const;
 
-    Kommodity::GIO::FileInfo fileInfo() const
-    {
+    Kommodity::GIO::FileInfo fileInfo() const {
         return m_fileInfo;
     }
 
-    QUrl url() const
-    {
+    QUrl url() const {
         return m_url;
     }
     
 private:
     Kommodity::GIO::FileInfo m_fileInfo;
     QUrl m_url;
-    
 };
 
 #endif // PLACESITEM_H

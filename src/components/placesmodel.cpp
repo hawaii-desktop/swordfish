@@ -27,21 +27,22 @@
 #include "placesmodel.h"
 
 PlacesModel::PlacesModel(QObject* parent)
-: QStandardItemModel(parent),
-  m_showApplications(true),
-  m_showDesktop(true),
-  m_showTrash(true)
+    : QStandardItemModel(parent),
+      m_showApplications(true),
+      m_showDesktop(true),
+      m_showTrash(true)
 {   
-    //Initializing some variables;
-    PlacesItem *item;
     m_volumeMonitor = new Kommodity::GIO::VolumeMonitor();
+
+    PlacesItem *item;
 
     m_placesRoot = new QStandardItem(tr("Places"));
     m_placesRoot->setEditable(false);
     m_placesRoot->setSelectable(false);
     appendRow(m_placesRoot);
 
-    m_home = new PlacesItem("user-home", QStandardPaths::displayName(QStandardPaths::HomeLocation),
+    m_home = new PlacesItem("user-home",
+                            QStandardPaths::displayName(QStandardPaths::HomeLocation),
                             QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
     m_home->setEditable(false);
     m_placesRoot->appendRow(m_home);
@@ -80,26 +81,27 @@ PlacesModel::PlacesModel(QObject* parent)
     m_devicesRoot->setSelectable(false);
     appendRow(m_devicesRoot);
 
-    //Find all volumes and append them to m_devicesRoot
+    // Find all volumes and append them to m_devicesRoot
     QList<Kommodity::GIO::Volume *> volumes = m_volumeMonitor->getVolumes();
 
-        for (int i = 0; i < volumes.size(); ++i) {
-            Kommodity::GIO::Volume *volume = volumes.at(i);
-            item = new Volume(*volume);
-            m_devicesRoot->appendRow(item);
-        }
-    //Find all  mounts and append them to m_devicesRoot
+    for (int i = 0; i < volumes.size(); ++i) {
+        Kommodity::GIO::Volume *volume = volumes.at(i);
+        item = new Volume(*volume);
+        m_devicesRoot->appendRow(item);
+    }
+
+    // Find all  mounts and append them to m_devicesRoot
     QList<Kommodity::GIO::Mount *> mounts = m_volumeMonitor->getMounts();
 
-        for (int i = 0; i < mounts.size(); ++i) {
-            Kommodity::GIO::Mount *mount = mounts.at(i);
-            Kommodity::GIO::Volume *volume = mount->getVolume();
+    for (int i = 0; i < mounts.size(); ++i) {
+        Kommodity::GIO::Mount *mount = mounts.at(i);
+        Kommodity::GIO::Volume *volume = mount->getVolume();
 
-            if(!volume) {
+        if (!volume) {
             item = new Mount(*mount);
             m_devicesRoot->appendRow(item);
-            }
         }
+    }
 
     m_bookmarksRoot = new QStandardItem(tr("Bookmakrs"));
     m_bookmarksRoot->setEditable(false);
@@ -117,48 +119,42 @@ PlacesModel::PlacesModel(QObject* parent)
     addBookmark("folder-download-symbolic",tr("Downloads"),
                 QStandardPaths::writableLocation(QStandardPaths::DownloadLocation));
 
-
-
-    for(int i = 0; i < m_bookmarks.size(); ++i) {
+    for (int i = 0; i < m_bookmarks.size(); ++i)
         m_bookmarksRoot->appendRow(m_bookmarks.at(i));
-    }
 
-    /*connect(m_volumeMonitor, SIGNAL(mountAdded(const VolumeMonitor *,const Mount *)),
-               this, SLOT(mountAdded(Kommodity::GIO::VolumeMonitor *, Kommodity::GIO::Mount *, PlacesModel *)));*/
+#if 0
+    connect(m_volumeMonitor, SIGNAL(mountAdded(const VolumeMonitor *,const Mount *)),
+            this, SLOT(mountAdded(Kommodity::GIO::VolumeMonitor *, Kommodity::GIO::Mount *, PlacesModel *)));
+#endif
 }
 
-void PlacesModel::mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor, Kommodity::GIO::Mount *mount, PlacesModel *placesModel)
+void PlacesModel::mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor,
+                             Kommodity::GIO::Mount *mount, PlacesModel *placesModel)
 {
     Kommodity::GIO::Volume *volume = mount->getVolume();
-    if(volume) {
-        Volume *volumeItem = placesModel->itemFromVolume(volume);
+    if (!volume)
+        return;
 
-        if (volumeItem && volumeItem->url().isEmpty()) {
-            Kommodity::GIO::File file = mount->getRoot();
-            QUrl murl = file.getUri();
-            volumeItem->setUrl(murl);
-        }
-        else {
-            Mount *mountItem = placesModel->itemFromMount(mount);
-            if(!mountItem) {
-                mountItem = new Mount(*mount);
-                placesModel->m_devicesRoot->appendRow(mountItem);
-            }
+    Volume *volumeItem = placesModel->itemFromVolume(volume);
+
+    if (volumeItem && volumeItem->url().isEmpty()) {
+        Kommodity::GIO::File file = mount->getRoot();
+        QUrl murl = file.getUri();
+        volumeItem->setUrl(murl);
+    } else {
+        Mount *mountItem = placesModel->itemFromMount(mount);
+        if (!mountItem) {
+            mountItem = new Mount(*mount);
+            placesModel->m_devicesRoot->appendRow(mountItem);
         }
     }
-}
-
-
-PlacesModel::~PlacesModel()
-{
 }
 
 int PlacesModel::addBookmark(const QString &icon, const QString &text, const QUrl &url)
 {
-    for(int i=0;i<m_bookmarks.length();i++)
-    {
-        if(m_bookmarks.at(i)->text()==text && m_bookmarks.at(i)->url() == url)
-           return -1;
+    for (int i = 0; i < m_bookmarks.length(); i++) {
+        if (m_bookmarks.at(i)->text() == text && m_bookmarks.at(i)->url() == url)
+            return -1;
     }
     m_bookmarks.append(new Bookmark(text, icon, url));
     return 0;
@@ -166,8 +162,8 @@ int PlacesModel::addBookmark(const QString &icon, const QString &text, const QUr
 
 void PlacesModel::removeBookmark(const QString &text, const QUrl &url)
 {
-    for(int i=0; i<m_bookmarks.length(); i++)
-        if(m_bookmarks.at(i)->text()==text && m_bookmarks.at(i)->url()==url)
+    for(int i = 0; i < m_bookmarks.length(); i++)
+        if (m_bookmarks.at(i)->text() == text && m_bookmarks.at(i)->url() == url)
             m_bookmarks.removeAt(i);
 }
 
@@ -177,9 +173,11 @@ Volume *PlacesModel::itemFromVolume(Kommodity::GIO::Volume *volume)
     for (int i = 0; i < rowCount; ++i) {
         PlacesItem *item = static_cast<PlacesItem *>(m_devicesRoot->child(i, 0));
         Volume *volumeItem = static_cast<Volume *>(item);
-        if(volumeItem)
+        if (volumeItem)
             return volumeItem;
     }
+
+    return 0;
 }
 
 Mount *PlacesModel::itemFromMount(Kommodity::GIO::Mount *mount)
@@ -188,13 +186,16 @@ Mount *PlacesModel::itemFromMount(Kommodity::GIO::Mount *mount)
     for (int i = 0; i < rowCount; ++i) {
         PlacesItem *item = static_cast<PlacesItem *>(m_devicesRoot->child(i, 0));
         Mount *mountItem = static_cast<Mount *>(item);
-        if(mountItem)
-          return mountItem;
+        if (mountItem)
+            return mountItem;
     }
+
+    return 0;
 }
 
 Bookmark *PlacesModel::itemFromBookmark(Bookmark *item)
 {
+    return 0;
 }
 
 #include "moc_placesmodel.cpp"

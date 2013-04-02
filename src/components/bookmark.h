@@ -38,25 +38,21 @@ class Bookmark : public PlacesItem
 {
 public:
     Bookmark(const QString &text, const QString &icon, const QUrl &url);
+    ~Bookmark();
 
     void setText(const QString &text);
     void setIcon(const QString &icon);
     void setUrl(const QUrl &url);
 
-    ~Bookmark();
-
-    QString text() const
-    {
+    QString text() const {
         return m_text;
     }
 
-    QUrl  url() const
-    {
+    QUrl  url() const {
         return m_url;
     }
 
-    QIcon icon() const
-    {
+    QIcon icon() const {
         return m_icon;
     }
 
