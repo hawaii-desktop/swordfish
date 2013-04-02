@@ -31,7 +31,7 @@ Bookmark::~Bookmark()
 }
 
 Bookmark::Bookmark(const QString &text,const QString &icon,const QUrl &url)
-: PlacesItem(m_icon,m_text,m_url)
+: PlacesItem(icon,text,url)
 {
     if(icon.isEmpty())
         m_icon=QIcon::fromTheme("folder");
