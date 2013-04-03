@@ -71,6 +71,8 @@ PlacesModel::PlacesModel(QObject* parent)
     m_networkRoot = new QStandardItem(tr("Network"));
     m_networkRoot->setEditable(false);
     m_networkRoot->setSelectable(false);
+    appendRow(m_networkRoot);
+
     m_networkUrl.setUrl("network:///");
     m_network = new PlacesItem("network", tr("Network"), m_networkUrl);
     m_network->setEditable(false);
