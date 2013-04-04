@@ -9,7 +9,7 @@ add_definitions(-DQT_PLUGIN)
 set(SOURCES
     placesmodel.cpp
     placesitem.cpp
-    bookmark.cpp       
+    bookmarkitem.cpp
     volume.cpp
     mount.cpp
     swordfishplugin.cpp

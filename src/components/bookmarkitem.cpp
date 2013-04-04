@@ -24,9 +24,9 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#include "bookmark.h"
+#include "bookmarkitem.h"
 
-Bookmark::Bookmark(const QString &text, const QString &icon, const QUrl &url)
+BookmarkItem::BookmarkItem(const QString &text, const QString &icon, const QUrl &url)
     : PlacesItem(icon, text, url)
 {
     setCategory(QObject::tr("Bookmarks"));
@@ -47,21 +47,17 @@ Bookmark::Bookmark(const QString &text, const QString &icon, const QUrl &url)
         m_text = text;
 }
 
-Bookmark::~Bookmark()
-{
-}
-
-void Bookmark::setIcon(const QString &icon)
+void BookmarkItem::setIcon(const QString &icon)
 {
     m_icon = QIcon::fromTheme(icon);
 }
 
-void Bookmark::setUrl(const QUrl &url)
+void BookmarkItem::setUrl(const QUrl &url)
 {
     m_url = url;
 }
 
-void Bookmark::setText(const QString &text)
+void BookmarkItem::setText(const QString &text)
 {
     m_text = text;
 }

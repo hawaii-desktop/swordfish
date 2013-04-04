@@ -143,7 +143,7 @@ void PlacesModel::mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor,
 
 void PlacesModel::addBookmark(const QString &icon, const QString &text, const QUrl &url)
 {
-    Bookmark *item = new Bookmark(text, icon, url);
+    BookmarkItem *item = new BookmarkItem(text, icon, url);
     m_items.append(item);
     appendRow(item);
 }
@@ -151,7 +151,7 @@ void PlacesModel::addBookmark(const QString &icon, const QString &text, const QU
 void PlacesModel::removeBookmark(const QString &text, const QUrl &url)
 {
     for(int i = 0; i < m_items.length(); i++) {
-        Bookmark *item = static_cast<Bookmark *>(m_items.at(i));
+        BookmarkItem *item = static_cast<BookmarkItem *>(m_items.at(i));
         if (!item)
             continue;
 
@@ -184,7 +184,7 @@ Mount *PlacesModel::itemFromMount(Kommodity::GIO::Mount *mount)
     return 0;
 }
 
-Bookmark *PlacesModel::itemFromBookmark(Bookmark *item)
+BookmarkItem *PlacesModel::itemFromBookmark(BookmarkItem *item)
 {
     return 0;
 }

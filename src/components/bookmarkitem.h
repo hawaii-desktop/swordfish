@@ -24,8 +24,8 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#ifndef BOOKMARK_H
-#define BOOKMARK_H
+#ifndef BOOKMARKITEM_H
+#define BOOKMARKITEM_H
 
 #include <QIcon>
 #include <QDir>
@@ -34,11 +34,10 @@
 
 #include "placesitem.h"
 
-class Bookmark : public PlacesItem
+class BookmarkItem : public PlacesItem
 {
 public:
-    Bookmark(const QString &text, const QString &icon, const QUrl &url);
-    ~Bookmark();
+    BookmarkItem(const QString &text, const QString &icon, const QUrl &url);
 
     void setText(const QString &text);
     void setIcon(const QString &icon);
@@ -62,4 +61,4 @@ private:
     QIcon m_icon;
 };
 
-#endif // BOOKMARK_H
+#endif // BOOKMARKITEM_H

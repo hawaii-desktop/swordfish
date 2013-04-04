@@ -38,7 +38,7 @@
 #include <Kommodity/GIO/VolumeMonitor>
 #include <Kommodity/GIO/FileMonitor>
 
-#include "bookmark.h"
+#include "bookmarkitem.h"
 #include "mount.h"
 #include "volume.h"
 #include "placesitem.h"
@@ -60,7 +60,7 @@ protected:
     PlacesItem *itemFromPath(const QUrl &url);
     Volume *itemFromVolume(Kommodity::GIO::Volume *volume);
     Mount *itemFromMount(Kommodity::GIO::Mount *mount);
-    Bookmark *itemFromBookmark(Bookmark *item);
+    BookmarkItem *itemFromBookmark(BookmarkItem *item);
 
 private:
     Kommodity::GIO::VolumeMonitor *m_volumeMonitor;
