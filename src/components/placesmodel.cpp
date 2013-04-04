@@ -72,7 +72,7 @@ PlacesModel::PlacesModel(QObject* parent)
         addPlacesBookmark("user-desktop",
                           QStandardPaths::displayName(QStandardPaths::DesktopLocation),
                           QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
-    addPlacesBookmark("volume", tr("File System"), QUrl("file:///"));
+    addPlacesBookmark("drive-harddisk", tr("File System"), QUrl("file:///"));
     addPlacesBookmark("user-trash", tr("Trash"), QUrl("trash:///"));
     addPlacesBookmark("computer", tr("Computer"), QUrl("computer:///"));
 
