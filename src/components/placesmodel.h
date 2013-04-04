@@ -49,7 +49,7 @@ class PlacesModel : public QStandardItemModel
 public:
     PlacesModel(QObject* parent = 0);
 
-    int addBookmark(const QString &icon, const QString &text, const QUrl &url);
+    void addBookmark(const QString &icon, const QString &text, const QUrl &url);
     void removeBookmark(const QString &text, const QUrl &url);
 
 public Q_SLOTS:
@@ -70,14 +70,10 @@ private:
     PlacesItem *m_computer;
     PlacesItem *m_network;
     PlacesItem *m_filesystem;
-    QStandardItem *m_placesRoot;
-    QStandardItem *m_devicesRoot;
-    QStandardItem *m_networkRoot;
-    QStandardItem *m_bookmarksRoot;
     bool m_showTrash;
     bool m_showDesktop;
     bool m_showApplications;
-    QList<Bookmark *> m_bookmarks;
+    QList<PlacesItem *> m_items;
     QUrl m_trashUrl;
     QUrl m_computerUrl;
     QUrl m_filesystemUrl;

@@ -37,12 +37,23 @@
 class PlacesItem : public QStandardItem
 {
 public:
+    enum Roles {
+        CategoryRole = Qt::UserRole + 1,
+        UrlRole
+    };
+
     PlacesItem();
     PlacesItem(const QUrl &url);
     PlacesItem(const QIcon &icon, const QString &text, const QUrl &url);
     PlacesItem(const QString &icon, const QString &text, const QUrl &url);
     PlacesItem(const QString &text, const QUrl &url);
     ~PlacesItem();
+
+    inline QString category() const {
+        return qvariant_cast<QString>(data(CategoryRole));
+    }
+
+    void setCategory(const QString &category);
 
     void setUrl(const QUrl &path);
     void setInfo(const Kommodity::GIO::FileInfo &fileInfo);
@@ -58,6 +69,7 @@ public:
     }
     
 private:
+    QString m_category;
     Kommodity::GIO::FileInfo m_fileInfo;
     QUrl m_url;
 };

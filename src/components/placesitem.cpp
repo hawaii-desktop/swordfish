@@ -24,11 +24,13 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#include "placesitem.h"
+#include <QDebug>
+#include "placesmodel.h"
 
 PlacesItem::PlacesItem()
     : QStandardItem()
 {
+    setCategory(QObject::tr("Places"));
 }
 
 PlacesItem::PlacesItem(const QUrl &url)
@@ -60,6 +62,11 @@ PlacesItem::~PlacesItem()
 {
 }
 
+void PlacesItem::setCategory(const QString &category)
+{
+    m_category = category;
+}
+
 void PlacesItem::setUrl(const QUrl &url)
 {
     m_url = url;
@@ -67,6 +74,15 @@ void PlacesItem::setUrl(const QUrl &url)
 
 QVariant PlacesItem::data(int role) const
 {
+    switch (role) {
+    case CategoryRole:
+        return m_category;
+    case UrlRole:
+        return m_url;
+    default:
+        break;
+    }
+
     return QStandardItem::data(role);
 }
 

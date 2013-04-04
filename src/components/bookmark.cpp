@@ -29,6 +29,8 @@
 Bookmark::Bookmark(const QString &text, const QString &icon, const QUrl &url)
     : PlacesItem(icon, text, url)
 {
+    setCategory(QObject::tr("Bookmarks"));
+
     if (icon.isEmpty())
         m_icon = QIcon::fromTheme("folder");
     else

@@ -26,8 +26,10 @@
 
 import QtQuick 2.0
 import Swordfish 0.1
+import FluidExtra 1.0 as FluidExtra
 
 Rectangle {
+    id: container
     width: 400
     height: 400
     color: sysPal.window
@@ -40,16 +42,53 @@ Rectangle {
         anchors.fill: parent
 
         Component {
+            id: sectionHeading
+
+            Rectangle {
+                width: container.width
+                height: childrenRect.height
+                color: "lightsteelblue"
+
+                Text {
+                    text: section
+                    font.weight: Font.Bold
+                }
+            }
+        }
+
+        Component {
             id: delegate
 
-            Text {
-                font.weight: Font.Bold
-                text: display
+            Item {
+                width: container.width
+                height: childrenRect.height
+
+                FluidExtra.IconItem {
+                    id: icon
+                    anchors {
+                        left: parent.left
+                        top: parent.top
+                    }
+                    icon: decoration
+                    smooth: true
+                }
+
+                Text {
+                    id: label
+                    anchors {
+                        left: icon.right
+                        verticalCenter: icon.verticalCenter
+                    }
+                    text: display
+                }
             }
         }
 
         model: PlacesModel {}
         delegate: delegate
         spacing: 8
+        section.property: "category"
+        section.criteria: ViewSection.FullString
+        section.delegate: sectionHeading
     }
 }
