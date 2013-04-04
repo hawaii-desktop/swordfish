@@ -36,7 +36,7 @@
 class VolumeItem : public PlacesItem
 {
 public:
-    VolumeItem(const Kommodity::GIO::Volume &volume);
+    VolumeItem(Kommodity::GIO::Volume *volume);
 
     bool isMounted();
     void update();

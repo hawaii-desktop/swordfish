@@ -86,21 +86,8 @@ PlacesModel::PlacesModel(QObject* parent)
 
     for (int i = 0; i < volumes.size(); ++i) {
         Kommodity::GIO::Volume *volume = volumes.at(i);
-        item = new VolumeItem(*volume);
+        item = new VolumeItem(volume);
         appendRow(item);
-    }
-
-    // Find all  mounts and append them to m_devicesRoot
-    QList<Kommodity::GIO::Mount *> mounts = m_volumeMonitor->getMounts();
-
-    for (int i = 0; i < mounts.size(); ++i) {
-        Kommodity::GIO::Mount *mount = mounts.at(i);
-        Kommodity::GIO::Volume *volume = mount->getVolume();
-
-        if (!volume) {
-            item = new MountItem(*mount);
-            appendRow(item);
-        }
     }
 
     connect(m_volumeMonitor, SIGNAL(mountAdded(VolumeMonitor *, MountItem *)),
@@ -110,22 +97,14 @@ PlacesModel::PlacesModel(QObject* parent)
 void PlacesModel::mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor,
                              Kommodity::GIO::Mount *mount)
 {
+    Q_UNUSED(volumeMonitor);
+
     Kommodity::GIO::Volume *volume = mount->getVolume();
     if (!volume)
         return;
 
-    VolumeItem *volumeItem = itemFromVolume(volume);
-
-    if (volumeItem && volumeItem->url().isEmpty()) {
-        Kommodity::GIO::File file = mount->getRoot();
-        volumeItem->setUrl(file.getUri());
-    } else {
-        MountItem *mountItem = itemFromMount(mount);
-        if (!mountItem) {
-            mountItem = new MountItem(*mount);
-            appendRow(mountItem);
-        }
-    }
+    VolumeItem *item = new VolumeItem(volume);
+    appendRow(item);
 }
 
 void PlacesModel::addBookmark(const QString &icon, const QString &text,
@@ -171,23 +150,29 @@ void PlacesModel::removeBookmark(const QString &text, const QUrl &url)
 
 VolumeItem *PlacesModel::itemFromVolume(Kommodity::GIO::Volume *volume)
 {
-    for (int i = 0; i < m_items.length(); ++i) {
-        PlacesItem *item = static_cast<PlacesItem *>(m_items.at(i));
-        VolumeItem *volumeItem = static_cast<VolumeItem *>(item);
-        if (volumeItem)
-            return volumeItem;
+    for (int i = 0; i < m_items.length(); i++) {
+        VolumeItem *item = static_cast<VolumeItem *>(m_items.at(i));
+        if (!item)
+            continue;
+
+        Kommodity::GIO::Volume *theVolume = item->volume();
+        if (theVolume && theVolume->getUuid() == volume->getUuid())
+            return item;
     }
 
     return 0;
 }
 
-MountItem *PlacesModel::itemFromMount(Kommodity::GIO::Mount *mount)
+VolumeItem *PlacesModel::itemFromMount(Kommodity::GIO::Mount *mount)
 {
-    for (int i = 0; i < m_items.length(); ++i) {
-        PlacesItem *item = static_cast<PlacesItem *>(m_items.at(i));
-        MountItem *mountItem = static_cast<MountItem *>(item);
-        if (mountItem)
-            return mountItem;
+    for (int i = 0; i < m_items.length(); i++) {
+        VolumeItem *item = static_cast<VolumeItem *>(m_items.at(i));
+        if (!item)
+            continue;
+
+        Kommodity::GIO::Mount *theMount = item->volume()->getMount();
+        if (theMount && theMount->getUuid() == mount->getUuid())
+            return item;
     }
 
     return 0;

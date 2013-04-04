@@ -30,7 +30,6 @@
 PlacesItem::PlacesItem()
     : QStandardItem()
 {
-    setCategory(QObject::tr("Places"));
 }
 
 PlacesItem::PlacesItem(const QUrl &url)

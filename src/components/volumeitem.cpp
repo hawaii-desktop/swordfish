@@ -26,10 +26,12 @@
 
 #include "volumeitem.h"
 
-VolumeItem::VolumeItem(const Kommodity::GIO::Volume &volume)
+VolumeItem::VolumeItem(Kommodity::GIO::Volume *volume)
     : PlacesItem()
 {
-    m_volume = new Kommodity::GIO::Volume();
+    setCategory(QObject::tr("Devices"));
+
+    m_volume = volume;
     update();
     setEditable(false);
 }
@@ -45,8 +47,5 @@ void VolumeItem::update()
 
 bool VolumeItem::isMounted()
 {
-    if (m_volume->getMount())
-        return true;
-    else
-        return false;
+    return m_volume->getMount();
 }

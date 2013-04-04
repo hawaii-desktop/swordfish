@@ -11,7 +11,6 @@ set(SOURCES
     placesitem.cpp
     bookmarkitem.cpp
     volumeitem.cpp
-    mountitem.cpp
     swordfishplugin.cpp
 )
 
