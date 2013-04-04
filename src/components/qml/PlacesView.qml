@@ -69,6 +69,8 @@ Rectangle {
                         left: parent.left
                         top: parent.top
                     }
+                    width: 22
+                    height: 22
                     icon: decoration
                     smooth: true
                 }
