@@ -39,8 +39,8 @@
 #include <Kommodity/GIO/FileMonitor>
 
 #include "bookmarkitem.h"
-#include "mount.h"
-#include "volume.h"
+#include "mountitem.h"
+#include "volumeitem.h"
 #include "placesitem.h"
 
 class PlacesModel : public QStandardItemModel
@@ -59,12 +59,12 @@ public:
 
 public Q_SLOTS:
     void mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor,
-                    Kommodity::GIO::Mount *mount, PlacesModel *placesModel);
+                    Kommodity::GIO::Mount *mount);
 
 protected:
     PlacesItem *itemFromPath(const QUrl &url);
-    Volume *itemFromVolume(Kommodity::GIO::Volume *volume);
-    Mount *itemFromMount(Kommodity::GIO::Mount *mount);
+    VolumeItem *itemFromVolume(Kommodity::GIO::Volume *volume);
+    MountItem *itemFromMount(Kommodity::GIO::Mount *mount);
     BookmarkItem *itemFromBookmark(BookmarkItem *item);
 
 private:

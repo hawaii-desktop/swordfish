@@ -24,25 +24,29 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#include "mount.h"
+#include "volumeitem.h"
 
-Mount::Mount(const Kommodity::GIO::Mount &mount)
+VolumeItem::VolumeItem(const Kommodity::GIO::Volume &volume)
     : PlacesItem()
 {
-    m_mount = new Kommodity::GIO::Mount();
+    m_volume = new Kommodity::GIO::Volume();
     update();
-    setEditable(true);
+    setEditable(false);
 }
 
-void Mount::update()
+void VolumeItem::update()
 {
-    setText(m_mount->getName());
+    setText(m_volume->getName());
+    setIcon(m_volume->getIcon());
 
-    Kommodity::GIO::File mFile = m_mount->getRoot();
-    if (mFile.getUri().isValid())
-        setUrl(mFile.getUri());
+    if (m_volume->getMount())
+        setUrl(m_volume->getMount()->getRoot().getUri());
+}
+
+bool VolumeItem::isMounted()
+{
+    if (m_volume->getMount())
+        return true;
     else
-        setUrl(QUrl::fromUserInput("unknown"));
-
-    setIcon(m_mount->getIcon());
+        return false;
 }

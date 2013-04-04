@@ -10,8 +10,8 @@ set(SOURCES
     placesmodel.cpp
     placesitem.cpp
     bookmarkitem.cpp
-    volume.cpp
-    mount.cpp
+    volumeitem.cpp
+    mountitem.cpp
     swordfishplugin.cpp
 )
 

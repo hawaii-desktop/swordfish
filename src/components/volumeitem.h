@@ -24,27 +24,33 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#ifndef MOUNT_H
-#define MOUNT_H
+#ifndef VOLUMEITEM_H
+#define VOLUMEITEM_H
 
+#include <Kommodity/GIO/Volume>
 #include <Kommodity/GIO/Mount>
 #include <Kommodity/GIO/File>
 
 #include "placesitem.h"
 
-class Mount : public PlacesItem
+class VolumeItem : public PlacesItem
 {
 public:
-    Mount(const Kommodity::GIO::Mount &mount);
+    VolumeItem(const Kommodity::GIO::Volume &volume);
 
+    bool isMounted();
     void update();
 
-    Kommodity::GIO::Mount *mount() const {
-        return m_mount;
+    bool canEject() const {
+        return m_volume->canEject();
+    }
+
+    Kommodity::GIO::Volume *volume() const {
+        return m_volume;
     }
 
 private:
-    Kommodity::GIO::Mount *m_mount;
+    Kommodity::GIO::Volume *m_volume;
 };
 
-#endif // MOUNT_H
+#endif // VOLUMEITEM_H
