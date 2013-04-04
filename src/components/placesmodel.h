@@ -42,6 +42,8 @@
 #include "volumeitem.h"
 #include "placesitem.h"
 
+using namespace Kommodity::GIO;
+
 class PlacesModel : public QStandardItemModel
 {
     Q_OBJECT
@@ -57,17 +59,21 @@ public:
     void removeBookmark(const QString &text, const QUrl &url);
 
 public Q_SLOTS:
-    void mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor,
-                    Kommodity::GIO::Mount *mount);
+    void volumeAdded(const VolumeMonitor *volumeMonitor, const Volume *volume);
+    void volumeChanged(const VolumeMonitor *volumeMonitor, const Volume *volume);
+    void volumeRemoved(const VolumeMonitor *volumeMonitor, const Volume *volume);
+    void mountAdded(const VolumeMonitor *volumeMonitor, const Mount *mount);
+    void mountChanged(const VolumeMonitor *volumeMonitor, const Mount *mount);
+    void mountRemoved(const VolumeMonitor *volumeMonitor, const Mount *mount);
 
 protected:
     PlacesItem *itemFromPath(const QUrl &url);
-    VolumeItem *itemFromVolume(Kommodity::GIO::Volume *volume);
-    VolumeItem *itemFromMount(Kommodity::GIO::Mount *mount);
+    VolumeItem *itemFromVolume(Volume *volume);
+    VolumeItem *itemFromMount(Mount *mount);
     BookmarkItem *itemFromBookmark(BookmarkItem *item);
 
 private:
-    Kommodity::GIO::VolumeMonitor *m_volumeMonitor;
+    VolumeMonitor *m_volumeMonitor;
     bool m_showApplications;
     bool m_showDesktop;
     bool m_showTrash;

@@ -24,6 +24,8 @@
  * $END_LICENSE$
  ***************************************************************************/
 
+#include <QDebug>
+
 #include "placesmodel.h"
 
 PlacesModel::PlacesModel(QObject* parent)
@@ -40,7 +42,7 @@ PlacesModel::PlacesModel(QObject* parent)
     roles[PlacesItem::UrlRole] = "url";
     setItemRoleNames(roles);
 
-    m_volumeMonitor = new Kommodity::GIO::VolumeMonitor();
+    m_volumeMonitor = new VolumeMonitor();
 
     // Bookmarks
     addBookmark("folder-documents-symbolic",
@@ -79,32 +81,111 @@ PlacesModel::PlacesModel(QObject* parent)
     // Network
     addNetworkBookmark("network", tr("Network"), QUrl("network:///"));
 
-    PlacesItem *item;
-
     // Find all volumes and append to the Devices category
-    QList<Kommodity::GIO::Volume *> volumes = m_volumeMonitor->getVolumes();
-
-    for (int i = 0; i < volumes.size(); ++i) {
-        Kommodity::GIO::Volume *volume = volumes.at(i);
-        item = new VolumeItem(volume);
+    QList<Volume *> volumes = m_volumeMonitor->getVolumes();
+    for (int i = 0; i < volumes.size(); i++) {
+        Volume *volume = volumes.at(i);
+        VolumeItem *item = new VolumeItem(volume);
         appendRow(item);
     }
 
-    connect(m_volumeMonitor, SIGNAL(mountAdded(VolumeMonitor *, MountItem *)),
-            this, SLOT(mountAdded(Kommodity::GIO::VolumeMonitor *, Kommodity::GIO::Mount *)));
+    connect(m_volumeMonitor, SIGNAL(volumeAdded(const VolumeMonitor*, const Volume*)),
+            this, SLOT(volumeAdded(const VolumeMonitor*, const Volume*)));
+    connect(m_volumeMonitor, SIGNAL(volumeChanged(const VolumeMonitor*,const Volume*)),
+            this, SLOT(volumeChanged(const VolumeMonitor*, const Volume*)));
+    connect(m_volumeMonitor, SIGNAL(volumeRemoved(const VolumeMonitor*, const Volume*)),
+            this, SLOT(volumeRemoved(const VolumeMonitor*, const Volume*)));
+    connect(m_volumeMonitor, SIGNAL(mountAdded(const VolumeMonitor*, const Mount*)),
+            this, SLOT(mountAdded(const VolumeMonitor*, const Mount*)));
+    connect(m_volumeMonitor, SIGNAL(mountChanged(const VolumeMonitor*, const Mount*)),
+            this, SLOT(mountChanged(const VolumeMonitor*, const Mount*)));
+    connect(m_volumeMonitor, SIGNAL(mountRemoved(const VolumeMonitor*, const Mount*)),
+            this, SLOT(mountRemoved(const VolumeMonitor*, const Mount*)));
 }
 
-void PlacesModel::mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor,
-                             Kommodity::GIO::Mount *mount)
+void PlacesModel::volumeAdded(const VolumeMonitor *volumeMonitor,
+                              const Volume *volume)
 {
     Q_UNUSED(volumeMonitor);
 
-    Kommodity::GIO::Volume *volume = mount->getVolume();
-    if (!volume)
-        return;
+    VolumeItem *item = itemFromVolume(const_cast<Volume *>(volume));
+    if (!item) {
+        // Fine, we don't have an item for this volume so we create an item
+        // and append it
+        VolumeItem *item = new VolumeItem(const_cast<Volume *>(volume));
+        appendRow(item);
+    }
+}
 
-    VolumeItem *item = new VolumeItem(volume);
-    appendRow(item);
+void PlacesModel::volumeChanged(const VolumeMonitor *volumeMonitor,
+                                const Volume *volume)
+{
+    Q_UNUSED(volumeMonitor);
+
+    VolumeItem *item = itemFromVolume(const_cast<Volume *>(volume));
+    if (!item) {
+        qWarning() << "No volume item for" << volume->getUuid();
+        return;
+    }
+
+    item->setVolume(const_cast<Volume *>(volume));
+}
+
+void PlacesModel::volumeRemoved(const VolumeMonitor *volumeMonitor,
+                                const Volume *volume)
+{
+    Q_UNUSED(volumeMonitor);
+
+    for (int i = 0; i < m_items.length(); i++) {
+        VolumeItem *item = static_cast<VolumeItem *>(m_items.at(i));
+        if (!item)
+            continue;
+
+        Volume *theVolume = item->volume();
+        if (theVolume && theVolume->getUuid() == volume->getUuid()) {
+            removeRow(i);
+            m_items.removeAt(i);
+            return;
+        }
+    }
+
+    qWarning() << "No volume item for" << volume->getUuid();
+}
+
+void PlacesModel::mountAdded(const VolumeMonitor *volumeMonitor,
+                             const Mount *mount)
+{
+    Volume *volume = mount->getVolume();
+    if (!volume) {
+        qWarning() << "Mount" << mount->getUuid() << "has no volume";
+        return;
+    }
+
+    volumeAdded(volumeMonitor, volume);
+}
+
+void PlacesModel::mountChanged(const VolumeMonitor *volumeMonitor,
+                               const Mount *mount)
+{
+    Volume *volume = mount->getVolume();
+    if (!volume) {
+        qWarning() << "Mount" << mount->getUuid() << "has no volume";
+        return;
+    }
+
+    volumeChanged(volumeMonitor, volume);
+}
+
+void PlacesModel::mountRemoved(const VolumeMonitor *volumeMonitor,
+                               const Mount *mount)
+{
+    Volume *volume = mount->getVolume();
+    if (!volume) {
+        qWarning() << "Mount" << mount->getUuid() << "has no volume";
+        return;
+    }
+
+    volumeRemoved(volumeMonitor, volume);
 }
 
 void PlacesModel::addBookmark(const QString &icon, const QString &text,
@@ -148,14 +229,16 @@ void PlacesModel::removeBookmark(const QString &text, const QUrl &url)
     }
 }
 
-VolumeItem *PlacesModel::itemFromVolume(Kommodity::GIO::Volume *volume)
+VolumeItem *PlacesModel::itemFromVolume(Volume *volume)
 {
     for (int i = 0; i < m_items.length(); i++) {
         VolumeItem *item = static_cast<VolumeItem *>(m_items.at(i));
         if (!item)
             continue;
 
-        Kommodity::GIO::Volume *theVolume = item->volume();
+        Volume *theVolume = item->volume();
+        if (theVolume) qDebug() << theVolume << theVolume->getName();
+        if (theVolume) qDebug() << theVolume << theVolume->getUuid();
         if (theVolume && theVolume->getUuid() == volume->getUuid())
             return item;
     }
@@ -163,14 +246,14 @@ VolumeItem *PlacesModel::itemFromVolume(Kommodity::GIO::Volume *volume)
     return 0;
 }
 
-VolumeItem *PlacesModel::itemFromMount(Kommodity::GIO::Mount *mount)
+VolumeItem *PlacesModel::itemFromMount(Mount *mount)
 {
     for (int i = 0; i < m_items.length(); i++) {
         VolumeItem *item = static_cast<VolumeItem *>(m_items.at(i));
         if (!item)
             continue;
 
-        Kommodity::GIO::Mount *theMount = item->volume()->getMount();
+        Mount *theMount = item->volume()->getMount();
         if (theMount && theMount->getUuid() == mount->getUuid())
             return item;
     }

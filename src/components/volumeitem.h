@@ -49,6 +49,8 @@ public:
         return m_volume;
     }
 
+    void setVolume(Kommodity::GIO::Volume *volume);
+
 private:
     Kommodity::GIO::Volume *m_volume;
 };

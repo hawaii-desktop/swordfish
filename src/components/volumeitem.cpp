@@ -28,12 +28,11 @@
 
 VolumeItem::VolumeItem(Kommodity::GIO::Volume *volume)
     : PlacesItem()
+    , m_volume(volume)
 {
     setCategory(QObject::tr("Devices"));
-
-    m_volume = volume;
-    update();
     setEditable(false);
+    update();
 }
 
 void VolumeItem::update()
@@ -48,4 +47,10 @@ void VolumeItem::update()
 bool VolumeItem::isMounted()
 {
     return m_volume->getMount();
+}
+
+void VolumeItem::setVolume(Kommodity::GIO::Volume *volume)
+{
+    m_volume = volume;
+    update();
 }
