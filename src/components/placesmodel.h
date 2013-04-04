@@ -69,9 +69,9 @@ protected:
 
 private:
     Kommodity::GIO::VolumeMonitor *m_volumeMonitor;
-    bool m_showTrash;
-    bool m_showDesktop;
     bool m_showApplications;
+    bool m_showDesktop;
+    bool m_showTrash;
     QList<PlacesItem *> m_items;
 
     void updateBookmarks();
