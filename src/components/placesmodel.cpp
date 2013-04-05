@@ -78,9 +78,6 @@ PlacesModel::PlacesModel(QObject* parent)
     addPlacesBookmark("user-trash", tr("Trash"), QUrl("trash:///"));
     addPlacesBookmark("computer", tr("Computer"), QUrl("computer:///"));
 
-    // Network
-    addNetworkBookmark("network", tr("Network"), QUrl("network:///"));
-
     // Find all volumes and append to the Devices category
     QList<Volume *> volumes = m_volumeMonitor->getVolumes();
     for (int i = 0; i < volumes.size(); i++) {
@@ -88,6 +85,9 @@ PlacesModel::PlacesModel(QObject* parent)
         VolumeItem *item = new VolumeItem(volume);
         appendRow(item);
     }
+
+    // Network
+    addNetworkBookmark("network", tr("Network"), QUrl("network:///"));
 
     connect(m_volumeMonitor, SIGNAL(volumeAdded(const VolumeMonitor*, const Volume*)),
             this, SLOT(volumeAdded(const VolumeMonitor*, const Volume*)));
