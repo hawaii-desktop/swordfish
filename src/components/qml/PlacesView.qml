@@ -30,24 +30,26 @@ import FluidExtra 1.0 as FluidExtra
 
 Rectangle {
     id: container
-    width: 400
-    height: 400
+    width: 350
+    height: 450
     color: sysPal.window
+
+    signal selected(url uri)
 
     SystemPalette {
         id: sysPal
     }
 
     ListView {
+        id: placesListView
         anchors.fill: parent
 
         Component {
             id: sectionHeading
 
-            Rectangle {
+            Item {
                 width: container.width
                 height: childrenRect.height
-                color: "lightsteelblue"
 
                 Text {
                     text: section
@@ -63,11 +65,14 @@ Rectangle {
                 width: container.width
                 height: childrenRect.height
 
+                property bool selected: placesListView.currentIndex == index
+
                 FluidExtra.IconItem {
                     id: icon
                     anchors {
                         left: parent.left
                         top: parent.top
+                        leftMargin: 10
                     }
                     width: 22
                     height: 22
@@ -82,12 +87,31 @@ Rectangle {
                         verticalCenter: icon.verticalCenter
                     }
                     text: display
+                    color: selected ? sysPal.highlightedText : sysPal.windowText
+
+                    Behavior on color {
+                        ColorAnimation { easing.type: Easing.InQuad; duration: 200 }
+                    }
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        // Select this item and emit a signal
+                        placesListView.currentIndex = index;
+                        container.selected(url);
+                        console.log(url);
+                    }
                 }
             }
         }
 
         model: PlacesModel {}
         delegate: delegate
+        highlight: Rectangle {
+            color: sysPal.highlight
+            opacity: 0.7
+        }
         spacing: 8
         section.property: "category"
         section.criteria: ViewSection.FullString
