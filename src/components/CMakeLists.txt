@@ -12,6 +12,8 @@ set(SOURCES
     bookmarkitem.cpp
     volumeitem.cpp
     swordfishplugin.cpp
+    foldermodel.cpp
+    folderitem.cpp
 )
 
 add_library(declarative_swordfish SHARED ${SOURCES})
