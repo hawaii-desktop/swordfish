@@ -26,6 +26,7 @@
 #include <QtCore/QVariant>
 #include <QtCore/QTime>
 #include <QtCore/QSharedData>
+#include <QtGui/QIcon>
 
 #include <Kommodity/GIO/SharedWrappedObject>
 #include <Kommodity/GIO/Error>
@@ -116,7 +117,7 @@ public:
     
     QString getEditName() const;
     
-    Icon * getIcon() const;
+    QIcon getIcon() const;
     
     QString getContentType() const;
     

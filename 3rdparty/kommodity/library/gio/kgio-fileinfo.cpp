@@ -297,33 +297,36 @@ QString FileInfo::getEditName() const
     return QString(editName);
 }
 
-Icon *  FileInfo::getIcon() const
+QIcon FileInfo::getIcon() const
 {
     GIcon* gIcon = g_file_info_get_icon(WO::getGFileInfo(this));
-    if (gIcon==NULL) return NULL;
-    g_object_ref(gIcon);
-    
-    Icon * icon = NULL;
-    
-    if (G_IS_THEMED_ICON(gIcon))
-    {
-        icon = new ThemedIcon();
+    if (gIcon) {
+        g_object_ref(gIcon);
+
+        Icon *icon = 0;
+
+        if (G_IS_THEMED_ICON(gIcon))
+            icon = new ThemedIcon();
+        else if (G_IS_FILE_ICON(gIcon))
+            icon = new FileIcon();
+        else if (G_IS_LOADABLE_ICON(gIcon))
+            icon = new LoadableIcon();
+
+        if (icon)
+            WO::setGIcon(icon, gIcon);
     }
-    else if(G_IS_FILE_ICON(gIcon))
-    {
-        icon = new FileIcon();
-    } 
-    else if(G_IS_LOADABLE_ICON(gIcon))
-    {
-        icon = new LoadableIcon();
-    } 
-    else
-    {
-        return NULL;
-    }
-    
-    WO::setGIcon(icon, gIcon);
-    return icon;
+
+    QString iconName;
+
+    if (gIcon)
+        iconName = QString::fromUtf8(g_icon_to_string(gIcon));
+
+    if (QFile::exists(iconName))
+        return QIcon(iconName);
+
+    if (!QIcon::hasThemeIcon(iconName))
+        iconName = QStringLiteral("unknown");
+    return QIcon::fromTheme(iconName);
 }
 
 QString FileInfo::getContentType() const
