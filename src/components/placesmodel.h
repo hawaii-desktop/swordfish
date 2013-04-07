@@ -71,7 +71,6 @@ protected:
     PlacesItem *itemFromPath(const QUrl &url);
     VolumeItem *itemFromVolume(Volume *volume);
     VolumeItem *itemFromMount(Mount *mount);
-    BookmarkItem *itemFromBookmark(BookmarkItem *item);
 
 private:
     VolumeMonitor *m_volumeMonitor;

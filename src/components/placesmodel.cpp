@@ -314,9 +314,4 @@ VolumeItem *PlacesModel::itemFromMount(Mount *mount)
     return 0;
 }
 
-BookmarkItem *PlacesModel::itemFromBookmark(BookmarkItem *item)
-{
-    return 0;
-}
-
 #include "moc_placesmodel.cpp"
