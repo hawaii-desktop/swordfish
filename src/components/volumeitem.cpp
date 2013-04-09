@@ -46,7 +46,10 @@ void VolumeItem::update()
 
 bool VolumeItem::isMounted()
 {
-    return m_volume->getMount();
+    if (m_volume->getMount())
+        return true;
+    else
+        return false;
 }
 
 void VolumeItem::setVolume(Kommodity::GIO::Volume *volume)
