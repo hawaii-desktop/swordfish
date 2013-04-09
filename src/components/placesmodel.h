@@ -65,6 +65,7 @@ public Q_SLOTS:
     void mountAdded(const VolumeMonitor *volumeMonitor, const Mount *mount);
     void mountChanged(const VolumeMonitor *volumeMonitor, const Mount *mount);
     void mountRemoved(const VolumeMonitor *volumeMonitor, const Mount *mount);
+    void preUnmount(const VolumeMonitor * volumeMonitor, const Mount * mount);
 
 protected:
     PlacesItem *itemFromPath(const QUrl &url);

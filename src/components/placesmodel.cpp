@@ -83,7 +83,9 @@ PlacesModel::PlacesModel(QObject* parent)
     for (int i = 0; i < volumes.size(); i++) {
         Volume *volume = volumes.at(i);
         VolumeItem *item = new VolumeItem(volume);
+        m_items.append(item);
         appendRow(item);
+        qDebug() << item->volume()->getName() << " has Uuid" << item->volume()->getUuid();
     }
 
     // Network
@@ -101,6 +103,8 @@ PlacesModel::PlacesModel(QObject* parent)
             this, SLOT(mountChanged(const VolumeMonitor*, const Mount*)));
     connect(m_volumeMonitor, SIGNAL(mountRemoved(const VolumeMonitor*, const Mount*)),
             this, SLOT(mountRemoved(const VolumeMonitor*, const Mount*)));
+    connect(m_volumeMonitor, SIGNAL(preUnmount(const VolumeMonitor * , const Mount * )),
+            this, SLOT(preUnmount(const VolumeMonitor * , const Mount * )));
 }
 
 void PlacesModel::volumeAdded(const VolumeMonitor *volumeMonitor,
@@ -113,7 +117,25 @@ void PlacesModel::volumeAdded(const VolumeMonitor *volumeMonitor,
         // Fine, we don't have an item for this volume so we create an item
         // and append it
         VolumeItem *item = new VolumeItem(const_cast<Volume *>(volume));
-        appendRow(item);
+        //Insert the new volume into devices category
+        int fristDevice = 0;
+        int devicesCount = 0;
+        int lastDevice = 0;
+        //We need to find out the latest volume device's index manually
+        for (int i = 0; i < m_items.length(); i++)
+        {
+            if (m_items.at(i)->category() == tr("Devices"))
+                devicesCount++;
+            if (m_items.at(i)->category() != tr("Devices"))
+                fristDevice++;
+        }
+        fristDevice--;
+        lastDevice = fristDevice + devicesCount;
+        m_items.insert(lastDevice, item);
+        insertRow(lastDevice, item);
+    }
+    else {
+        item->setUrl(volume->getMount()->getRoot().getUri());
     }
 }
 
@@ -135,19 +157,17 @@ void PlacesModel::volumeRemoved(const VolumeMonitor *volumeMonitor,
                                 const Volume *volume)
 {
     Q_UNUSED(volumeMonitor);
-
-    for (int i = 0; i < m_items.length(); i++) {
-        VolumeItem *item = static_cast<VolumeItem *>(m_items.at(i));
-        if (!item)
-            continue;
-
-        Volume *theVolume = item->volume();
-        if (theVolume && theVolume->getUuid() == volume->getUuid()) {
-            removeRow(i);
-            m_items.removeAt(i);
-            return;
-        }
+    //Get interested volume from items
+    VolumeItem *item = itemFromVolume(const_cast<Volume *>(volume));
+    if (item) {
+        int itemIndex = m_items.indexOf(item);
+        removeRow(itemIndex);
+        m_items.removeAt(itemIndex);
     }
+
+    else
+        qDebug() << "Wtf volume!?";
+
 
     qWarning() << "No volume item for" << volume->getUuid();
 }
@@ -181,11 +201,45 @@ void PlacesModel::mountRemoved(const VolumeMonitor *volumeMonitor,
 {
     Volume *volume = mount->getVolume();
     if (!volume) {
-        qWarning() << "Mount" << mount->getUuid() << "has no volume";
+        qWarning() << "Mount" << mount->getName() << "has no volume";
         return;
     }
 
-    volumeRemoved(volumeMonitor, volume);
+    VolumeItem *item = itemFromVolume(const_cast<Volume *>(volume));
+    if (item) {
+        qDebug() << "Yay! we have this volume";
+        if (item->isMounted()) {
+            qDebug() << "Yay! is mounted!";
+            if (item->volume()->getMount()->canUnmount()) {
+                qDebug() << "Yay! we can unmount it!";
+                item->volume()->getMount()->unmount();
+                item->setUrl(QUrl::fromUserInput(""));
+            }
+        }
+    }
+
+}
+
+void PlacesModel::preUnmount(const VolumeMonitor *volumeMonitor,
+                             const Mount *mount)
+{
+    Volume *volume = mount->getVolume();
+    if (!volume) {
+        qWarning() << "Mount" << mount->getName() << "has no volume";
+        return;
+    }
+    VolumeItem *item = itemFromVolume(const_cast<Volume *>(volume));
+    if (item) {
+        qDebug() << "Yay! we have this volume";
+        if (item->isMounted()) {
+            qDebug() << "Yay! is mounted!";
+            if (item->volume()->getMount()->canUnmount()) {
+                qDebug() << "Yay! we can unmount it!";
+                item->volume()->getMount()->unmount();
+                item->setUrl(QUrl::fromUserInput(""));
+            }
+        }
+    }
 }
 
 void PlacesModel::addBookmark(const QString &icon, const QString &text,
@@ -232,15 +286,14 @@ void PlacesModel::removeBookmark(const QString &text, const QUrl &url)
 VolumeItem *PlacesModel::itemFromVolume(Volume *volume)
 {
     for (int i = 0; i < m_items.length(); i++) {
-        VolumeItem *item = static_cast<VolumeItem *>(m_items.at(i));
-        if (!item)
-            continue;
-
-        Volume *theVolume = item->volume();
-        if (theVolume) qDebug() << theVolume << theVolume->getName();
-        if (theVolume) qDebug() << theVolume << theVolume->getUuid();
-        if (theVolume && theVolume->getUuid() == volume->getUuid())
-            return item;
+        if (m_items.at(i)->category() == tr("Devices")) {
+            VolumeItem *item = static_cast<VolumeItem *>(m_items.at(i));
+            Volume *theVolume = item->volume();
+            if (theVolume) qDebug() << theVolume << theVolume->getName();
+            if (theVolume) qDebug() << theVolume << theVolume->getUuid();
+            if (theVolume && theVolume->getName() == volume->getName())
+                return item;
+        }
     }
 
     return 0;
