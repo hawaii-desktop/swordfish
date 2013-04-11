@@ -32,56 +32,52 @@ PlacesModel::PlacesModel(QObject* parent)
       m_showDesktop(true),
       m_showTrash(true)
 {   
+    // Set role names
+    QHash<int, QByteArray> roles;
+    roles[Qt::DisplayRole] = "display";
+    roles[Qt::DecorationRole] = "decoration";
+    roles[PlacesItem::CategoryRole] = "category";
+    roles[PlacesItem::UrlRole] = "url";
+    setItemRoleNames(roles);
+
     m_volumeMonitor = new Kommodity::GIO::VolumeMonitor();
 
     PlacesItem *item;
-
-    m_placesRoot = new QStandardItem(tr("Places"));
-    m_placesRoot->setEditable(false);
-    m_placesRoot->setSelectable(false);
-    appendRow(m_placesRoot);
 
     m_home = new PlacesItem("user-home",
                             QStandardPaths::displayName(QStandardPaths::HomeLocation),
                             QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
     m_home->setEditable(false);
-    m_placesRoot->appendRow(m_home);
+    appendRow(m_home);
 
     m_desktop = new PlacesItem("user-desktop", tr("Desktop"),
                                QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
     m_desktop->setEditable(false);
-    m_placesRoot->appendRow(m_desktop);
+    appendRow(m_desktop);
 
     m_filesystemUrl.setUrl("file:///");
     m_filesystem = new PlacesItem("volume", tr("File system"), m_filesystemUrl);
     m_filesystem->setEditable(false);
-    m_placesRoot->appendRow(m_filesystem);
+    appendRow(m_filesystem);
 
     m_trashUrl.setUrl("trash:///");
     m_trash = new PlacesItem("user-trash", tr("Trash"), m_trashUrl);
     m_trash->setEditable(false);
-    m_placesRoot->appendRow(m_trash);
+    appendRow(m_trash);
 
     m_computerUrl.setUrl("computer:///");
     m_computer = new PlacesItem("computer", tr("Computer"), m_computerUrl);
     m_computer->setEditable(false);
-    m_placesRoot->appendRow(m_computer);
-
+    appendRow(m_computer);
 
     m_networkRoot = new QStandardItem(tr("Network"));
     m_networkRoot->setEditable(false);
     m_networkRoot->setSelectable(false);
     appendRow(m_networkRoot);
-
     m_networkUrl.setUrl("network:///");
     m_network = new PlacesItem("network", tr("Network"), m_networkUrl);
     m_network->setEditable(false);
-    m_placesRoot->appendRow(m_network);
-
-    m_devicesRoot = new QStandardItem(tr("Devices"));
-    m_devicesRoot->setEditable(false);
-    m_devicesRoot->setSelectable(false);
-    appendRow(m_devicesRoot);
+    appendRow(m_network);
 
     // Find all volumes and append them to m_devicesRoot
     QList<Kommodity::GIO::Volume *> volumes = m_volumeMonitor->getVolumes();
@@ -89,7 +85,7 @@ PlacesModel::PlacesModel(QObject* parent)
     for (int i = 0; i < volumes.size(); ++i) {
         Kommodity::GIO::Volume *volume = volumes.at(i);
         item = new Volume(*volume);
-        m_devicesRoot->appendRow(item);
+        appendRow(item);
     }
 
     // Find all  mounts and append them to m_devicesRoot
@@ -101,15 +97,11 @@ PlacesModel::PlacesModel(QObject* parent)
 
         if (!volume) {
             item = new Mount(*mount);
-            m_devicesRoot->appendRow(item);
+            appendRow(item);
         }
     }
 
-    m_bookmarksRoot = new QStandardItem(tr("Bookmakrs"));
-    m_bookmarksRoot->setEditable(false);
-    m_bookmarksRoot->setSelectable(false);
-    appendRow(m_bookmarksRoot);
-
+    // Bookmarks
     addBookmark("folder-documents-symbolic",tr("Documents"),
                 QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
     addBookmark("folder-music-symbolic",tr("Music"),
@@ -120,9 +112,6 @@ PlacesModel::PlacesModel(QObject* parent)
                 QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
     addBookmark("folder-download-symbolic",tr("Downloads"),
                 QStandardPaths::writableLocation(QStandardPaths::DownloadLocation));
-
-    for (int i = 0; i < m_bookmarks.size(); ++i)
-        m_bookmarksRoot->appendRow(m_bookmarks.at(i));
 
 #if 0
     connect(m_volumeMonitor, SIGNAL(mountAdded(const VolumeMonitor *,const Mount *)),
@@ -147,33 +136,34 @@ void PlacesModel::mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor,
         Mount *mountItem = placesModel->itemFromMount(mount);
         if (!mountItem) {
             mountItem = new Mount(*mount);
-            placesModel->m_devicesRoot->appendRow(mountItem);
+            appendRow(mountItem);
         }
     }
 }
 
-int PlacesModel::addBookmark(const QString &icon, const QString &text, const QUrl &url)
+void PlacesModel::addBookmark(const QString &icon, const QString &text, const QUrl &url)
 {
-    for (int i = 0; i < m_bookmarks.length(); i++) {
-        if (m_bookmarks.at(i)->text() == text && m_bookmarks.at(i)->url() == url)
-            return -1;
-    }
-    m_bookmarks.append(new Bookmark(text, icon, url));
-    return 0;
+    Bookmark *item = new Bookmark(text, icon, url);
+    m_items.append(item);
+    appendRow(item);
 }
 
 void PlacesModel::removeBookmark(const QString &text, const QUrl &url)
 {
-    for(int i = 0; i < m_bookmarks.length(); i++)
-        if (m_bookmarks.at(i)->text() == text && m_bookmarks.at(i)->url() == url)
-            m_bookmarks.removeAt(i);
+    for(int i = 0; i < m_items.length(); i++) {
+        Bookmark *item = static_cast<Bookmark *>(m_items.at(i));
+        if (!item)
+            continue;
+
+        if (item->text() == text && item->url() == url)
+            m_items.removeAt(i);
+    }
 }
 
 Volume *PlacesModel::itemFromVolume(Kommodity::GIO::Volume *volume)
 {
-    int rowCount = m_devicesRoot->rowCount();
-    for (int i = 0; i < rowCount; ++i) {
-        PlacesItem *item = static_cast<PlacesItem *>(m_devicesRoot->child(i, 0));
+    for (int i = 0; i < m_items.length(); ++i) {
+        PlacesItem *item = static_cast<PlacesItem *>(m_items.at(i));
         Volume *volumeItem = static_cast<Volume *>(item);
         if (volumeItem)
             return volumeItem;
@@ -184,9 +174,8 @@ Volume *PlacesModel::itemFromVolume(Kommodity::GIO::Volume *volume)
 
 Mount *PlacesModel::itemFromMount(Kommodity::GIO::Mount *mount)
 {
-    int rowCount = m_devicesRoot->rowCount();
-    for (int i = 0; i < rowCount; ++i) {
-        PlacesItem *item = static_cast<PlacesItem *>(m_devicesRoot->child(i, 0));
+    for (int i = 0; i < m_items.length(); ++i) {
+        PlacesItem *item = static_cast<PlacesItem *>(m_items.at(i));
         Mount *mountItem = static_cast<Mount *>(item);
         if (mountItem)
             return mountItem;
