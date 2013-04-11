@@ -42,42 +42,44 @@ PlacesModel::PlacesModel(QObject* parent)
 
     m_volumeMonitor = new Kommodity::GIO::VolumeMonitor();
 
+    // Bookmarks
+    addBookmark("folder-documents-symbolic",
+                QStandardPaths::displayName(QStandardPaths::DocumentsLocation),
+                QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+                false);
+    addBookmark("folder-music-symbolic",
+                QStandardPaths::displayName(QStandardPaths::MusicLocation),
+                QStandardPaths::writableLocation(QStandardPaths::MusicLocation),
+                false);
+    addBookmark("folder-pictures-symbolic",
+                QStandardPaths::displayName(QStandardPaths::PicturesLocation),
+                QStandardPaths::writableLocation(QStandardPaths::PicturesLocation),
+                false);
+    addBookmark("folder-videos-symbolic",
+                QStandardPaths::displayName(QStandardPaths::MoviesLocation),
+                QStandardPaths::writableLocation(QStandardPaths::MoviesLocation),
+                false);
+    addBookmark("folder-download-symbolic",
+                QStandardPaths::displayName(QStandardPaths::DownloadLocation),
+                QStandardPaths::writableLocation(QStandardPaths::DownloadLocation),
+                false);
+
+    // Places
+    addPlacesBookmark("user-home",
+                      QStandardPaths::displayName(QStandardPaths::HomeLocation),
+                      QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+    if (m_showDesktop)
+        addPlacesBookmark("user-desktop",
+                          QStandardPaths::displayName(QStandardPaths::DesktopLocation),
+                          QStandardPaths::writableLocation(QStandardPaths::DesktopLocation));
+    addPlacesBookmark("volume", tr("File System"), QUrl("file:///"));
+    addPlacesBookmark("user-trash", tr("Trash"), QUrl("trash:///"));
+    addPlacesBookmark("computer", tr("Computer"), QUrl("computer:///"));
+
+    // Network
+    addNetworkBookmark("network", tr("Network"), QUrl("network:///"));
+
     PlacesItem *item;
-
-    m_home = new PlacesItem("user-home",
-                            QStandardPaths::displayName(QStandardPaths::HomeLocation),
-                            QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-    m_home->setEditable(false);
-    appendRow(m_home);
-
-    m_desktop = new PlacesItem("user-desktop", tr("Desktop"),
-                               QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
-    m_desktop->setEditable(false);
-    appendRow(m_desktop);
-
-    m_filesystemUrl.setUrl("file:///");
-    m_filesystem = new PlacesItem("volume", tr("File system"), m_filesystemUrl);
-    m_filesystem->setEditable(false);
-    appendRow(m_filesystem);
-
-    m_trashUrl.setUrl("trash:///");
-    m_trash = new PlacesItem("user-trash", tr("Trash"), m_trashUrl);
-    m_trash->setEditable(false);
-    appendRow(m_trash);
-
-    m_computerUrl.setUrl("computer:///");
-    m_computer = new PlacesItem("computer", tr("Computer"), m_computerUrl);
-    m_computer->setEditable(false);
-    appendRow(m_computer);
-
-    m_networkRoot = new QStandardItem(tr("Network"));
-    m_networkRoot->setEditable(false);
-    m_networkRoot->setSelectable(false);
-    appendRow(m_networkRoot);
-    m_networkUrl.setUrl("network:///");
-    m_network = new PlacesItem("network", tr("Network"), m_networkUrl);
-    m_network->setEditable(false);
-    appendRow(m_network);
 
     // Find all volumes and append them to m_devicesRoot
     QList<Kommodity::GIO::Volume *> volumes = m_volumeMonitor->getVolumes();
@@ -100,18 +102,6 @@ PlacesModel::PlacesModel(QObject* parent)
             appendRow(item);
         }
     }
-
-    // Bookmarks
-    addBookmark("folder-documents-symbolic",tr("Documents"),
-                QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation));
-    addBookmark("folder-music-symbolic",tr("Music"),
-                QStandardPaths::writableLocation(QStandardPaths::MusicLocation));
-    addBookmark("folder-pictures-symbolic",tr("Pictures"),
-                QStandardPaths::writableLocation(QStandardPaths::PicturesLocation));
-    addBookmark("folder-videos-symbolic",tr("Videos"),
-                QStandardPaths::writableLocation(QStandardPaths::MoviesLocation));
-    addBookmark("folder-download-symbolic",tr("Downloads"),
-                QStandardPaths::writableLocation(QStandardPaths::DownloadLocation));
 
 #if 0
     connect(m_volumeMonitor, SIGNAL(mountAdded(const VolumeMonitor *,const Mount *)),
@@ -141,9 +131,31 @@ void PlacesModel::mountAdded(Kommodity::GIO::VolumeMonitor *volumeMonitor,
     }
 }
 
-void PlacesModel::addBookmark(const QString &icon, const QString &text, const QUrl &url)
+void PlacesModel::addBookmark(const QString &icon, const QString &text,
+                              const QUrl &url, bool editable)
 {
     BookmarkItem *item = new BookmarkItem(text, icon, url);
+    item->setEditable(editable);
+    m_items.append(item);
+    appendRow(item);
+}
+
+void PlacesModel::addPlacesBookmark(const QString &icon, const QString &text,
+                                    const QUrl &url)
+{
+    BookmarkItem *item = new BookmarkItem(text, icon, url);
+    item->setCategory(tr("Places"));
+    item->setEditable(false);
+    m_items.append(item);
+    appendRow(item);
+}
+
+void PlacesModel::addNetworkBookmark(const QString &icon, const QString &text,
+                                     const QUrl &url)
+{
+    BookmarkItem *item = new BookmarkItem(text, icon, url);
+    item->setCategory(tr("Network"));
+    item->setEditable(false);
     m_items.append(item);
     appendRow(item);
 }

@@ -49,7 +49,12 @@ class PlacesModel : public QStandardItemModel
 public:
     PlacesModel(QObject* parent = 0);
 
-    void addBookmark(const QString &icon, const QString &text, const QUrl &url);
+    void addBookmark(const QString &icon, const QString &text,
+                     const QUrl &url, bool editable = true);
+    void addPlacesBookmark(const QString &icon, const QString &text,
+                           const QUrl &url);
+    void addNetworkBookmark(const QString &icon, const QString &text,
+                            const QUrl &url);
     void removeBookmark(const QString &text, const QUrl &url);
 
 public Q_SLOTS:
@@ -64,20 +69,10 @@ protected:
 
 private:
     Kommodity::GIO::VolumeMonitor *m_volumeMonitor;
-    PlacesItem *m_trash;
-    PlacesItem *m_desktop;
-    PlacesItem *m_home;
-    PlacesItem *m_computer;
-    PlacesItem *m_network;
-    PlacesItem *m_filesystem;
     bool m_showTrash;
     bool m_showDesktop;
     bool m_showApplications;
     QList<PlacesItem *> m_items;
-    QUrl m_trashUrl;
-    QUrl m_computerUrl;
-    QUrl m_filesystemUrl;
-    QUrl m_networkUrl;
 
     void updateBookmarks();
 };
