@@ -201,7 +201,7 @@ void PlacesModel::mountRemoved(const VolumeMonitor *volumeMonitor,
 {
     Volume *volume = mount->getVolume();
     if (!volume) {
-        qWarning() << "Mount" << mount->getName() << "has no volume";
+        qWarning() << "Mount" << mount->getUuid() << "has no volume";
         return;
     }
 
@@ -291,7 +291,7 @@ VolumeItem *PlacesModel::itemFromVolume(Volume *volume)
             Volume *theVolume = item->volume();
             if (theVolume) qDebug() << theVolume << theVolume->getName();
             if (theVolume) qDebug() << theVolume << theVolume->getUuid();
-            if (theVolume && theVolume->getName() == volume->getName())
+            if (theVolume && theVolume->getUuid() == volume->getUuid())
                 return item;
         }
     }
