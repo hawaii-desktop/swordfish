@@ -99,7 +99,7 @@ QString Volume::getName() const
 
 QByteArray Volume::getUuid() const
 {
-    return WO::qByteArrayFromCStrFreed(g_volume_get_uuid(WO::getGVolume(this)));
+    return WO::qByteArrayFromCStrFreed(g_volume_get_identifier(WO::getGVolume(this),"uuid"));
 }
 
 QIcon Volume::getIcon() const
