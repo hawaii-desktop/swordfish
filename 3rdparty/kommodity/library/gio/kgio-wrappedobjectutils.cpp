@@ -62,7 +62,7 @@ void WO::setGVolume(Volume * volume, GVolume * gVolume)
     
 GVolume * WO::getGVolume(const Volume * volume)
 {
-    return (GVolume*)volume->getObjectPtr();
+    return static_cast<GVolume *>(volume->getObjectPtr());
 }        
 
 /////
