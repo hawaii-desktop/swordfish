@@ -345,7 +345,7 @@ public:
     
     static QByteArray qByteArrayFromCStrFreed(char * cstr)
     {
-        if (!cstr) return QByteArray();
+        if (!cstr) return QByteArray("No uuid for this volume/mount!?Or Something goes wrong D:");
         QByteArray result = QByteArray(cstr);
         g_free(cstr);
         return result;
