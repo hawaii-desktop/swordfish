@@ -29,14 +29,15 @@
 FolderModel::FolderModel(QObject* parent)
     : QAbstractListModel(parent)
 {
+    setFolder(NULL);
 }
 
-void FolderModel::insertFiles(const int &row, const QList<Kommodity::GIO::FileInfo *> &fileInfoList)
+void FolderModel::insertFiles(const int &row, const QList<FileInfo> &fileInfoList)
 {
     int files = fileInfoList.length();
     beginInsertRows(QModelIndex(), row, row + files - 1);
     for (int i = 0; i < files; i++) {
-        FolderItem newFolderItem(*fileInfoList.at(i));
+        FolderItem newFolderItem(fileInfoList.at(i));
         m_folderItems.append(newFolderItem);
     }
     endInsertRows();
@@ -75,7 +76,7 @@ QVariant FolderModel::data(const QModelIndex &index, int role = Qt::DisplayRole)
     if (!index.isValid() || index.row() > m_folderItems.size() || index.column() >= NumOfColumns)
         return QVariant();
     FolderItem *folderitem = itemFromIndex(index);
-    Kommodity::GIO::FileInfo *fileinfo = folderitem->fileInfo;
+    FileInfo *fileinfo = folderitem->fileInfo;
 
     switch (role) {
     case Qt::ToolTipRole :
@@ -152,7 +153,7 @@ QVariant FolderModel::headerData(int section,
     return QVariant();
 }
 
-Kommodity::GIO::FileInfo *FolderModel::fileInfoFromIndex(const QModelIndex &index) const
+FileInfo *FolderModel::fileInfoFromIndex(const QModelIndex &index) const
 {
     FolderItem *folderItem = itemFromIndex(index);
     if (folderItem)
@@ -170,7 +171,111 @@ void FolderModel::removeAll()
     endRemoveRows();
 }
 
-void FolderModel::setFolder(const QDir &newFolder)
+void FolderModel::setFolder(File *newFolder)
 {
+    if (!m_folder->isNull()) {
+        removeAll();
+    }
+    if(newFolder->isNull()) {
+        Error error;
+        m_folder = new File(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+        m_folderMonitor = new FileMonitor(m_folder->monitorDirectory(m_folder->MonitorNorm,error,NULL));
+
+        if(error.hasError()) {
+            qDebug() << error.getMessage() << "\n";
+        }
+
+        FileEnumerator fileEnumerator = m_folder->enumerateChildren(
+                "*",
+                File::QueryInfoNorm,
+                error
+        );
+
+        if(error.hasError()) {
+            qDebug() << error.getMessage() << "\n";
+        }
+
+
+        QList<FileInfo> fileInfoList;
+        for (;;)
+        {
+            FileInfo fileInfo = fileEnumerator.nextFile(error);
+            if (error.hasError())
+            {
+                qDebug() << error.getMessage().toUtf8().data() << "\n";
+            }
+
+            if (fileInfo.isNull())
+            {
+                break;
+            }
+
+            fileInfoList.append(fileInfo);
+
+        }
+
+        insertFiles(fileInfoList.length(),fileInfoList);
+    }
+    else {
+
+        Error error;
+        m_folder = newFolder;
+        m_folderMonitor = new FileMonitor(m_folder->monitorDirectory(m_folder->MonitorNorm,error,NULL));
+
+        if(error.hasError()) {
+            qDebug() << error.getMessage() << "\n";
+        }
+
+        FileEnumerator fileEnumerator = m_folder->enumerateChildren(
+                "*",
+                File::QueryInfoNorm,
+                error
+        );
+
+        if(error.hasError()) {
+            qDebug() << error.getMessage() << "\n";
+        }
+
+
+        QList<FileInfo> fileInfoList;
+        for (;;)
+        {
+            FileInfo fileInfo = fileEnumerator.nextFile(error);
+            if (error.hasError())
+            {
+                qDebug() << error.getMessage().toUtf8().data() << "\n";
+            }
+
+            if (fileInfo.isNull())
+            {
+                break;
+            }
+
+            fileInfoList.append(fileInfo);
+
+        }
+
+        insertFiles(fileInfoList.length(), fileInfoList);
+        connect(m_folderMonitor, SIGNAL(changed(FileMonitor*, File, File, FileMonitorEvent)),
+                this, SLOT(changed(FileMonitor*, File, File, FileMonitor::FileMonitorEvent)));
+
+    }
 }
 
+void changed(FileMonitor *monitor,
+                  const File &file,
+                  const File &otherFile,
+                  FileMonitor::FileMonitorEvent eventType)
+{
+    if (eventType == monitor->Changed) {
+        //Do something
+    }
+    else if (eventType == monitor->Deleted) {
+        //Do Something Else
+    }
+    else if (eventType == monitor->AttributeChanged) {
+        //Do Something Else
+    }
+}
+
+#include "moc_foldermodel.cpp"
