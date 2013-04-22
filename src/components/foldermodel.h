@@ -32,7 +32,14 @@
 #include <QDir>
 #include <QUrl>
 #include <QModelIndex>
+#include <QDebug>
 #include <Kommodity/GIO/FileInfo>
+#include <Kommodity/GIO/FileMonitor>
+#include <Kommodity/GIO/File>
+#include <Kommodity/GIO/FileEnumerator>
+#include <QStandardPaths>
+
+using namespace Kommodity::GIO;
 
 #include "folderitem.h"
 
@@ -54,18 +61,18 @@ public:
         NumOfColumns
     };
 
-    QDir *folder() const
+    Kommodity::GIO::File *folder() const
     {
         return m_folder;
     }
 
     QUrl url() const
     {
-        if(m_folder->exists())
-        return QUrl::fromUserInput(m_folder->absolutePath());
+        if(m_folder)
+        return m_folder->getUri();
     }
 
-    void setFolder(const QDir &newFolder);
+    void setFolder(File *newFolder);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent) const;
 
@@ -79,10 +86,16 @@ public:
                       const QModelIndex &parent = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &index) const;
 
-    Kommodity::GIO::FileInfo *fileInfoFromIndex(const QModelIndex &index) const;
+    FileInfo *fileInfoFromIndex(const QModelIndex &index) const;
+
+public Q_SLOTS:
+    void changed(FileMonitor *monitor,
+                 const File &file,
+                 const File &otherFile,
+                 FileMonitor::FileMonitorEvent eventType);
 
 protected:
-    void insertFiles(const int &row,const QList<Kommodity::GIO::FileInfo *> &fileInfoList);
+    void insertFiles(const int &row,const QList<FileInfo> &fileInfoList);
     void removeAll();
 
     QList<FolderItem>::Iterator findItemByUrl(const QUrl &url, const int &row);
@@ -91,7 +104,8 @@ protected:
     FolderItem *itemFromIndex(const QModelIndex &index) const;
 
 private:
-    QDir *m_folder;
+    FileMonitor *m_folderMonitor;
+    File *m_folder;
     QList<FolderItem> m_folderItems;
     //QHash<FolderItem, int> m_folderItems;
 };
