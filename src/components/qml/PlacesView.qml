@@ -28,16 +28,13 @@ import QtQuick 2.0
 import Swordfish 0.1
 import FluidExtra 1.0 as FluidExtra
 
-Rectangle {
+Item {
     id: container
-    width: 350
-    height: 450
-    color: sysPal.window
 
     signal selected(url uri)
 
     SystemPalette {
-        id: sysPal
+        id: palette
     }
 
     ListView {
@@ -87,7 +84,7 @@ Rectangle {
                         verticalCenter: icon.verticalCenter
                     }
                     text: display
-                    color: selected ? sysPal.highlightedText : sysPal.windowText
+                    color: selected ? palette.highlightedText : palette.windowText
 
                     Behavior on color {
                         ColorAnimation { easing.type: Easing.InQuad; duration: 200 }
@@ -109,7 +106,7 @@ Rectangle {
         model: PlacesModel {}
         delegate: delegate
         highlight: Rectangle {
-            color: sysPal.highlight
+            color: palette.highlight
             opacity: 0.7
         }
         spacing: 8
