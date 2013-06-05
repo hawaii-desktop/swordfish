@@ -1,3 +1,4 @@
 module Swordfish
 PlacesView 0.1 PlacesView.qml
+FolderView 0.1 FolderView.qml
 plugin declarative_swordfish
