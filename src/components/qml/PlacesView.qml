@@ -24,7 +24,8 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-import QtQuick 2.0
+import QtQuick 2.1
+import QtQuick.Controls 1.0
 import Swordfish 0.1
 import FluidExtra 1.0 as FluidExtra
 
@@ -48,7 +49,7 @@ Item {
                 width: container.width
                 height: childrenRect.height
 
-                Text {
+                Label {
                     text: section
                     font.weight: Font.Bold
                 }
@@ -70,6 +71,7 @@ Item {
                         left: parent.left
                         top: parent.top
                         leftMargin: 10
+                        topMargin: 5
                     }
                     width: 22
                     height: 22
@@ -77,18 +79,16 @@ Item {
                     smooth: true
                 }
 
-                Text {
+                Label {
                     id: label
                     anchors {
                         left: icon.right
+                        leftMargin: 6
+                        topMargin: 5
                         verticalCenter: icon.verticalCenter
                     }
                     text: display
                     color: selected ? palette.highlightedText : palette.windowText
-
-                    Behavior on color {
-                        ColorAnimation { easing.type: Easing.InQuad; duration: 200 }
-                    }
                 }
 
                 MouseArea {
@@ -109,6 +109,7 @@ Item {
             color: palette.highlight
             opacity: 0.7
         }
+        highlightMoveDuration: 0
         spacing: 8
         section.property: "category"
         section.criteria: ViewSection.FullString

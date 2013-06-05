@@ -29,6 +29,7 @@
 
 #include "swordfishplugin.h"
 #include "placesmodel.h"
+#include "foldermodel.h"
 
 void SwordfishPlugin::registerTypes(const char *uri)
 {
@@ -36,6 +37,7 @@ void SwordfishPlugin::registerTypes(const char *uri)
 
     // Register QML types
     qmlRegisterType<PlacesModel>("Swordfish", 0, 1, "PlacesModel");
+    qmlRegisterType<FolderModel>("Swordfish", 0, 1, "FolderModel");
 }
 
 void SwordfishPlugin::initializeEngine(QQmlEngine *engine, const char *uri)

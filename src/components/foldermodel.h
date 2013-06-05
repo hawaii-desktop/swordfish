@@ -50,7 +50,8 @@ public:
     FolderModel(QObject* parent = 0);
     
     enum Role {
-        FileInfoRole = Qt::UserRole
+        FileNameRole = Qt::UserRole + 1,
+        FileInfoRole
     };
     enum ColumnId {
         ColumnFileName,
@@ -75,6 +76,8 @@ public:
     void setFolder(File *newFolder);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent) const;
+
+    QHash<int, QByteArray> roleNames() const;
 
     QVariant data(const QModelIndex &index, int role) const;
     QVariant headerData(int section,
