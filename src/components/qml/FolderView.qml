@@ -33,6 +33,10 @@ import Swordfish 0.1
 Item {
     id: container
 
+    function setFolder(uri) {
+        gridView.model.folder = uri;
+    }
+
     SystemPalette {
         id: palette
     }

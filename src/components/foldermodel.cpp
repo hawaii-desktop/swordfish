@@ -30,7 +30,7 @@ FolderModel::FolderModel(QObject* parent)
     : QAbstractListModel(parent)
     , m_folder(0)
 {
-    setFolder(0);
+    setFolder(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
 }
 
 void FolderModel::insertFiles(const int &row, const QList<FileInfo> &fileInfoList)
@@ -191,22 +191,26 @@ void FolderModel::removeAll()
     endRemoveRows();
 }
 
-void FolderModel::setFolder(File *newFolder)
+QUrl FolderModel::folder() const
 {
     if (m_folder && !m_folder->isNull())
-        removeAll();
+        return m_folder->getUri();
+    return QUrl();
+}
 
-    if (newFolder && !newFolder->isNull())
-        m_folder = newFolder;
-    else
-        m_folder = new File(QStandardPaths::writableLocation(QStandardPaths::HomeLocation).toUtf8());
+void FolderModel::setFolder(const QUrl &uri)
+{
+    File *folder = new File(uri);
 
     Error error;
 
-    FileEnumerator fileEnumerator = m_folder->enumerateChildren(
+    FileEnumerator fileEnumerator = folder->enumerateChildren(
         "*", File::QueryInfoNorm, error);
     if (error.hasError()) {
-        qWarning() << error.getMessage() << "\n";
+        qWarning("Couldn't enumerate %s: %s",
+                 qPrintable(uri.toString(QUrl::FullyEncoded)),
+                 qPrintable(error.getMessage()));
+        delete folder;
         return;
     }
 
@@ -214,7 +218,10 @@ void FolderModel::setFolder(File *newFolder)
     for (;;) {
         FileInfo fileInfo = fileEnumerator.nextFile(error);
         if (error.hasError()) {
-            qWarning() << error.getMessage().toUtf8().data() << "\n";
+            qWarning("Couldn't advance enumerator %s: %s",
+                     qPrintable(uri.toString(QUrl::FullyEncoded)),
+                     qPrintable(error.getMessage()));
+            delete folder;
             return;
         }
 
@@ -226,18 +233,26 @@ void FolderModel::setFolder(File *newFolder)
 
     fileEnumerator.close(error);
     if (error.hasError())
-        qDebug() << error.getMessage() << "\n";
+        qDebug() << error.getMessage();
 
     insertFiles(fileInfoList.length(), fileInfoList);
 
+    if (m_folder && !m_folder->isNull()) {
+        removeAll();
+        delete m_folder;
+    }
+    m_folder = folder;
+
     m_folderMonitor = new FileMonitor(m_folder->monitorDirectory(m_folder->MonitorNorm, error, 0));
     if (error.hasError()) {
-        qWarning() << error.getMessage() << "\n";
+        qWarning() << qPrintable(error.getMessage());
         return;
     }
 
     connect(m_folderMonitor, SIGNAL(changed(FileMonitor *, File, File, FileMonitorEvent)),
             this, SLOT(changed(FileMonitor *, File, File, FileMonitor::FileMonitorEvent)));
+
+    emit folderChanged();
 }
 
 void changed(FileMonitor *monitor,

@@ -80,8 +80,11 @@ ApplicationWindow {
 
         PlacesView {
             id: placesView
+
             Layout.minimumWidth: 200
             Layout.maximumWidth: 250
+
+            onSelected: folderView.setFolder(uri)
         }
 
         FolderView {

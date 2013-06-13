@@ -46,6 +46,7 @@ using namespace Kommodity::GIO;
 class FolderModel : public QAbstractListModel
 {
     Q_OBJECT
+    Q_PROPERTY(QUrl folder READ folder WRITE setFolder NOTIFY folderChanged)
 public:
     FolderModel(QObject* parent = 0);
     
@@ -64,18 +65,9 @@ public:
         NumOfColumns
     };
 
-    Kommodity::GIO::File *folder() const
-    {
-        return m_folder;
-    }
+    QUrl folder() const;
+    void setFolder(const QUrl &uri);
 
-    QUrl url() const
-    {
-        if(m_folder)
-        return m_folder->getUri();
-    }
-
-    void setFolder(File *newFolder);
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent) const;
 
@@ -92,6 +84,9 @@ public:
     QModelIndex parent(const QModelIndex &index) const;
 
     FileInfo *fileInfoFromIndex(const QModelIndex &index) const;
+
+signals:
+    void folderChanged();
 
 public Q_SLOTS:
     void changed(FileMonitor *monitor,
