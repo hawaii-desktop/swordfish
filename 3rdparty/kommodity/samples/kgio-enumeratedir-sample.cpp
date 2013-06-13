@@ -28,9 +28,11 @@ using namespace Kommodity::GIO;
 
 int main(int argc, char *argv[])
 {
+    const char *path = argv[1] ? argv[1] : "/etc";
+
     Error error;
 
-    File file("/etc");
+    File file(path);
     
     FileEnumerator fileEnumerator = file.enumerateChildren(
             "*",  
