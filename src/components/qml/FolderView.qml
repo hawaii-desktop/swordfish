@@ -26,8 +26,8 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
-import Swordfish 0.1
 import FluidExtra 1.0 as FluidExtra
+import Swordfish 0.1
 
 Item {
     id: container
@@ -36,16 +36,16 @@ Item {
 		id: gridDelegate
 
 		Column {
-			Image {
+			FluidExtra.IconItem {
 				anchors.horizontalCenter: parent.horizontalCenter
-				source: "image://desktoptheme/unknown"
+				icon: fileIcon
 				width: 48
 				height: 48
 			}
 
 			Label {
 				anchors.horizontalCenter: parent.horizontalCenter
-				text: fileName
+				text: model.fileName
 			}
 		}
 	}

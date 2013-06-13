@@ -77,6 +77,7 @@ QHash<int, QByteArray> FolderModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[FileNameRole] = "fileName";
     roles[FileInfoRole] = "fileInfo";
+    roles[FileIconRole] = "fileIcon";
     return roles;
 }
 
