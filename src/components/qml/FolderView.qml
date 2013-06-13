@@ -32,31 +32,31 @@ import Swordfish 0.1
 Item {
     id: container
 
-	Component {
-		id: gridDelegate
+    Component {
+        id: gridDelegate
 
-		Column {
-			FluidExtra.IconItem {
-				anchors.horizontalCenter: parent.horizontalCenter
-				icon: fileIcon
-				width: 48
-				height: 48
-			}
+        Column {
+            FluidExtra.IconItem {
+                anchors.horizontalCenter: parent.horizontalCenter
+                icon: fileIcon
+                width: 48
+                height: 48
+            }
 
-			Label {
-				anchors.horizontalCenter: parent.horizontalCenter
-				text: model.fileName
-			}
-		}
-	}
+            Label {
+                anchors.horizontalCenter: parent.horizontalCenter
+                text: model.fileName
+            }
+        }
+    }
 
-	ScrollView {
-		anchors.fill: parent
+    ScrollView {
+        anchors.fill: parent
 
-		GridView {
-			id: gridView
-			model: FolderModel {}
-			delegate: gridDelegate
-		}
-	}
+        GridView {
+            id: gridView
+            model: FolderModel {}
+            delegate: gridDelegate
+        }
+    }
 }
