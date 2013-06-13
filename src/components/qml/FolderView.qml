@@ -26,26 +26,50 @@
 
 import QtQuick 2.1
 import QtQuick.Controls 1.0
+import QtQuick.Layouts 1.0
 import FluidExtra 1.0 as FluidExtra
 import Swordfish 0.1
 
 Item {
     id: container
 
+    SystemPalette {
+        id: palette
+    }
+
     Component {
         id: gridDelegate
 
-        Column {
-            FluidExtra.IconItem {
-                anchors.horizontalCenter: parent.horizontalCenter
-                icon: fileIcon
-                width: 48
-                height: 48
+        Item {
+            width: gridView.cellWidth
+            height: gridView.cellHeight
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: gridView.currentIndex = index
             }
 
-            Label {
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: model.fileName
+            ColumnLayout {
+                anchors.fill: parent
+
+                FluidExtra.IconItem {
+                    icon: fileIcon
+                    width: 48
+                    height: 48
+
+                    Layout.alignment: Qt.AlignCenter
+                }
+
+                Label {
+                    text: model.fileName
+                    horizontalAlignment: Qt.AlignHCenter
+                    verticalAlignment: Qt.AlignTop
+                    wrapMode: Text.Wrap
+                    elide: Text.ElideRight
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                }
             }
         }
     }
@@ -55,8 +79,14 @@ Item {
 
         GridView {
             id: gridView
+            cellWidth: 100
+            cellHeight: 100
             model: FolderModel {}
             delegate: gridDelegate
+            highlight: Rectangle {
+                radius: 4
+                color: palette.highlight
+            }
         }
     }
 }
