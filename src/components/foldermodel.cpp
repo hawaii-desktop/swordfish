@@ -88,7 +88,8 @@ QVariant FolderModel::data(const QModelIndex &index, int role = Qt::DisplayRole)
     FileInfo *fileinfo = folderitem->fileInfo;
 
     switch (role) {
-    case Qt::ToolTipRole :
+
+    /*case Qt::ToolTipRole :
         return QVariant(folderitem->displayName);
 
     case Qt::DisplayRole : {
@@ -117,10 +118,17 @@ QVariant FolderModel::data(const QModelIndex &index, int role = Qt::DisplayRole)
     case Qt::DecorationRole : {
         if (index.column() == 0)
             return QVariant(folderitem->icon);
-    }
+    }*/
+
+    case FileIconRole:
+        return QVariant(folderitem->icon);
+
+    case FileOwnerRole:
+        return QVariant(fileinfo->getAttributeAsString("owner::user"));
 
     case FileNameRole:
         return QVariant(folderitem->displayName);
+
     case FileInfoRole :
         return qVariantFromValue((void *)fileinfo);
 
@@ -190,7 +198,7 @@ void FolderModel::setFolder(File *newFolder)
     if (newFolder && !newFolder->isNull())
         m_folder = newFolder;
     else
-        m_folder = new File(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+        m_folder = new File(QStandardPaths::writableLocation(QStandardPaths::HomeLocation).toUtf8());
 
     Error error;
 
