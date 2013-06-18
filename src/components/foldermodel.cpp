@@ -288,8 +288,12 @@ void FolderModel::removeAll()
 
 void FolderModel::insertFiles(const QList<FileInfo> &fileInfoList)
 {
-    int files = fileInfoList.length();
-    beginInsertRows(QModelIndex(), 0, files);
+    int files = fileInfoList.size();
+
+    if (files == 0)
+        return;
+
+    beginInsertRows(QModelIndex(), 0, files - 1);
     for (int i = 0; i < files; i++) {
         FolderItem item(fileInfoList.at(i));
         m_folderItems.append(item);
