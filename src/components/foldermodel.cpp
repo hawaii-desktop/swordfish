@@ -41,17 +41,6 @@ FolderModel::FolderModel(QObject* parent)
             this, SLOT(replied(MountOperation *, MountOperation::MountOperationResult)));
 }
 
-void FolderModel::insertFiles(const int &row, const QList<FileInfo> &fileInfoList)
-{
-    int files = fileInfoList.length();
-    beginInsertRows(QModelIndex(), row, row + files - 1);
-    for (int i = 0; i < files; i++) {
-        FolderItem item(fileInfoList.at(i));
-        m_folderItems.append(item);
-    }
-    endInsertRows();
-}
-
 int FolderModel::rowCount(const QModelIndex &parent) const
 {
     if (parent.isValid())
@@ -277,7 +266,7 @@ void FolderModel::listFolderContents(const File &file)
 
     // Populate model
     removeAll();
-    insertFiles(fileInfoList.length(), fileInfoList);
+    insertFiles(fileInfoList);
 
 #if 0
     m_folderMonitor = new FileMonitor(folder.monitorDirectory(folder.MonitorNorm, error, 0));
@@ -295,6 +284,17 @@ void FolderModel::listFolderContents(const File &file)
     // Change URI
     m_uri = folder.getUri();
     emit folderChanged();
+}
+
+void FolderModel::insertFiles(const QList<FileInfo> &fileInfoList)
+{
+    int files = fileInfoList.length();
+    beginInsertRows(QModelIndex(), 0, files);
+    for (int i = 0; i < files; i++) {
+        FolderItem item(fileInfoList.at(i));
+        m_folderItems.append(item);
+    }
+    endInsertRows();
 }
 
 void FolderModel::askPassword(MountOperation *op, const QString &message,
