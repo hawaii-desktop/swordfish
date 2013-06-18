@@ -192,13 +192,15 @@ void FolderModel::removeAll()
 
 QUrl FolderModel::folder() const
 {
-    if (m_folder && !m_folder->isNull())
-        return m_folder->getUri();
-    return QUrl();
+    return m_uri;
 }
 
 void FolderModel::setFolder(const QUrl &uri)
 {
+    // Just return if we already have this URI open
+    if (uri == m_uri)
+        return;
+
     Error error;
 
     // Open folder
@@ -262,6 +264,8 @@ void FolderModel::setFolder(const QUrl &uri)
     connect(m_folderMonitor, SIGNAL(changed(FileMonitor *, File, File, FileMonitorEvent)),
             this, SLOT(changed(FileMonitor *, File, File, FileMonitor::FileMonitorEvent)));
 
+    // Change URI
+    m_uri = uri;
     emit folderChanged();
 }
 

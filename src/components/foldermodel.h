@@ -104,6 +104,7 @@ protected:
     FolderItem *itemFromIndex(const QModelIndex &index) const;
 
 private:
+    QUrl m_uri;
     FileMonitor *m_folderMonitor;
     QList<FolderItem> m_folderItems;
 };
