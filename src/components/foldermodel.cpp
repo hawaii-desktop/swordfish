@@ -30,7 +30,7 @@ FolderModel::FolderModel(QObject* parent)
     : QAbstractListModel(parent)
 {
     // Open home folder
-    setFolder(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+    setFolder(QUrl::fromLocalFile(QStandardPaths::writableLocation(QStandardPaths::HomeLocation)));
 
     // Connect mount operation signals
     connect(&m_mountOperation, SIGNAL(askPassword(MountOperation *, QString, QString, QString, MountOperation::AskPasswordFlags)),
