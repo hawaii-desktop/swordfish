@@ -105,9 +105,7 @@ protected:
 
 private:
     FileMonitor *m_folderMonitor;
-    File *m_folder;
     QList<FolderItem> m_folderItems;
-    //QHash<FolderItem, int> m_folderItems;
 };
 
 #endif // FOLDERMODEL_H

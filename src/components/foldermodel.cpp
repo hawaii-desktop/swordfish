@@ -28,7 +28,6 @@
 
 FolderModel::FolderModel(QObject* parent)
     : QAbstractListModel(parent)
-    , m_folder(0)
 {
     setFolder(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
 }
@@ -200,28 +199,36 @@ QUrl FolderModel::folder() const
 
 void FolderModel::setFolder(const QUrl &uri)
 {
-    File *folder = new File(uri);
-
     Error error;
 
+    // Open folder
+    File folder(uri);
+    FileInfo fileInfo = folder.queryInfo("*", File::QueryInfoNorm, error);
+    if (error.hasError() && !error.isIOError(IOError::NotMounted)) {
+        qWarning("Error opening %s: %s",
+                 qPrintable(uri.toString(QUrl::FullyEncoded)),
+                 qPrintable(error.getMessage()));
+        return;
+    }
+
+    // Enumerate folder contents
     FileEnumerator fileEnumerator = folder->enumerateChildren(
         "*", File::QueryInfoNorm, error);
     if (error.hasError()) {
         qWarning("Couldn't enumerate %s: %s",
                  qPrintable(uri.toString(QUrl::FullyEncoded)),
                  qPrintable(error.getMessage()));
-        delete folder;
         return;
     }
 
+    // Save FileInfo objects
     QList<FileInfo> fileInfoList;
     for (;;) {
-        FileInfo fileInfo = fileEnumerator.nextFile(error);
+        fileInfo = fileEnumerator.nextFile(error);
         if (error.hasError()) {
             qWarning("Couldn't advance enumerator %s: %s",
                      qPrintable(uri.toString(QUrl::FullyEncoded)),
                      qPrintable(error.getMessage()));
-            delete folder;
             return;
         }
 
@@ -231,21 +238,24 @@ void FolderModel::setFolder(const QUrl &uri)
         fileInfoList.append(fileInfo);
     }
 
+    // Close enumerator
     fileEnumerator.close(error);
     if (error.hasError())
-        qDebug() << error.getMessage();
-
-    insertFiles(fileInfoList.length(), fileInfoList);
-
-    if (m_folder && !m_folder->isNull()) {
-        removeAll();
-        delete m_folder;
+        qWarning("Couldn't close enumerator on %s: %s",
+                 qPrintable(uri.toString(QUrl::FullyEncoded)),
+                 qPrintable(error.getMessage()));
+        return;
     }
-    m_folder = folder;
 
-    m_folderMonitor = new FileMonitor(m_folder->monitorDirectory(m_folder->MonitorNorm, error, 0));
+    // Populate model
+    removeAll();
+    insertFiles(fileInfoList);
+
+    m_folderMonitor = new FileMonitor(folder.monitorDirectory(folder.MonitorNorm, error, 0));
     if (error.hasError()) {
-        qWarning() << qPrintable(error.getMessage());
+        qWarning("Failed to monitor %s: %s",
+                 qPrintable(uri.toString(QUrl::FullyEncoded)),
+                 qPrintable(error.getMessage()));
         return;
     }
 
