@@ -37,6 +37,7 @@
 #include <Kommodity/GIO/FileMonitor>
 #include <Kommodity/GIO/File>
 #include <Kommodity/GIO/FileEnumerator>
+#include <Kommodity/GIO/MountOperation>
 #include <QStandardPaths>
 
 using namespace Kommodity::GIO;
@@ -106,7 +107,19 @@ protected:
 private:
     QUrl m_uri;
     FileMonitor *m_folderMonitor;
+    MountOperation m_mountOperation;
     QList<FolderItem> m_folderItems;
+
+    void listFolderContents(const File &folder);
+
+private Q_SLOTS:
+    void askPassword(MountOperation *op, const QString &message,
+                     const QString &defaultUser, const QString &defaultDomain,
+                     MountOperation::AskPasswordFlags flags);
+    void askQuestion(MountOperation *op, const QString &message,
+                     const QList<QString> &choices);
+    void replied(MountOperation *op, MountOperation::MountOperationResult abort);
+    void mountEnclosingVolumeReady(const File &folder, const Error &error);
 };
 
 #endif // FOLDERMODEL_H

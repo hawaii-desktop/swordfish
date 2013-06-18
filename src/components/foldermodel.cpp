@@ -29,7 +29,16 @@
 FolderModel::FolderModel(QObject* parent)
     : QAbstractListModel(parent)
 {
-    setFolder(QUrl(QStandardPaths::writableLocation(QStandardPaths::HomeLocation)));
+    // Open home folder
+    setFolder(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+
+    // Connect mount operation signals
+    connect(&m_mountOperation, SIGNAL(askPassword(MountOperation *, QString, QString, QString, MountOperation::AskPasswordFlags)),
+            this, SLOT(askPassword(MountOperation *, QString, QString, QString, MountOperation::AskPasswordFlags)));
+    connect(&m_mountOperation, SIGNAL(askQuestion(MountOperation *, QString, QList<QString>)),
+            this, SLOT(askQuestion(MountOperation *, QString, QList<QString>)));
+    connect(&m_mountOperation, SIGNAL(replied(MountOperation *, MountOperation::MountOperationResult)),
+            this, SLOT(replied(MountOperation *, MountOperation::MountOperationResult)));
 }
 
 void FolderModel::insertFiles(const int &row, const QList<FileInfo> &fileInfoList)
@@ -206,19 +215,36 @@ void FolderModel::setFolder(const QUrl &uri)
     // Open folder
     File folder(uri);
     FileInfo fileInfo = folder.queryInfo("*", File::QueryInfoNorm, error);
-    if (error.hasError() && !error.isIOError(IOError::NotMounted)) {
-        qWarning("Error opening %s: %s",
-                 qPrintable(uri.toString(QUrl::FullyEncoded)),
-                 qPrintable(error.getMessage()));
+    if (error.hasError()) {
+        if (!error.isIOError(IOError::NotMounted)) {
+            // An error is occurred opening the folder
+            qWarning("Error opening %s: %s",
+                     qPrintable(uri.toString(QUrl::FullyEncoded)),
+                     qPrintable(error.getMessage()));
+            return;
+        }
+    } else {
+        // Already mounted, list contents
+        listFolderContents(folder);
         return;
     }
+
+    // Mount the URI if it's not already mounted
+    folder.mountEnclosingVolumeAsync(m_mountOperation, Mount::MountNone, this,
+                                     SLOT(mountEnclosingVolumeReady(File, Error)));
+}
+
+void FolderModel::listFolderContents(const File &file)
+{
+    Error error;
+    File folder = file;
 
     // Enumerate folder contents
     FileEnumerator fileEnumerator = folder.enumerateChildren(
         "*", File::QueryInfoNorm, error);
     if (error.hasError()) {
         qWarning("Couldn't enumerate %s: %s",
-                 qPrintable(uri.toString(QUrl::FullyEncoded)),
+                 qPrintable(folder.getUri().toString(QUrl::FullyEncoded)),
                  qPrintable(error.getMessage()));
         return;
     }
@@ -226,10 +252,10 @@ void FolderModel::setFolder(const QUrl &uri)
     // Save FileInfo objects
     QList<FileInfo> fileInfoList;
     for (;;) {
-        fileInfo = fileEnumerator.nextFile(error);
+        FileInfo fileInfo = fileEnumerator.nextFile(error);
         if (error.hasError()) {
             qWarning("Couldn't advance enumerator %s: %s",
-                     qPrintable(uri.toString(QUrl::FullyEncoded)),
+                     qPrintable(folder.getUri().toString(QUrl::FullyEncoded)),
                      qPrintable(error.getMessage()));
             return;
         }
@@ -244,7 +270,7 @@ void FolderModel::setFolder(const QUrl &uri)
     fileEnumerator.close(error);
     if (error.hasError()) {
         qWarning("Couldn't close enumerator on %s: %s",
-                 qPrintable(uri.toString(QUrl::FullyEncoded)),
+                 qPrintable(folder.getUri().toString(QUrl::FullyEncoded)),
                  qPrintable(error.getMessage()));
         return;
     }
@@ -253,20 +279,52 @@ void FolderModel::setFolder(const QUrl &uri)
     removeAll();
     insertFiles(fileInfoList.length(), fileInfoList);
 
+#if 0
     m_folderMonitor = new FileMonitor(folder.monitorDirectory(folder.MonitorNorm, error, 0));
     if (error.hasError()) {
         qWarning("Failed to monitor %s: %s",
-                 qPrintable(uri.toString(QUrl::FullyEncoded)),
+                 qPrintable(folder.getUri().toString(QUrl::FullyEncoded)),
                  qPrintable(error.getMessage()));
         return;
     }
 
     connect(m_folderMonitor, SIGNAL(changed(FileMonitor *, File, File, FileMonitorEvent)),
             this, SLOT(changed(FileMonitor *, File, File, FileMonitor::FileMonitorEvent)));
+#endif
 
     // Change URI
-    m_uri = uri;
+    m_uri = folder.getUri();
     emit folderChanged();
+}
+
+void FolderModel::askPassword(MountOperation *op, const QString &message,
+                              const QString &defaultUser, const QString &defaultDomain,
+                              MountOperation::AskPasswordFlags flags)
+{
+    qDebug() << "askPassword" << message << defaultUser << defaultDomain;
+}
+
+void FolderModel::askQuestion(MountOperation *op, const QString &message,
+                              const QList<QString> &choices)
+{
+    qDebug() << "askQuestion" << message << choices;
+}
+
+void FolderModel::replied(MountOperation *op,
+                          MountOperation::MountOperationResult abort)
+{
+}
+
+void FolderModel::mountEnclosingVolumeReady(const File &folder, const Error &error)
+{
+    if (error.hasError()) {
+        qWarning("Couldn't list %s content: %s",
+                 qPrintable(folder.getUri().toString(QUrl::FullyEncoded)),
+                 qPrintable(error.getMessage()));
+        return;
+    }
+
+    listFolderContents(folder);
 }
 
 void changed(FileMonitor *monitor,
