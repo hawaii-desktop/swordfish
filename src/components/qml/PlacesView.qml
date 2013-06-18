@@ -97,7 +97,6 @@ Item {
                         // Select this item and emit a signal
                         placesListView.currentIndex = index;
                         container.selected(url);
-                        console.log(url);
                     }
                 }
             }
