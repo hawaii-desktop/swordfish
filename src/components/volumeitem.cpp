@@ -24,7 +24,12 @@
  * $END_LICENSE$
  ***************************************************************************/
 
+#include <Kommodity/GIO/Icon>
+#include <Kommodity/GIO/ThemedIcon>
+
 #include "volumeitem.h"
+
+using namespace Kommodity::GIO;
 
 VolumeItem::VolumeItem(Kommodity::GIO::Volume *volume)
     : PlacesItem()
@@ -38,7 +43,7 @@ VolumeItem::VolumeItem(Kommodity::GIO::Volume *volume)
 void VolumeItem::update()
 {
     setText(m_volume->getName());
-    setIcon(m_volume->getIcon());
+    setIconFromVolume();
 
     if (m_volume->getMount())
         setUrl(m_volume->getMount()->getRoot().getUri());
@@ -56,4 +61,22 @@ void VolumeItem::setVolume(Kommodity::GIO::Volume *volume)
 {
     m_volume = volume;
     update();
+}
+
+void VolumeItem::setIconFromVolume()
+{
+    Q_ASSERT(m_volume);
+
+    Icon *icon = m_volume->getIcon();
+    ThemedIcon *themedIcon = qobject_cast<ThemedIcon *>(icon);
+    if (themedIcon) {
+        foreach (QString iconName, themedIcon->getNames()) {
+            if (QIcon::hasThemeIcon(iconName)) {
+                setIcon(QIcon::fromTheme(iconName));
+                return;
+            }
+        }
+    }
+
+    setIcon(QIcon(icon->fileName()));
 }

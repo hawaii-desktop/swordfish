@@ -102,32 +102,14 @@ QByteArray Volume::getUuid() const
     return WO::qByteArrayFromCStrFreed(g_volume_get_identifier(WO::getGVolume(this),"uuid"));
 }
 
-QIcon Volume::getIcon() const
+Icon * Volume::getIcon() const
 {
     GIcon *gIcon = g_volume_get_icon(WO::getGVolume(this));
-    if (gIcon) {
-        Icon * icon = new Icon;
-        WO::setGIcon(icon, gIcon);
-    }
-
-    QString iconName;
-
-    if (gIcon)
-        iconName = QString::fromUtf8(g_icon_to_string(gIcon));
-
-    // When we deal with a GFileIcon we might have a path instead of an icon name,
-    // if it's an actual file name we load it as a QIcon
-    if (QFile::exists(iconName))
-        return QIcon(iconName);
-
-    // If we can't find the icon from the theme we fallback to
-    // drive-removable-media and if missing fallback to unknown
-    if (!QIcon::hasThemeIcon(iconName)) {
-        iconName = QStringLiteral("drive-removable-media");
-        if (!QIcon::hasThemeIcon(iconName))
-            iconName = QStringLiteral("unknown");
-    }
-    return QIcon::fromTheme(iconName);
+    if (!gIcon) return 0;
+ 
+    Icon * icon = new Icon;
+    WO::setGIcon(icon, gIcon);
+    return icon;
 }
 
 Drive * Volume::getDrive() const

@@ -24,7 +24,14 @@
  * $END_LICENSE$
  ***************************************************************************/
 
+#include <QtCore/QUrl>
+#include <QtGui/QIcon>
+
+#include <Kommodity/GIO/ThemedIcon>
+
 #include "folderitem.h"
+
+using namespace Kommodity::GIO;
 
 FolderItem::FolderItem(const Kommodity::GIO::FileInfo &newFileInfo)
 {
@@ -38,4 +45,20 @@ FolderItem::FolderItem(const FolderItem &next)
     fileInfo = new Kommodity::GIO::FileInfo(*next.fileInfo);
     displayName = fileInfo->getDisplayName();
     icon = next.icon;
+}
+
+QUrl FolderItem::iconSource() const
+{
+    ThemedIcon *themedIcon = qobject_cast<ThemedIcon *>(icon);
+    if (themedIcon) {
+        foreach (QString iconName, themedIcon->getNames()) {
+            if (QIcon::hasThemeIcon(iconName))
+                return QUrl(QString("image://desktoptheme/%1").arg(iconName));
+        }
+    }
+
+    QString fileName = icon->fileName();
+    if (fileName.isEmpty())
+        return QUrl("image://desktoptheme/unknown");
+    return QUrl::fromLocalFile(fileName);
 }

@@ -74,7 +74,7 @@ QHash<int, QByteArray> FolderModel::roleNames() const
     QHash<int, QByteArray> roles;
     roles[FileNameRole] = "fileName";
     roles[FileInfoRole] = "fileInfo";
-    roles[FileIconRole] = "fileIcon";
+    roles[FileIconSourceRole] = "fileIconSource";
     return roles;
 }
 
@@ -118,8 +118,8 @@ QVariant FolderModel::data(const QModelIndex &index, int role = Qt::DisplayRole)
             return QVariant(folderitem->icon);
     }*/
 
-    case FileIconRole:
-        return QVariant(folderitem->icon);
+    case FileIconSourceRole:
+        return folderitem->iconSource();
 
     case FileOwnerRole:
         return QVariant(fileinfo->getAttributeAsString("owner::user"));

@@ -27,9 +27,10 @@
 #ifndef FOLDERITEM_H
 #define FOLDERITEM_H
 
-#include <Kommodity/GIO/FileInfo>
-#include <QIcon>
 #include <QString>
+
+#include <Kommodity/GIO/FileInfo>
+#include <Kommodity/GIO/Icon>
 
 class FolderItem
 {
@@ -37,8 +38,10 @@ public:
     FolderItem(const Kommodity::GIO::FileInfo &newFileInfo);
     FolderItem(const FolderItem &next);
 
+    QUrl iconSource() const;
+
     QString displayName;
-    QIcon icon;
+    Kommodity::GIO::Icon *icon;
     Kommodity::GIO::FileInfo *fileInfo;
 };
 

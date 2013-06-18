@@ -53,6 +53,8 @@ public:
 
 private:
     Kommodity::GIO::Volume *m_volume;
+
+    void setIconFromVolume();
 };
 
 #endif // VOLUMEITEM_H

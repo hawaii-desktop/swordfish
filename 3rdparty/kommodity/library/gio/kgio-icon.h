@@ -42,7 +42,8 @@ public:
 
     Icon();    
     virtual ~Icon();
-    QIcon toQIcon() const;
+
+    QString fileName() const;
     
 private:
 

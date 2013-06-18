@@ -27,7 +27,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
-import FluidExtra 1.0 as FluidExtra
 import Swordfish 0.1
 
 Item {
@@ -56,8 +55,12 @@ Item {
             ColumnLayout {
                 anchors.fill: parent
 
-                FluidExtra.IconItem {
-                    icon: fileIcon
+                Image {
+                    source: fileIconSource
+                    sourceSize {
+                        width: 48
+                        height: 48
+                    }
                     width: 48
                     height: 48
 

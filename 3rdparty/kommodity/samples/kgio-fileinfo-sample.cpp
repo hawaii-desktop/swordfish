@@ -105,7 +105,6 @@ int main(int argc, char *argv[])
         cout << attributeInfo.name << "\n";
     }
     
-#if 0
     ///// Icon
     
     Icon * icon = fileInfo.getIcon();
@@ -136,7 +135,6 @@ int main(int argc, char *argv[])
     }
     
     delete icon;
-#endif
-    
+ 
     return 0;
 }

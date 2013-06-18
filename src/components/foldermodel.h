@@ -55,7 +55,7 @@ public:
         FileNameRole = Qt::UserRole + 1,
         FileInfoRole,
         FileOwnerRole,
-        FileIconRole = Qt::DecorationRole
+        FileIconSourceRole
     };
     enum ColumnId {
         ColumnFileName,
