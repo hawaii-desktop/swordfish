@@ -96,8 +96,6 @@ public Q_SLOTS:
                  FileMonitor::FileMonitorEvent eventType);
 
 protected:
-    void removeAll();
-
     QList<FolderItem>::Iterator findItemByUrl(const QUrl &url, const int &row);
     QList<FolderItem>::Iterator findItemByName(const QString &name, const int &row);
 
@@ -110,6 +108,7 @@ private:
     QList<FolderItem> m_folderItems;
 
     void listFolderContents(const File &folder);
+    void removeAll();
     void insertFiles(const QList<FileInfo> &fileInfoList);
 
 private Q_SLOTS:

@@ -178,16 +178,6 @@ FileInfo *FolderModel::fileInfoFromIndex(const QModelIndex &index) const
     return 0;
 }
 
-void FolderModel::removeAll()
-{
-    if (m_folderItems.size() == 0)
-        return;
-
-    beginRemoveRows(QModelIndex(), 0, m_folderItems.size() - 1);
-    m_folderItems.clear();
-    endRemoveRows();
-}
-
 QUrl FolderModel::folder() const
 {
     return m_uri;
@@ -284,6 +274,16 @@ void FolderModel::listFolderContents(const File &file)
     // Change URI
     m_uri = folder.getUri();
     emit folderChanged();
+}
+
+void FolderModel::removeAll()
+{
+    if (m_folderItems.size() == 0)
+        return;
+
+    beginRemoveRows(QModelIndex(), 0, m_folderItems.size() - 1);
+    m_folderItems.clear();
+    endRemoveRows();
 }
 
 void FolderModel::insertFiles(const QList<FileInfo> &fileInfoList)
