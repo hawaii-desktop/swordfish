@@ -29,7 +29,7 @@
 FolderModel::FolderModel(QObject* parent)
     : QAbstractListModel(parent)
 {
-    setFolder(QStandardPaths::writableLocation(QStandardPaths::HomeLocation));
+    setFolder(QUrl(QStandardPaths::writableLocation(QStandardPaths::HomeLocation)));
 }
 
 void FolderModel::insertFiles(const int &row, const QList<FileInfo> &fileInfoList)
@@ -214,7 +214,7 @@ void FolderModel::setFolder(const QUrl &uri)
     }
 
     // Enumerate folder contents
-    FileEnumerator fileEnumerator = folder->enumerateChildren(
+    FileEnumerator fileEnumerator = folder.enumerateChildren(
         "*", File::QueryInfoNorm, error);
     if (error.hasError()) {
         qWarning("Couldn't enumerate %s: %s",
@@ -242,7 +242,7 @@ void FolderModel::setFolder(const QUrl &uri)
 
     // Close enumerator
     fileEnumerator.close(error);
-    if (error.hasError())
+    if (error.hasError()) {
         qWarning("Couldn't close enumerator on %s: %s",
                  qPrintable(uri.toString(QUrl::FullyEncoded)),
                  qPrintable(error.getMessage()));
@@ -251,7 +251,7 @@ void FolderModel::setFolder(const QUrl &uri)
 
     // Populate model
     removeAll();
-    insertFiles(fileInfoList);
+    insertFiles(fileInfoList.length(), fileInfoList);
 
     m_folderMonitor = new FileMonitor(folder.monitorDirectory(folder.MonitorNorm, error, 0));
     if (error.hasError()) {
