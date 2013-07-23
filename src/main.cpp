@@ -24,22 +24,36 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#include <QApplication>
-
-#include "mainwindow.h"
+#include <QtGui/QGuiApplication>
+#include <QtQml/QQmlApplicationEngine>
+#include <QtQml/QQmlComponent>
+#include <QtQuick/QQuickWindow>
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
     app.setApplicationName("Swordfish");
     app.setApplicationVersion("0.0.0");
     app.setOrganizationDomain("maui-project.org");
     app.setOrganizationName("Hawaii");
-    app.setWindowIcon(QIcon::fromTheme("system-file-manager"));
 
-    // Show the main window
-    MainWindow *mainWindow = new MainWindow();
-    mainWindow->show();
+    QQmlEngine engine;
 
+    QQmlComponent component(&engine);
+    component.loadUrl(QUrl("qrc:/qml/AppWindow.qml"));
+    if (!component.isReady()) {
+        qWarning("%s", qPrintable(component.errorString()));
+        return 1;
+    }
+
+    QObject *topLevel = component.create();
+    QQuickWindow *window = qobject_cast<QQuickWindow *>(topLevel);
+    if (!window) {
+        qWarning("Error: Your root item has to be a Window");
+        return 1;
+    }
+
+    QObject::connect(&engine, SIGNAL(quit()), &app, SLOT(quit()));
+    window->show();
     return app.exec();
 }
