@@ -49,8 +49,7 @@ if(CMAKE_BUILD_TYPE MATCHES "^[Rr]elease$")
 endif()
 
 # Find Qt
-find_package(Qt5Core REQUIRED)
-find_package(Qt5LinguistTools REQUIRED)
+find_package(Qt5 5.1.0 REQUIRED COMPONENTS Core Qml Quick LinguistTools)
 
 # Find pkg-config executable
 find_program(PKGCONFIG_EXECUTABLE pkg-config)
