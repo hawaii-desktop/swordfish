@@ -15,7 +15,7 @@ set(SWORDFISH_VERSION_PATCH 90)
 set(SWORDFISH_VERSION_STRING "${SWORDFISH_VERSION_MAJOR}.${SWORDFISH_VERSION_MINOR}.${SWORDFISH_VERSION_PATCH}")
 
 # Installation directories
-include(HawaiiInstallDirs)
+include(GNUInstallDirs)
 
 # Log features
 include(MacroLogFeature)
