@@ -15,7 +15,7 @@ qt5_add_translation(QM_FILES ${QM_SOURCES})
 qt5_add_resources(RC_FILES swordfish.qrc)
 
 add_executable(swordfish ${SOURCES} ${RC_FILES} ${QM_FILES})
-qt5_use_modules(swordfish Qml Quick)
+qt5_use_modules(swordfish Widgets Qml Quick)
 
 install(TARGETS swordfish
     DESTINATION ${CMAKE_INSTALL_BINDIR})

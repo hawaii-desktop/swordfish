@@ -24,14 +24,14 @@
  * $END_LICENSE$
  ***************************************************************************/
 
-#include <QtGui/QGuiApplication>
+#include <QtWidgets/QApplication>
 #include <QtQml/QQmlApplicationEngine>
 #include <QtQml/QQmlComponent>
 #include <QtQuick/QQuickWindow>
 
 int main(int argc, char *argv[])
 {
-    QGuiApplication app(argc, argv);
+    QApplication app(argc, argv);
     app.setApplicationName("Swordfish");
     app.setApplicationVersion("0.0.0");
     app.setOrganizationDomain("maui-project.org");
