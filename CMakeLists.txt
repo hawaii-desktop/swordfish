@@ -52,11 +52,6 @@ endif()
 find_package(Qt5Core REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
 
-# Find Vibe libraries
-find_package(VibeCore REQUIRED)
-find_package(VibeGui REQUIRED)
-find_package(VibeWidgets REQUIRED)
-
 # Find pkg-config executable
 find_program(PKGCONFIG_EXECUTABLE pkg-config)
 if(NOT PKGCONFIG_EXECUTABLE)
