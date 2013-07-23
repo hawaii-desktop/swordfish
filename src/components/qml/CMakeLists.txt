@@ -4,4 +4,4 @@ set(MODULE_FILES
     FolderView.qml
 )
 install(FILES ${MODULE_FILES}
-    DESTINATION ${CMAKE_INSTALL_QMLDIR}/Swordfish)
+    DESTINATION ${QT_IMPORTS_DIR}/Swordfish)

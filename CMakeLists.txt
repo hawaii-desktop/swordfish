@@ -66,6 +66,10 @@ if(_failed)
 endif(_failed)
 string(REGEX REPLACE "[ \t\n]+" \; DBUS_SESSION_BUS_SERVICES_DIR "${DBUS_SESSION_BUS_SERVICES_DIR}")
 
+# QML import path
+get_target_property(QMAKE_EXECUTABLE Qt5::qmake LOCATION)
+exec_program(${QMAKE_EXECUTABLE} ARGS "-query QT_INSTALL_QML" RETURN_VALUE return_code OUTPUT_VARIABLE QT_IMPORTS_DIR)
+
 # Subdirectories
 add_subdirectory(data)
 add_subdirectory(3rdparty)

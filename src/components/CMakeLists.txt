@@ -22,9 +22,9 @@ target_link_libraries(declarative_swordfish kommoditygio)
 
 # Install plugin
 install(FILES qmldir
-    DESTINATION ${CMAKE_INSTALL_QMLDIR}/Swordfish)
+    DESTINATION ${QT_IMPORTS_DIR}/Swordfish)
 install(TARGETS declarative_swordfish
-        LIBRARY DESTINATION ${CMAKE_INSTALL_QMLDIR}/Swordfish)
+        LIBRARY DESTINATION ${QT_IMPORTS_DIR}/Swordfish)
 
 # QML and JavaScript code
 add_subdirectory(qml)
