@@ -17,8 +17,8 @@ set(SWORDFISH_VERSION_STRING "${SWORDFISH_VERSION_MAJOR}.${SWORDFISH_VERSION_MIN
 # Installation directories
 include(GNUInstallDirs)
 
-# Log features
-include(MacroLogFeature)
+# Macro to print feature summary
+include(FeatureSummary)
 
 # Add custom uninstall target
 configure_file(
@@ -51,16 +51,11 @@ endif()
 # Find Qt
 find_package(Qt5Core REQUIRED)
 find_package(Qt5LinguistTools REQUIRED)
-macro_log_feature(Qt5Core_FOUND "Qt5Core" "Support for Qt5Core" "http://qt-project.org" "")
-macro_log_feature(Qt5LinguistTools_FOUND "Qt5LinguistTools" "Support for Qt5LinguistTools" "http://qt-project.org" "")
 
 # Find Vibe libraries
 find_package(VibeCore REQUIRED)
 find_package(VibeGui REQUIRED)
 find_package(VibeWidgets REQUIRED)
-macro_log_feature(VibeCore_FOUND "VibeCore" "Support for VibeCore" "http://www.maui-project.org" "")
-macro_log_feature(VibeGui_FOUND "VibeGui" "Support for VibeGui" "http://www.maui-project.org" "")
-macro_log_feature(VibeWidgets_FOUND "VibeWidgets" "Support for VibeWidgets" "http://www.maui-project.org" "")
 
 # Find pkg-config executable
 find_program(PKGCONFIG_EXECUTABLE pkg-config)
@@ -82,5 +77,5 @@ add_subdirectory(data)
 add_subdirectory(3rdparty)
 add_subdirectory(src)
 
-# Display featute log
-macro_display_feature_log()
+# Display featute summary
+feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
