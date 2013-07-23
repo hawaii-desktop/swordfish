@@ -5,4 +5,5 @@ configure_file(
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/org.freedesktop.FileManager1.service
     DESTINATION ${CMAKE_INSTALL_DATADIR}/dbus-1/services)
 
-install(FILES swordfish.desktop DESTINATION ${CMAKE_INSTALL_APPLICATIONSDIR})
+install(FILES swordfish.desktop
+        DESTINATION ${CMAKE_INSTALL_DATADIR}/applications)
