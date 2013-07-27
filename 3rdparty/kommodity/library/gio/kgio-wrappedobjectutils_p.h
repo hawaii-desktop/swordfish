@@ -367,14 +367,7 @@ public:
         }
         
         return result;
-    }
-    
-    
-    static void initGIO()
-    {
-        g_type_init();
-    }
-    
+    } 
     
 };
 

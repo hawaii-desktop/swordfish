@@ -51,7 +51,6 @@ public:
 
 AppLaunchContext::AppLaunchContext() : d(new Private)
 {
-    WO::initGIO();
     d->m_gAppLaunchContext = g_app_launch_context_new();
 }
 
@@ -62,7 +61,6 @@ AppLaunchContext::~AppLaunchContext()
 
 AppLaunchContext::AppLaunchContext( const AppLaunchContext& other) : d(other.d)
 {
-    WO::initGIO();
 }
 
 AppLaunchContext &AppLaunchContext::operator=(const AppLaunchContext &other)

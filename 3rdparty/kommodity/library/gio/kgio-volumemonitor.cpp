@@ -202,8 +202,6 @@ public:
 
 VolumeMonitor::VolumeMonitor() : d(new Private)
 {
-    WO::initGIO();
-    
     GVolumeMonitor * gVolumeMonitor = g_volume_monitor_get();
 
     WO::setGVolumeMonitor(this, gVolumeMonitor);

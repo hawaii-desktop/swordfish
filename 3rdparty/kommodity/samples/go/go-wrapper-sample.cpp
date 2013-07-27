@@ -60,8 +60,6 @@ public:
 
 int main(int argc, char *argv[])
 {
-    g_type_init();
-    
     GError * err = NULL;
     GO<GFile> gFile = g_file_new_for_uri("ftp://user@server/file");
     GO<GFile> gFile2;

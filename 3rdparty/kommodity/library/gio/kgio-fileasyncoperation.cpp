@@ -287,10 +287,10 @@ static void _copy_async_ready_callback(GObject *source_object, GAsyncResult *res
     {
         FileAsyncOperation * fileAsyncOperation = fileAsyncOperationQPointer->data();
 
-        gboolean success = g_file_copy_finish(
-                G_FILE(source_object),
-                result,
-                WO::getGErrorPtr(&error));
+        g_file_copy_finish(
+                    G_FILE(source_object),
+                    result,
+                    WO::getGErrorPtr(&error));
 
         fileAsyncOperation->emitCopyReady(
                 fileAsyncOperation->getFile(),
@@ -365,10 +365,10 @@ static void _unmount_mountable_ready_callback(GObject *source_object, GAsyncResu
     {
         FileAsyncOperation * fileAsyncOperation = fileAsyncOperationQPointer->data();
 
-        gboolean success = g_file_unmount_mountable_finish(
-                G_FILE(source_object),
-                result,
-                WO::getGErrorPtr(&error));
+        g_file_unmount_mountable_with_operation_finish(
+                    G_FILE(source_object),
+                    result,
+                    WO::getGErrorPtr(&error));
 
         fileAsyncOperation->emitUnmountMountableReady(
                 fileAsyncOperation->getFile(),
@@ -386,10 +386,10 @@ static void _eject_mountable_ready_callback(GObject *source_object, GAsyncResult
     {
         FileAsyncOperation * fileAsyncOperation = fileAsyncOperationQPointer->data();
 
-        gboolean success = g_file_eject_mountable_finish(
-                G_FILE(source_object),
-                result,
-                WO::getGErrorPtr(&error));
+        g_file_eject_mountable_with_operation_finish(
+                    G_FILE(source_object),
+                    result,
+                    WO::getGErrorPtr(&error));
 
         fileAsyncOperation->emitEjectMountableReady(
                 fileAsyncOperation->getFile(),
@@ -407,10 +407,10 @@ static void _mount_enclosing_volume_ready_callback(GObject *source_object, GAsyn
     {
         FileAsyncOperation * fileAsyncOperation = fileAsyncOperationQPointer->data();
 
-        gboolean success = g_file_mount_enclosing_volume_finish(
-                G_FILE(source_object),
-                result,
-                WO::getGErrorPtr(&error));
+        g_file_mount_enclosing_volume_finish(
+                    G_FILE(source_object),
+                    result,
+                    WO::getGErrorPtr(&error));
 
         fileAsyncOperation->emitMountEnclosingVolumeReady(
                 fileAsyncOperation->getFile(),
@@ -785,11 +785,12 @@ void FileAsyncOperation::unmountMountable(Mount::UnmountFlags flags)
 {
     void * thisQPointer = new QPointer<FileAsyncOperation>(this);
     File file = getFile();
-    g_file_unmount_mountable(WO::getGFile(&file),
-                             (GMountUnmountFlags) flags,
-                             d->m_gcancellable,
-                             _unmount_mountable_ready_callback,
-                             thisQPointer);
+    g_file_unmount_mountable_with_operation(WO::getGFile(&file),
+                                            (GMountUnmountFlags) flags,
+                                            NULL,
+                                            d->m_gcancellable,
+                                            _unmount_mountable_ready_callback,
+                                            thisQPointer);
 
 }
 
@@ -797,11 +798,12 @@ void FileAsyncOperation::ejectMountable(Mount::UnmountFlags flags)
 {
     void * thisQPointer = new QPointer<FileAsyncOperation>(this);
     File file = getFile();
-    g_file_eject_mountable(WO::getGFile(&file),
-                           (GMountUnmountFlags) flags,
-                           d->m_gcancellable,
-                           _eject_mountable_ready_callback,
-                           thisQPointer);
+    g_file_eject_mountable_with_operation(WO::getGFile(&file),
+                                          (GMountUnmountFlags) flags,
+                                          NULL,
+                                          d->m_gcancellable,
+                                          _eject_mountable_ready_callback,
+                                          thisQPointer);
 
 }
 

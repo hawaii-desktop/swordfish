@@ -44,7 +44,6 @@ public:
 
 ThemedIcon::ThemedIcon() : d(0)
 {
-    WO::initGIO();
 }
 
 

@@ -39,7 +39,6 @@ namespace GIO {
 
 Cancellable::Cancellable() : d(0)
 {
-    WO::initGIO();
     WO::setGCancellable( this, g_cancellable_new  ());
 }
 

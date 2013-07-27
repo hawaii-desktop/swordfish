@@ -52,10 +52,10 @@ static void  _mount_ready_callback(GObject *source_object, GAsyncResult *result,
     if (!p->isNull())
     {
         
-        gboolean success = g_volume_mount_finish(
-                G_VOLUME(source_object),
-                result,
-                WO::getGErrorPtr(&error));
+        g_volume_mount_finish(
+                    G_VOLUME(source_object),
+                    result,
+                    WO::getGErrorPtr(&error));
         
         p->data()->emitMountReady(p->data(), error);
     }
@@ -70,10 +70,10 @@ static void  _eject_ready_callback(GObject *source_object, GAsyncResult *result,
     QPointer<Volume> * p = (QPointer<Volume> *)user_data;
     if (!p->isNull())
     {
-        gboolean success = g_volume_eject_finish(
-                G_VOLUME(source_object),
-                result,
-                WO::getGErrorPtr(&error));
+        g_volume_eject_with_operation_finish(
+                    G_VOLUME(source_object),
+                    result,
+                    WO::getGErrorPtr(&error));
 
         p->data()->emitEjectReady(p->data(), error);
     }
@@ -84,7 +84,6 @@ static void  _eject_ready_callback(GObject *source_object, GAsyncResult *result,
 
 Volume::Volume() : d(0)
 {
-    WO::initGIO();
 }
 
 
@@ -166,11 +165,12 @@ void Volume::eject(Mount::UnmountFlags flags, const Cancellable * cancellable)
 {
     void * thisQPointer = new QPointer<Volume>(this);
     
-    g_volume_eject(WO::getGVolume(this),
-            (GMountUnmountFlags) flags,
-            WO::getGCancellable(cancellable),
-            _eject_ready_callback,
-            thisQPointer);
+    g_volume_eject_with_operation(WO::getGVolume(this),
+                                  (GMountUnmountFlags) flags,
+                                  NULL,
+                                  WO::getGCancellable(cancellable),
+                                  _eject_ready_callback,
+                                  thisQPointer);
 }
 
 QList<QByteArray> Volume::enumerateIdentifiers() const

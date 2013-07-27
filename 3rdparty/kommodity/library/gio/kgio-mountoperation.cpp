@@ -112,8 +112,6 @@ public:
 
 MountOperation::MountOperation() : d(new Private)
 {
-    WO::initGIO();
-    
     GMountOperation* mountOperation = g_mount_operation_new ();
     
     WO::setGMountOperation(this, mountOperation);

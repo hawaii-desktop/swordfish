@@ -85,7 +85,6 @@ public:
 
 FileMonitor::FileMonitor() : d(new Private())
 {
-    WO::initGIO();
 }
 
 

@@ -41,7 +41,6 @@ public:
 
 FileIcon::FileIcon() : d(0)
 {
-    WO::initGIO();
 }
 
 

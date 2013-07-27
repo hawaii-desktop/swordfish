@@ -45,9 +45,7 @@ public:
 
 FileInfo::FileInfo() : d(0)
 {
-    WO::initGIO();
-    WO::setGFileInfo(this, g_file_info_new());
-    
+    WO::setGFileInfo(this, g_file_info_new());  
 }
 
 

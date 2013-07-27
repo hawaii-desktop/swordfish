@@ -51,7 +51,6 @@ public:
 
 FileAttributeMatcher::FileAttributeMatcher(const char *attributes) : d(new Private)
 {
-    WO::initGIO();
     d->m_gFileAttributeMatcher = g_file_attribute_matcher_new (attributes);
 }
 

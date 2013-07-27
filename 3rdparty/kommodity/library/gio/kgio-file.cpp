@@ -47,7 +47,6 @@ public:
 
 File::File() : d(0)
 {
-    WO::initGIO();
 }
 
 File::File( const File& other) : SharedWrappedObject(other), d(0)
@@ -56,15 +55,12 @@ File::File( const File& other) : SharedWrappedObject(other), d(0)
 
 File::File( const QByteArray & path ) : d(0)
 {
-    WO::initGIO();
     WO::setGFile(this, g_file_new_for_path(path.data()));
 }
 
 File::File( const QUrl & url ) : d(0)
 {
-    WO::initGIO();
     WO::set<File,GFile>(this, g_file_new_for_uri(url.toString().toUtf8().data()));
-
 }
 
 File::~File()

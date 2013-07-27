@@ -39,10 +39,10 @@ static void  _close_async_ready_callback(GObject *source_object, GAsyncResult *r
 {
     Error error;
     
-    gboolean success = g_output_stream_close_finish(
-            G_OUTPUT_STREAM(source_object),
-            result,
-            WO::getGErrorPtr(&error));
+    g_output_stream_close_finish(
+                G_OUTPUT_STREAM(source_object),
+                result,
+                WO::getGErrorPtr(&error));
     
     QPointer<OutputStream> * outputStreamQPointer = (QPointer<OutputStream> *)user_data;
     if (!outputStreamQPointer->isNull())
@@ -77,10 +77,10 @@ static void  _splice_async_ready_callback(GObject *source_object, GAsyncResult *
 {
     Error error;
     
-    bool success = g_output_stream_splice_finish(
-            G_OUTPUT_STREAM(source_object),
-            result,
-            WO::getGErrorPtr(&error));
+    g_output_stream_splice_finish(
+                G_OUTPUT_STREAM(source_object),
+                result,
+                WO::getGErrorPtr(&error));
     
     QPointer<OutputStream> * outputStreamQPointer = (QPointer<OutputStream> *)user_data;
     if (!outputStreamQPointer->isNull())
@@ -97,10 +97,10 @@ static void  _flush_async_ready_callback(GObject *source_object, GAsyncResult *r
 {
     Error error;
     
-    bool success = g_output_stream_flush_finish(
-            G_OUTPUT_STREAM(source_object),
-            result,
-            WO::getGErrorPtr(&error));
+    g_output_stream_flush_finish(
+                G_OUTPUT_STREAM(source_object),
+                result,
+                WO::getGErrorPtr(&error));
     
     QPointer<OutputStream> * outputStreamQPointer = (QPointer<OutputStream> *)user_data;
     if (!outputStreamQPointer->isNull())

@@ -75,7 +75,6 @@ static void  _icon_load_async_ready_callback(GObject *source_object, GAsyncResul
 
 LoadableIcon::LoadableIcon() : d(0)
 {
-    WO::initGIO();
 }
 
 

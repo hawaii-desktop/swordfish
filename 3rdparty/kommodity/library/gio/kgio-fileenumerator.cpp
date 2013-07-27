@@ -43,10 +43,10 @@ static void  _close_async_ready_callback(GObject *source_object, GAsyncResult *r
 {
     Error error;
     
-    gboolean success = g_file_enumerator_close_finish(
-            G_FILE_ENUMERATOR(source_object),
-            result,
-            WO::getGErrorPtr(&error));
+    g_file_enumerator_close_finish(
+                G_FILE_ENUMERATOR(source_object),
+                result,
+                WO::getGErrorPtr(&error));
     
     QPointer<FileEnumerator> * fileEnumeratorQPointer = (QPointer<FileEnumerator> *)user_data;
     if (!fileEnumeratorQPointer->isNull())
@@ -106,7 +106,6 @@ public:
 
 FileEnumerator::FileEnumerator() : d(0)
 {
-    WO::initGIO();
 }
 
 

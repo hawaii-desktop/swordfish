@@ -51,10 +51,10 @@ static void  _poll_for_media_ready_callback(GObject *source_object, GAsyncResult
     QPointer<Drive> * p = (QPointer<Drive> *)user_data;
     if (!p->isNull())
     {
-        gboolean success = g_drive_poll_for_media_finish(
-                G_DRIVE(source_object),
-                result,
-                WO::getGErrorPtr(&error));
+        g_drive_poll_for_media_finish(
+                    G_DRIVE(source_object),
+                    result,
+                    WO::getGErrorPtr(&error));
         
         p->data()->emitPollForMediaReady(p->data(), error);
     }
@@ -69,10 +69,10 @@ static void  _eject_ready_callback(GObject *source_object, GAsyncResult *result,
     QPointer<Drive> * p = (QPointer<Drive> *)user_data;
     if (!p->isNull())
     {
-        gboolean success = g_drive_eject_finish(
-                G_DRIVE(source_object),
-                result,
-                WO::getGErrorPtr(&error));
+        g_drive_eject_with_operation_finish(
+                    G_DRIVE(source_object),
+                    result,
+                    WO::getGErrorPtr(&error));
 
         p->data()->emitEjectReady(p->data(), error);
     }
@@ -83,7 +83,6 @@ static void  _eject_ready_callback(GObject *source_object, GAsyncResult *result,
 
 Drive::Drive() : d(0)
 {
-    WO::initGIO();
 }
 
 
@@ -188,11 +187,12 @@ void Drive::eject(Mount::UnmountFlags flags, const Cancellable * cancellable)
 {
     void * thisQPointer = new QPointer<Drive>(this);
     
-    g_drive_eject(WO::getGDrive(this),
-            (GMountUnmountFlags) flags,
-            WO::getGCancellable(cancellable),
-            _eject_ready_callback,
-            thisQPointer);
+    g_drive_eject_with_operation(WO::getGDrive(this),
+                                 (GMountUnmountFlags) flags,
+                                 NULL,
+                                 WO::getGCancellable(cancellable),
+                                 _eject_ready_callback,
+                                 thisQPointer);
 }
 
 /////

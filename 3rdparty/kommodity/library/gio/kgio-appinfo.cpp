@@ -43,7 +43,6 @@ public:
 
 AppInfo::AppInfo() : d(0)
 {
-    WO::initGIO();
 }
 
 

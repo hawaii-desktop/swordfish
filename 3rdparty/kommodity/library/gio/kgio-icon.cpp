@@ -45,7 +45,6 @@ public:
 
 Icon::Icon() : d(0)
 {
-    WO::initGIO();
 }
 
 QString Icon::fileName() const

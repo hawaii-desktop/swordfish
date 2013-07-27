@@ -57,10 +57,10 @@ static void  _close_async_ready_callback(GObject *source_object, GAsyncResult *r
 {
     Error error;
     
-    gboolean success = g_input_stream_close_finish(
-            G_INPUT_STREAM(source_object),
-            result,
-            WO::getGErrorPtr(&error));
+    g_input_stream_close_finish(
+                G_INPUT_STREAM(source_object),
+                result,
+                WO::getGErrorPtr(&error));
     
     QPointer<InputStream> * inputStreamQPointer = (QPointer<InputStream> *)user_data;
     if (!inputStreamQPointer->isNull())

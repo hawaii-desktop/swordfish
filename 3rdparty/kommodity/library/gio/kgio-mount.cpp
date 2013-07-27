@@ -48,10 +48,10 @@ static void  _unmount_ready_callback(GObject *source_object, GAsyncResult *resul
     if (!p->isNull())
     {
         
-        gboolean success = g_mount_unmount_finish(
-                G_MOUNT(source_object),
-                result,
-                WO::getGErrorPtr(&error));
+        g_mount_unmount_with_operation_finish(
+                    G_MOUNT(source_object),
+                    result,
+                    WO::getGErrorPtr(&error));
         
         p->data()->emitUnmountReady(p->data(), error);
     }
@@ -65,10 +65,10 @@ static void  _remount_ready_callback(GObject *source_object, GAsyncResult *resul
     QPointer<Mount> * p = (QPointer<Mount> *)user_data;
     if (!p->isNull())
     {
-        gboolean success = g_mount_remount_finish(
-                G_MOUNT(source_object),
-                result,
-                WO::getGErrorPtr(&error));
+        g_mount_remount_finish(
+                    G_MOUNT(source_object),
+                    result,
+                    WO::getGErrorPtr(&error));
 
         p->data()->emitRemountReady(p->data(), error);
     }
@@ -82,10 +82,10 @@ static void  _eject_ready_callback(GObject *source_object, GAsyncResult *result,
     QPointer<Mount> * p = (QPointer<Mount> *)user_data;
     if (!p->isNull())
     {
-        gboolean success = g_mount_eject_finish(
-                G_MOUNT(source_object),
-                result,
-                WO::getGErrorPtr(&error));
+        g_mount_eject_with_operation_finish(
+                    G_MOUNT(source_object),
+                    result,
+                    WO::getGErrorPtr(&error));
 
         p->data()->emitEjectReady(p->data(), error);
     }
@@ -95,7 +95,6 @@ static void  _eject_ready_callback(GObject *source_object, GAsyncResult *result,
 
 Mount::Mount() : d(0)
 {
-    WO::initGIO();
 }
 
 
@@ -160,11 +159,12 @@ void Mount::unmount(UnmountFlags flags, const Cancellable * cancellable)
 {
     void * thisQPointer = new QPointer<Mount>(this);
     
-    g_mount_unmount(WO::getGMount(this),
-            (GMountUnmountFlags) flags,
-            WO::getGCancellable(cancellable),
-            _unmount_ready_callback,
-            thisQPointer);
+    g_mount_unmount_with_operation(WO::getGMount(this),
+                                   (GMountUnmountFlags) flags,
+                                   NULL,
+                                   WO::getGCancellable(cancellable),
+                                   _unmount_ready_callback,
+                                   thisQPointer);
 }
 
 void Mount::remount(MountFlags flags,
@@ -190,11 +190,12 @@ void Mount::eject(Mount::UnmountFlags flags, const Cancellable * cancellable)
 {
     void * thisQPointer = new QPointer<Mount>(this);
     
-    g_mount_eject(WO::getGMount(this),
-            (GMountUnmountFlags) flags,
-            WO::getGCancellable(cancellable),
-            _eject_ready_callback,
-            thisQPointer);
+    g_mount_eject_with_operation(WO::getGMount(this),
+                                 (GMountUnmountFlags) flags,
+                                 NULL,
+                                 WO::getGCancellable(cancellable),
+                                 _eject_ready_callback,
+                                 thisQPointer);
 }
 
 ///
