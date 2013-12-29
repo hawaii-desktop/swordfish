@@ -27,7 +27,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import Swordfish 0.1
-import FluidExtra 0.2 as FluidExtra
+import Fluid.Extra 1.0 as FluidExtra
 
 Item {
     id: container
