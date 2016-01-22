@@ -1,10 +1,10 @@
 /****************************************************************************
  * This file is part of Swordfish.
  *
- * Copyright (C) 2010-2016 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2010-2016 Pier Luigi Fiorini
  *
  * Author(s):
- *    Pier Luigi Fiorini
+ *    Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:GPL2+$
  *
@@ -29,7 +29,7 @@
 
 int main(int argc, char *argv[])
 {
-    QApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
     app.setApplicationName(QLatin1String("Swordfish"));
     app.setApplicationVersion(QLatin1String("0.0.0"));
     app.setOrganizationDomain(QLatin1String("hawaiios.org"));

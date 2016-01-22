@@ -1,5 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource prefix="/">
 	<file>qml/AppWindow.qml</file>
+	<file>qml/PlacesView.qml</file>
+	<file>qml/FolderView.qml</file>
 </qresource>
 </RCC>

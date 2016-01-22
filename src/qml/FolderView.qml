@@ -1,10 +1,10 @@
 /****************************************************************************
  * This file is part of Swordfish.
  *
- * Copyright (C) 2010-2014 Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
+ * Copyright (C) 2010-2016 Pier Luigi Fiorini
  *
  * Author(s):
- *    Pier Luigi Fiorini
+ *    Pier Luigi Fiorini <pierluigi.fiorini@gmail.com>
  *
  * $BEGIN_LICENSE:LGPL2.1+$
  *
@@ -27,7 +27,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
-import Swordfish 0.1
+import Swordfish.Folders 1.0
 
 Item {
     id: container
@@ -88,7 +88,7 @@ Item {
             id: gridView
             cellWidth: 100
             cellHeight: 100
-            model: FolderModel {}
+            model: FolderListModel {}
             delegate: gridDelegate
             highlight: Rectangle {
                 radius: 4
