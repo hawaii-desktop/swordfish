@@ -1,25 +1,23 @@
 Swordfish
 =========
 
+[![GitHub release](https://img.shields.io/github/release/hawaii-desktop/swordfish.svg)](https://github.com/hawaii-desktop/swordfish)
+[![GitHub issues](https://img.shields.io/github/issues/hawaii-desktop/swordfish.svg)](https://github.com/hawaii-desktop/swordfish/issues)
+[![IRC Network](https://img.shields.io/badge/irc-freenode-blue.svg "IRC Freenode")](https://webchat.freenode.net/?channels=hawaii-desktop)
+
 This is Swordfish, the file manager for the Hawaii desktop environment.
 
 ## Dependencies
 
-In order to build and install Swordfish you need Qt 5.1 or better with
-at least the following modules:
+Qt >= 5.6 with at least the following modules is required:
 
-* qtbase
-* qtjsbackend (doesn't exist on Qt >= 5.2)
-* qtdeclarative
-* qtquickcontrols
+* [qtbase](http://code.qt.io/cgit/qt/qtbase.git)
+* [qtdeclarative](http://code.qt.io/cgit/qt/qtdeclarative.git)
+* [qtquickcontrols2](http://code.qt.io/cgit/qt/qtquickcontrols2.git)
 
-You can either build Qt from git yourself or download binaries.
+The following modules and their dependencies are required:
 
-More information about building Qt 5 from can be found here:
-
-  http://qt-project.org/wiki/Building-Qt-5-from-Git
-
-Qt 5 binaries can be downloaded from http://qt-project.org/downloads
+* [ECM >= 1.4.0](http://quickgit.kde.org/?p=extra-cmake-modules.git)
 
 ## Build
 
@@ -66,3 +64,18 @@ make install
 ```
 
 from the build directory.
+
+# Licensing
+
+## QtQuick Plugins
+
+Licensed under the terms of the GNU Lesser General Public License version 3
+as published by the Free Software Foundation and appearing in the file
+LICENSE.LGPLv3 included with this software.
+
+## Application
+
+Licensed under the terms of the GNU General Public License version 2 as
+published by the Free Software Foundation and appearing in the file
+LICENSE.GPL2 included with this software, or (at your option) any later
+version.
