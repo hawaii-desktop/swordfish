@@ -51,6 +51,7 @@ ApplicationWindow {
             }
         }
     }
+    visible: true
 
     SystemPalette {
         id: palette
