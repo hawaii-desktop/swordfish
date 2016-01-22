@@ -27,7 +27,6 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
-import Swordfish 0.1
 
 ApplicationWindow {
     title: "Swordfish"
