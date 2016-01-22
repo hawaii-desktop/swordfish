@@ -88,7 +88,9 @@ Item {
             id: gridView
             cellWidth: 100
             cellHeight: 100
-            model: FolderListModel {}
+            model: FolderListModel {
+                path: "/"
+            }
             delegate: gridDelegate
             highlight: Rectangle {
                 radius: 4
