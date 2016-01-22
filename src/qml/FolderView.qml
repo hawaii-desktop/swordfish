@@ -27,6 +27,7 @@
 import QtQuick 2.1
 import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
+import Qt.labs.controls 1.0
 import Swordfish.Folders 1.0
 
 Item {
@@ -43,59 +44,25 @@ Item {
     Component {
         id: gridDelegate
 
-        Item {
+        ItemDelegate {
             width: gridView.cellWidth
             height: gridView.cellHeight
-
-            MouseArea {
-                anchors.fill: parent
-                onClicked: gridView.currentIndex = index
-            }
-
-            ColumnLayout {
-                anchors.fill: parent
-
-                Image {
-                    source: fileIconSource
-                    sourceSize {
-                        width: 48
-                        height: 48
-                    }
-                    width: 48
-                    height: 48
-
-                    Layout.alignment: Qt.AlignCenter
-                }
-
-                Label {
-                    text: model.fileName
-                    horizontalAlignment: Qt.AlignHCenter
-                    verticalAlignment: Qt.AlignTop
-                    wrapMode: Text.Wrap
-                    elide: Text.ElideRight
-
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                }
-            }
+            checked: gridView.currentIndex == index
+            text: model.fileName
+            onClicked: gridView.currentIndex = index
         }
     }
 
-    ScrollView {
-        anchors.fill: parent
-
-        GridView {
-            id: gridView
-            cellWidth: 100
-            cellHeight: 100
-            model: FolderListModel {
-                path: "/"
-            }
-            delegate: gridDelegate
-            highlight: Rectangle {
-                radius: 4
-                color: palette.highlight
-            }
+    GridView {
+        id: gridView
+        cellWidth: 100
+        cellHeight: 100
+        model: FolderListModel {
+            path: "/"
         }
+        delegate: gridDelegate
+
+        ScrollBar.horizontal: ScrollBar {}
+        ScrollBar.vertical: ScrollBar {}
     }
 }

@@ -25,8 +25,9 @@
  ***************************************************************************/
 
 import QtQuick 2.1
-import QtQuick.Controls 1.0
 import QtQuick.Layouts 1.0
+import QtQuick.Controls 1.0 as QtCC
+import Qt.labs.controls 1.0
 
 ApplicationWindow {
     title: "Swordfish"
@@ -34,8 +35,7 @@ ApplicationWindow {
     height: 480
     minimumWidth: 400
     minimumHeight: 400
-    color: palette.window
-    toolBar: ToolBar {
+    header: ToolBar {
         id: toolBar
 
         RowLayout {
@@ -43,11 +43,11 @@ ApplicationWindow {
             anchors.verticalCenter: parent.verticalCenter
 
             ToolButton {
-                action: actionBack
+                //action: actionBack
             }
 
             ToolButton {
-                action: actionForward
+                //action: actionForward
             }
         }
     }
@@ -57,7 +57,7 @@ ApplicationWindow {
         id: palette
     }
 
-    Action {
+    QtCC.Action {
         id: actionBack
         text: qsTr("&Back")
         tooltip: qsTr("Back")
@@ -66,7 +66,7 @@ ApplicationWindow {
         enabled: false
     }
 
-    Action {
+    QtCC.Action {
         id: actionForward
         text: qsTr("&Forward")
         tooltip: qsTr("Forward")
@@ -75,7 +75,7 @@ ApplicationWindow {
         enabled: false
     }
 
-    SplitView {
+    QtCC.SplitView {
         anchors.fill: parent
 
         PlacesView {
