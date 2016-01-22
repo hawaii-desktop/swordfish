@@ -25,9 +25,8 @@
  ***************************************************************************/
 
 import QtQuick 2.1
-import QtQuick.Controls 1.0
-import Swordfish 0.1
-import Fluid.Extra 1.0 as FluidExtra
+import Qt.labs.controls 1.0
+import Swordfish.Folders 1.0
 
 Item {
     id: container
@@ -56,6 +55,7 @@ Item {
             }
         }
 
+/*
         Component {
             id: delegate
 
@@ -101,9 +101,10 @@ Item {
                 }
             }
         }
+*/
 
-        model: PlacesModel {}
-        delegate: delegate
+        //model: PlacesModel {}
+        delegate: ItemDelegate {}
         highlight: Rectangle {
             color: palette.highlight
             opacity: 0.7
