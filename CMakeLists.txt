@@ -76,8 +76,7 @@ string(REGEX REPLACE "[ \t\n]+" \; DBUS_SESSION_BUS_SERVICES_DIR "${DBUS_SESSION
 
 # Subdirectories
 add_subdirectory(data)
-add_subdirectory(3rdparty)
-add_subdirectory(src)
+add_subdirectory(declarative)
 
 # Display featute summary
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
