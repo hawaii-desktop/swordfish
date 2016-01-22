@@ -3,6 +3,15 @@ include_directories(
     ${CMAKE_SOURCE_DIR}/3rdparty/kommodity/include
 )
 
+# Don't cast QString from/to ascii
+add_definitions(
+    -DQT_NO_CAST_FROM_ASCII
+    -DQT_NO_CAST_TO_ASCII
+    -DQT_NO_CAST_FROM_BYTEARRAY
+    -DQT_NO_URL_CAST_FROM_STRING
+    -DQT_USE_QSTRINGBUILDER
+)
+
 set(SOURCES
     main.cpp
 )
