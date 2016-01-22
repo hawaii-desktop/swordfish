@@ -26,7 +26,9 @@
 #include "disklocation.h"
 #include "trashlocation.h"
 #include "trashiteminfo.h"
+#if ENABLE_SMBCLIENT
 #include "smblocation.h"
+#endif
 #include "cleanurl.h"
 #include "netauthenticationdata.h"
 
@@ -52,7 +54,9 @@ LocationsFactory::LocationsFactory(QObject *parent)
 {
    addLocation(new DiskLocation(Location::LocalDisk));
    addLocation(new TrashLocation(Location::TrashDisk));
+#if ENABLE_SMBCLIENT
    addLocation(new SmbLocation(Location::NetSambaShare));
+#endif
 }
 
 LocationsFactory::~LocationsFactory()

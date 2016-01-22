@@ -34,7 +34,9 @@
 
 #include "dirmodel.h"
 #include "dirselection.h"
+#if ENABLE_SMBCLIENT
 #include "smbusershare.h"
+#endif
 
 #include <QtGlobal>
 
