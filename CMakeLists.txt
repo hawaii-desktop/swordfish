@@ -1,55 +1,63 @@
 project(Swordfish)
 
-cmake_minimum_required(VERSION 2.8.9)
-
-# Find includes in corresponding build directories
-set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-# Instruct CMake to run moc automatically when needed
-set(CMAKE_AUTOMOC ON)
+cmake_minimum_required(VERSION 2.8.12)
 
 # Set version
-set(SWORDFISH_VERSION_MAJOR 0)
-set(SWORDFISH_VERSION_MINOR 2)
-set(SWORDFISH_VERSION_PATCH 90)
-set(SWORDFISH_VERSION_STRING "${SWORDFISH_VERSION_MAJOR}.${SWORDFISH_VERSION_MINOR}.${SWORDFISH_VERSION_PATCH}")
-
-# Installation directories
-include(GNUInstallDirs)
-
-# Macro to print feature summary
-include(FeatureSummary)
-
-# Add custom uninstall target
-configure_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
-    IMMEDIATE @ONLY)
-add_custom_target(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
+set(PROJECT_VERSION "0.2.90")
 
 # Set up packaging
-set(CPACK_PACKAGE_NAME hawaii-swordfish)
-set(CPACK_PACKAGE_VERSION ${SWORDFISH_VERSION_STRING})
-set(CPACK_SYSTEM_NAME "generic")
+set(CPACK_PACKAGE_NAME "swordfish")
+set(CPACK_PACKAGE_VERSION "${PROJECT_VERSION}")
 set(CPACK_GENERATOR "TGZ")
 set(CPACK_SET_DESTDIR FALSE)
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}-${CPACK_PACKAGE_VERSION}")
+set(CPACK_SOURCE_IGNORE_FILES "/build/;/.git;/*.user;/.tx/;~$;${CPACK_SOURCE_IGNORE_FILES}")
 include(CPack)
+add_custom_target(dist COMMAND ${CMAKE_MAKE_PROGRAM} package_source)
 
-# Build flags
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fvisibility=hidden -fvisibility-inlines-hidden -Wall -std=c++0x")
+# ECM
+find_package(ECM 1.4.0 REQUIRED NO_MODULE)
+set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} "${CMAKE_SOURCE_DIR}/cmake")
+
+# Macros
+include(FeatureSummary)
+include(KDEInstallDirs)
+include(KDECompilerSettings)
+include(KDECMakeSettings)
+
+# Don't cast QString from/to ascii
+add_definitions(
+    -DQT_NO_CAST_FROM_ASCII
+    -DQT_NO_CAST_TO_ASCII
+    -DQT_NO_CAST_FROM_BYTEARRAY
+    -DQT_NO_URL_CAST_FROM_STRING
+    -DQT_USE_QSTRINGBUILDER
+)
+
+# Add custom uninstall target
+if ("${ECM_VERSION}" VERSION_LESS "1.7.0")
+    # ECM 1.7.0 provides this target, so we can't roll our own (see issue #172)
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
+        IMMEDIATE @ONLY)
+    add_custom_target(uninstall "${CMAKE_COMMAND}" -P "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake")
+endif()
 
 # Assume release build by default
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "RelWithDebInfo" CACHE STRING "" FORCE)
 endif()
 
-# Disable debug output for release builds
-if(CMAKE_BUILD_TYPE MATCHES "^[Rr]elease$")
-    add_definitions(-DQT_NO_DEBUG_OUTPUT)
-endif()
-
 # Find Qt
-find_package(Qt5 5.1.0 REQUIRED COMPONENTS Widgets Qml Quick LinguistTools)
+set(REQUIRED_QT_VERSION "5.6.0")
+find_package(Qt5 ${REQUIRED_QT_VERSION} CONFIG REQUIRED COMPONENTS
+             Core
+             DBus
+             Gui
+             Qml
+             Quick
+             LinguistTools)
 
 # Find pkg-config executable
 find_program(PKGCONFIG_EXECUTABLE pkg-config)
