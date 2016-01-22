@@ -6,7 +6,12 @@ include_directories(
     smb/qsambaclient/src
 )
 
-set(PLUGIN_DIR Swordfish/Folders)
+add_definitions(
+    -DDEBUG_MESSAGES=0
+    -DDEBUG_EXT_FS_WATCHER=0
+    -DDEBUG_REMOVE=0
+    -DDO_NOT_USE_TAG_LIB
+)
 
 set(SOURCES
     clipboard.cpp
