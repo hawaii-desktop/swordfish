@@ -1,8 +1,8 @@
 include_directories(
     disk
-    trash   
+    trash
     net
-    smb 
+    smb
     smb/qsambaclient/src
 )
 
@@ -57,7 +57,7 @@ set(SOURCES
     locationitemdiriterator.cpp
     locationitemdiriterator.h
     locationitemfile.cpp
-    locationitemfile.h  
+    locationitemfile.h
     cleanurl.cpp
     cleanurl.h
     urliteminfo.cpp
@@ -71,15 +71,15 @@ set(SOURCES
     disk/disklocationitemdir.cpp
     disk/disklocationitemdir.h
     trash/qtrashdir.cpp
-    trash/qtrashdir.h   
+    trash/qtrashdir.h
     trash/qtrashutilinfo.cpp
     trash/qtrashutilinfo.h
     trash/trashiteminfo.cpp
     trash/trashiteminfo.h
     trash/trashlocation.cpp
-    trash/trashlocation.h 
+    trash/trashlocation.h
     net/netauthenticationdata.cpp
-    net/netauthenticationdata.h  
+    net/netauthenticationdata.h
     net/netutil.cpp
     net/netutil.h
 )
@@ -109,8 +109,8 @@ set(SAMBA_SOURCES
 
 # Find libsmbclient
 if(ENABLE_SMBCLIENT)
-    find_path(SAMBA_INCLUDE_DIR 
-              NAMES libsmbclient.h 
+    find_path(SAMBA_INCLUDE_DIR
+              NAMES libsmbclient.h
               HINTS /usr/include/smbclient /usr/include/samba /usr/include/samba-3.0 /usr/include/samba-4.0)
     find_library(SAMBA_LIBRARIES NAMES smbclient)
 
