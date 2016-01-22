@@ -32,10 +32,10 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    app.setApplicationName("Swordfish");
-    app.setApplicationVersion("0.0.0");
-    app.setOrganizationDomain("maui-project.org");
-    app.setOrganizationName("Hawaii");
+    app.setApplicationName(QLatin1String("Swordfish"));
+    app.setApplicationVersion(QLatin1String("0.0.0"));
+    app.setOrganizationDomain(QLatin1String("hawaiios.org"));
+    app.setOrganizationName(QLatin1String("Hawaii"));
 
     QQmlEngine engine;
 
