@@ -145,6 +145,6 @@ if(SAMBA_FOUND)
 endif()
 
 install(FILES qmldir
-        DESTINATION ${QT_INSTALL_DIR}/Swordfish/Folders)
+        DESTINATION ${QML_INSTALL_DIR}/Swordfish/Folders)
 install(TARGETS swordfishfoldersplugin
-        DESTINATION ${QT_INSTALL_DIR}/Swordfish/Folders)
+        DESTINATION ${QML_INSTALL_DIR}/Swordfish/Folders)
