@@ -48,7 +48,7 @@ Item {
             width: gridView.cellWidth
             height: gridView.cellHeight
             checked: gridView.currentIndex == index
-            text: model.fileName
+            text: model.filePath
             onClicked: gridView.currentIndex = index
         }
     }
@@ -58,7 +58,7 @@ Item {
         cellWidth: 100
         cellHeight: 100
         model: FolderListModel {
-            path: "/"
+            path: "trash://"
         }
         delegate: gridDelegate
 
